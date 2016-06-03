@@ -16,6 +16,14 @@ services:
     image: gateway
     ports:
      - "8765:8765"
+  servicos:
+    container_name: services
+    image: services
+    ports:
+     - "8081:8081"
+     - "8181:8181"
+    environment:
+     - spring.profiles.active=development
   ui:
     container_name: ui
     image: plataforma-ui
