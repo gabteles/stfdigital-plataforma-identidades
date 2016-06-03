@@ -1,0 +1,32 @@
+# --------------------------------
+# Mac OS
+.DS_Store
+.project
+.eslintrc
+
+# Node
+node_modules
+node
+
+# Typings
+src/main/ui/typings
+src/test/ui/typings
+
+# JS Main
+src/main/resources/public
+
+# --------------------------------
+
+# Visual Studio Code
+.vscode
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# Gradle
+.gradle
+build
+bin
+data
