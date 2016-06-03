@@ -1,0 +1,125 @@
+buildscript {
+	ext {
+        springBootVersion = '1.3.5.RELEASE'
+        springPlatformVersion = '2.0.5.RELEASE'
+		dependencyManagementPlugin = '0.5.2.RELEASE'
+        springCloudVersion = '1.1.0.RELEASE'
+		apacheCommonsVersion = '3.3.2'
+		jacksonVersion = '2.7.2'
+		jacksonMapperVersion = '1.9.13'
+		swaggerVersion = '1.0.2'
+		guavaVersion = '19.0'
+		flywayVersion = '4.0'
+	}
+    repositories {
+    	mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.spring.io/release" }
+        maven { url "https://plugins.gradle.org/m2/" }        
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPlugin}")
+        classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.6.0")
+        classpath("com.moowork.gradle:gradle-node-plugin:0.12")
+        classpath("com.moowork.gradle:gradle-gulp-plugin:0.12")
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'spring-boot'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: "com.palantir.docker"
+apply plugin: 'com.moowork.node'
+apply plugin: 'com.moowork.gulp'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        mavenBom("org.springframework.cloud:spring-cloud-netflix:${springCloudVersion}")
+        mavenBom("io.spring.platform:platform-bom:${springPlatformVersion}")
+    }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+		
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    
+    compile("org.springframework.boot:spring-boot-starter-undertow")
+    
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+                
+    compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+        
+    compile("com.google.guava:guava:${guavaVersion}")
+        
+    compile("org.apache.commons:commons-lang3:${apacheCommonsVersion}")
+		
+    compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+		
+    compile("org.codehaus.jackson:jackson-mapper-asl:${jacksonMapperVersion}")
+        
+    compile("com.mangofactory:swagger-springmvc:$swaggerVersion")
+    
+    compile("br.jus.stf.digital:core:0.0.1-SNAPSHOT")
+    
+    compile("com.h2database:h2")
+    
+    compile("org.flywaydb:flyway-core:$flywayVersion")
+    
+    compile("com.jayway.jsonpath:json-path")
+    
+    compile("org.springframework.boot:spring-boot-starter-test")
+    
+    compile("org.springframework.boot:spring-boot-devtools")
+}
+
+node {
+  // Version of node to use.
+  version = '5.9.1'
+
+  // Version of npm to use.
+  npmVersion = '3.7.3'
+
+  // Base URL for fetching node distributions (change if you have a mirror).
+  distBaseUrl = 'https://nodejs.org/dist'
+
+  // If true, it will download node using above parameters.
+  // If false, it will try to use globally installed node.
+  download = true
+
+  // Set the work directory for unpacking node
+  workDir = file("${project.buildDir}/node")
+
+  // Set the work directory where node_modules should be located
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+npmInstall.dependsOn npm_prune
+gulp_build.dependsOn tasks.npmInstall
+processResources.dependsOn gulp_build
+
+ext.dockerImageTag = project.hasProperty('dockerImageTag') ? project.getProperty('dockerImageTag') : ''
+
+docker {
+    name jar.baseName + (dockerImageTag ? ':' + dockerImageTag : '')
+    dockerfile 'src/main/docker/Dockerfile'
+    files 'src/main/docker/docker-entrypoint.sh'
+    dependsOn tasks.jar, tasks.bootRepackage, tasks.build
+}
