@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,7 +53,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 		//Recupera as informações do usuário.
 		mockMvc.perform(get("/api/acessos/usuario").header("login", "usuario-teste")).andExpect(status().isOk())
 			.andExpect(jsonPath("$.login", is("usuario-teste")))
-			.andExpect(jsonPath("$.nome", is("usuario-teste")))
+			.andExpect(jsonPath("$.nome", is("Usuario Teste")))
 			.andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
 			.andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
 			.andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")));
@@ -91,9 +90,6 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 		
 		userJson.put("login", "joao.silva");
 		userJson.put("nome", "João da Silva");
-		userJson.put("email", "joao.silva@exemplo.com.br");
-		userJson.put("cpf", "71405168633");
-		userJson.put("telefone", "6133332222");
 		
 		mockMvc.perform(
 				post("/api/acessos/usuarios")

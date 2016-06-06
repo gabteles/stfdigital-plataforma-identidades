@@ -23,7 +23,7 @@ import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.userauthentication.PapelId;
 
 @Entity
-@Table(name = "PAPEL", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_PAPEL"}))
+@Table(name = "PAPEL", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_PAPEL"}))
 public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 	
 	@EmbeddedId
@@ -37,7 +37,7 @@ public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 	private Grupo grupo;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PAPEL_RECURSO", schema = "PLATAFORMA",
+	@JoinTable(name = "PAPEL_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
 	private Set<Recurso> recursos = new HashSet<Recurso>(0);

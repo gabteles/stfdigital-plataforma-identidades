@@ -20,7 +20,7 @@ import br.jus.stf.core.shared.userauthentication.SegmentoId;
  * @since 03.06.2016
  */
 @Entity
-@Table(name = "SEGMENTO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_SEGMENTO", "SEQ_TIPO_INFORMACAO"}))
+@Table(name = "SEGMENTO", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_SEGMENTO", "SEQ_TIPO_INFORMACAO"}))
 public class Segmento extends EntitySupport<Segmento, SegmentoId> {
 	
 	@EmbeddedId

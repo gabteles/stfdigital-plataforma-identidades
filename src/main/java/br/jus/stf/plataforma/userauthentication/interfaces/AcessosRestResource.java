@@ -134,7 +134,7 @@ public class AcessosRestResource {
 	public UsuarioDto recuperarUsuario() {
         // TODO: Ver como será recuperado o usuário logado...
 //		String login = SecurityContextUtil.getUser().getUsername();
-		String login = "";
+		String login = "usuario-teste";
 		return usuarioDtoAssembler.toDto(
 				acessosApplicationService.recuperarUsuario(login));
 	}

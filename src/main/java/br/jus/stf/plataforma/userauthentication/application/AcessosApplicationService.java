@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -173,23 +172,24 @@ public class AcessosApplicationService {
 	 */
 	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
         // TODO: Verificar como será feito o cadastro de usuários e pessoas...
-		/*PessoaId idPessoa = pessoaRepository.nextId();
+//		PessoaId idPessoa = pessoaRepository.nextId();
+		PessoaId idPessoa = new PessoaId((long)(Math.random()*11)+5);
 		Pessoa pessoa;
 		
-		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
-			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
-			
-		} else if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
-			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
-			
-		} else if (StringUtils.isNotBlank(cpf)) {
-			pessoa = new Pessoa(idPessoa, nome, cpf);
-			
-		} else {
+//		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
+//			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
+//			
+//		} else if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
+//			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
+//			
+//		} else if (StringUtils.isNotBlank(cpf)) {
+//			pessoa = new Pessoa(idPessoa, nome, cpf);
+//			
+//		} else {
 			pessoa = new Pessoa(idPessoa, nome);
-		}
+//		}
 		
-		pessoaRepository.save(pessoa);
+//		pessoaRepository.save(pessoa);
 		
 		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
 		Usuario principal = new Usuario(idUsuario, pessoa, login);
@@ -201,10 +201,9 @@ public class AcessosApplicationService {
 		principal.atribuirGrupos(grupos);		
 		
 		usuarioRepository.save(principal);
-		pessoaApplicationEvent.pessoaCadastrada(pessoa);
+//		pessoaApplicationEvent.pessoaCadastrada(pessoa);
 		
-		return principal;*/
-		return null;
+		return principal;
 	}
 	
 	/**

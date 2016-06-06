@@ -49,19 +49,19 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 	private Setor lotacao;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "USUARIO_RECURSO", schema = "PLATAFORMA",
+	@JoinTable(name = "USUARIO_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
 	private Set<Recurso> recursos = new HashSet<Recurso>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
+	@JoinTable(name = "PAPEL_USUARIO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
 	private Set<Papel> papeis = new HashSet<Papel>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "GRUPO_USUARIO", schema = "PLATAFORMA",
+	@JoinTable(name = "GRUPO_USUARIO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
 	private Set<Grupo> grupos = new HashSet<Grupo>(0);

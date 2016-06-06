@@ -20,7 +20,7 @@ import br.jus.stf.core.shared.userauthentication.InformacaoId;
  * @since 03.06.2016
  */
 @Entity
-@Table(name = "INFORMACAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_TIPO_INFORMACAO", "SEQ_SEGMENTO", "COD_IDENTIDADE"}))
+@Table(name = "INFORMACAO", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_TIPO_INFORMACAO", "SEQ_SEGMENTO", "COD_IDENTIDADE"}))
 public class Informacao extends EntitySupport<Informacao, InformacaoId> {
 	
 	@EmbeddedId

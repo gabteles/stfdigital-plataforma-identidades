@@ -29,7 +29,7 @@ import br.jus.stf.core.shared.userauthentication.GrupoId;
  * @since 03.06.2016
  */
 @Entity
-@Table(name = "GRUPO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_GRUPO", "TIP_GRUPO"}))
+@Table(name = "GRUPO", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_GRUPO", "TIP_GRUPO"}))
 public class Grupo extends EntitySupport<Grupo, GrupoId> implements Principal {
 	
 	@EmbeddedId
@@ -43,7 +43,7 @@ public class Grupo extends EntitySupport<Grupo, GrupoId> implements Principal {
 	private TipoGrupo tipo;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "GRUPO_RECURSO", schema = "PLATAFORMA",
+	@JoinTable(name = "GRUPO_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
 	private Set<Recurso> recursos = new HashSet<Recurso>(0);

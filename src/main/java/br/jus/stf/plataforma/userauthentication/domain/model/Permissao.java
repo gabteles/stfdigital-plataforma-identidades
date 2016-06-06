@@ -24,7 +24,7 @@ import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
  * @since 03.06.2016
  */
 @Entity
-@Table(name = "PERMISSAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_TIPO_INFORMACAO", "SEQ_SEGMENTO", "TIP_PERMISSAO"}))
+@Table(name = "PERMISSAO", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_TIPO_INFORMACAO", "SEQ_SEGMENTO", "TIP_PERMISSAO"}))
 public class Permissao extends ValueObjectSupport<Permissao> {
 	
 	@Id
