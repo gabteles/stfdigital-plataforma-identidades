@@ -43,18 +43,34 @@ public class PessoaRestResource {
 	private PessoaRepository pessoaRepository;
 	
 	/**
-	 * Retorna os ids na mesma ordem de envio dos nomes
+	 * Retorna uma lista de IDs alocados para
+	 * cadastro ou reutilização de pessoas
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/alocar", method = RequestMethod.POST)
+	public List<Long> alocarIdPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
+		}
+		
+		return pessoaApplicationService.alocarIdPessoas(command).stream().map(pessoaId -> pessoaId.toLong())
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Retorna as pessoas cadastradas na mesma ordem de envio dos nomes
 	 * 
 	 * @param command
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public List<PessoaDto> cadastrar(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
+	public List<PessoaDto> cadastrarPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		
-		return pessoaApplicationService.cadastrarPessoas(command.getNomes()).stream()
+		return pessoaApplicationService.handle(command).stream()
 				.map(pessoa -> pessoaDtoAssembler.toDto(pessoa)).collect(Collectors.toList());
 	}
 	

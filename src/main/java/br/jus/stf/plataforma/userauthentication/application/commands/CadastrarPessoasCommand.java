@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * Comando para cadastro de pessoa
+ * Comando para cadastro de pessoas
  * 
  * @author Lucas.Rodrigues
  *
