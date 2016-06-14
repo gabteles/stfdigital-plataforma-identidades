@@ -99,4 +99,9 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
 		return !StringUtils.isEmpty(oab);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%d - %s", id, nome);
+	}
+	
 }
