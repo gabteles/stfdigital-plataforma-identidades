@@ -14,15 +14,15 @@ var libraryTypeScript = path.join(conf.paths.src, 'typings/main/**/*.d.ts');
 
 module.exports = {
   bundle: {
-    'peticoes-fisicas': {
-      scripts: [path.join(conf.paths.app, 'peticoes-fisicas.ts'),
-                path.join(conf.paths.app, 'peticoes-fisicas/**/*.ts'), libraryTypeScript],
+    'exemplo': {
+      scripts: [path.join(conf.paths.app, 'exemplo.ts'),
+                path.join(conf.paths.app, 'exemplo/**/*.ts'), libraryTypeScript],
       options: {
     	  rev: false,
     	  transforms: {
               scripts: lazypipe()
               	.pipe(typescript, createTsProject())
-              	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'recebimento/'})
+              	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'userauthentication/'})
               	.pipe(ngAnnotate)
               	.pipe(embedTemplates, {
               		skipErrors: true, 
@@ -34,95 +34,7 @@ module.exports = {
               	})
           }
       }
-    },
-    'preautuacao': {
-      scripts: [path.join(conf.paths.app, 'preautuacao.ts'),
-                path.join(conf.paths.app, 'preautuacao/**/*.ts'),
-                path.join(conf.paths.app, 'services.ts'),
-                path.join(conf.paths.app, 'services/**/*.ts'), libraryTypeScript],
-      options: {
-    	  rev: false,
-    	  transforms: {
-              scripts: lazypipe()
-              	.pipe(typescript, createTsProject())
-              	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'recebimento/'})
-              	.pipe(ngAnnotate)
-              	.pipe(embedTemplates, {
-              		skipErrors: true, 
-              		minimize: {
-              			empty : true,
-              			spare : true,
-              			quotes: true
-              		}
-              	})
-          }
-      }
-    },
-    'preautuacao-recursal': {
-        scripts: [path.join(conf.paths.app, 'preautuacao-recursal.ts'),
-                  path.join(conf.paths.app, 'preautuacao/recursal/**/*.ts'),
-                  path.join(conf.paths.app, 'services.ts'),
-                  path.join(conf.paths.app, 'services/**/*.ts'), libraryTypeScript],
-        options: {
-      	  rev: false,
-      	  transforms: {
-                scripts: lazypipe()
-                	.pipe(typescript, createTsProject())
-                	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'recebimento/'})
-                	.pipe(ngAnnotate)
-                	.pipe(embedTemplates, {
-                		skipErrors: true, 
-                		minimize: {
-                			empty : true,
-                			spare : true,
-                			quotes: true
-                		}
-                	})
-            }
-        }
-      },
-      'services': {
-          scripts: [path.join(conf.paths.app, 'services.ts'),
-                    path.join(conf.paths.app, 'services/**/*.ts'), libraryTypeScript],
-          options: {
-        	  rev: false,
-        	  transforms: {
-                  scripts: lazypipe()
-                  	.pipe(typescript, createTsProject())
-                  	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'recebimento/'})
-                  	.pipe(ngAnnotate)
-                  	.pipe(embedTemplates, {
-                  		skipErrors: true, 
-                  		minimize: {
-                  			empty : true,
-                  			spare : true,
-                  			quotes: true
-                  		}
-                  	})
-              }
-          }
-        },
-        'devolucao': {
-            scripts: [path.join(conf.paths.app, 'devolucao.ts'),
-                      path.join(conf.paths.app, 'devolucao/**/*.ts'), libraryTypeScript],
-            options: {
-          	  rev: false,
-          	  transforms: {
-                    scripts: lazypipe()
-                    	.pipe(typescript, createTsProject())
-                    	.pipe(moduleNameInjector, {rootDir: 'src/main/ui/app/', prefix: 'recebimento/'})
-                    	.pipe(ngAnnotate)
-                    	.pipe(embedTemplates, {
-                    		skipErrors: true, 
-                    		minimize: {
-                    			empty : true,
-                    			spare : true,
-                    			quotes: true
-                    		}
-                    	})
-                }
-            }
-          }
+    }
   },
   copy: [{
 	  src : path.join(conf.paths.app, '**/*.json'),
