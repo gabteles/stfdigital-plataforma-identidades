@@ -6,7 +6,6 @@ System.config({
 		'system-polyfills': './node_modules/systemjs/dist/system-polyfills.src.js'
 	},
 	bundles: {
-		'userauthentication/exemplo': ['userauthentication/exemplo/*']
-	},
-	strictImportSequence: true
+		'userauthentication/bundle': ['userauthentication/exemplo/*']
+	}
 });
