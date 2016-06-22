@@ -13,7 +13,6 @@ public class AcessosActionsResource {
 	
 //	@ActionMapping(id = "configurar-permissao", name = "Configurar Permissões", resourcesMode = ResourcesMode.None)
 	public void configurarPermissoesUsuario(ConfigurarPermissoesUsuarioCommand command){
-		this.acessosApplicationService.configurarPermissoesUsuario(command.getIdUsuario(), command.getPapeisAdicionados(), 
-				command.getGruposAdicionados(), command.getPapeisRemovidos(), command.getGruposRemovidos());
+		this.acessosApplicationService.handle(command);
 	}
 }

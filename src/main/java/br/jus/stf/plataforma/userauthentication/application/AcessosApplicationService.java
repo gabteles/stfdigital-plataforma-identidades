@@ -15,6 +15,7 @@ import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.userauthentication.GrupoId;
 import br.jus.stf.core.shared.userauthentication.PapelId;
 import br.jus.stf.core.shared.userauthentication.UsuarioId;
+import br.jus.stf.plataforma.userauthentication.application.commands.ConfigurarPermissoesUsuarioCommand;
 import br.jus.stf.plataforma.userauthentication.domain.model.Grupo;
 import br.jus.stf.plataforma.userauthentication.domain.model.GrupoRepository;
 import br.jus.stf.plataforma.userauthentication.domain.model.Papel;
@@ -104,23 +105,20 @@ public class AcessosApplicationService {
 	/**
 	 * Registra os grupos e papéis associados a um usuário.
 	 * 
-	 * @param id Id do usuário.
-	 * @param papeis Conjunto de papéis
-	 * @param grupos
+	 * @param command
 	 */
-	public void configurarPermissoesUsuario(Long id, Set<Long> papeisAdicionados, Set<Long> gruposAdicionados, Set<Long> papeisRemovidos, Set<Long> gruposRemovidos) {
-		
+	public void handle(ConfigurarPermissoesUsuarioCommand command) {
 		Set<Papel> papeisAdic = new HashSet<Papel>();
 		Set<PapelId> papeisRemov = new HashSet<PapelId>();
 		Set<Grupo> gruposAdic = new HashSet<Grupo>();
 		Set<GrupoId> gruposRemov = new HashSet<GrupoId>();
 		
-		Optional.ofNullable(papeisRemovidos).ifPresent(p2 -> p2.forEach(p -> papeisRemov.add(new PapelId(p))));
-		Optional.ofNullable(gruposRemovidos).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
-		Optional.ofNullable(papeisAdicionados).ifPresent(p1 -> p1.forEach(p -> papeisAdic.add(this.papelRepository.findOne(new PapelId(p)))));
-		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
+		Optional.ofNullable(command.getPapeisRemovidos()).ifPresent(p2 -> p2.forEach(p -> papeisRemov.add(new PapelId(p))));
+		Optional.ofNullable(command.getGruposRemovidos()).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
+		Optional.ofNullable(command.getPapeisAdicionados()).ifPresent(p1 -> p1.forEach(p -> papeisAdic.add(this.papelRepository.findOne(new PapelId(p)))));
+		Optional.ofNullable(command.getGruposAdicionados()).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
-		Usuario usuario = usuarioRepository.findOne(new UsuarioId(id));
+		Usuario usuario = usuarioRepository.findOne(new UsuarioId(command.getIdUsuario()));
 		if (!papeisRemov.isEmpty()) {
 			usuario.removerPapeis(papeisRemov);
 		}

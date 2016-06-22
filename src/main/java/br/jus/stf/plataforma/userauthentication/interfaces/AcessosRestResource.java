@@ -120,8 +120,7 @@ public class AcessosRestResource {
 	@RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void configurarPermissoesUsuario(@RequestBody ConfigurarPermissoesUsuarioCommand command ){
-		this.acessosApplicationService.configurarPermissoesUsuario(command.getIdUsuario(), command.getPapeisAdicionados(), 
-				command.getGruposAdicionados(), command.getPapeisRemovidos(), command.getGruposRemovidos());
+		this.acessosApplicationService.handle(command);
 	}
 	
 	/**
