@@ -17,14 +17,14 @@ public class CadastrarUsuarioCommand {
 	@NotBlank
 	private String login;
 
-	@ApiModelProperty(value = "Nome da pessoa", required = true)
+	@ApiModelProperty(value = "Nome do usuário", required = true)
 	@NotBlank
 	private String nome;
 
 	@ApiModelProperty(value = "Email")
 	private String email;
 
-	@ApiModelProperty(value = "CPF da pessoa")
+	@ApiModelProperty(value = "CPF do usuário")
 	private String cpf;
 
 	@ApiModelProperty(value = "Número da OAB")
@@ -32,6 +32,9 @@ public class CadastrarUsuarioCommand {
 
 	@ApiModelProperty(value = "Telefone")
 	private String telefone;
+	
+	@ApiModelProperty(value = "Id da pessoa no contexto de identidades")
+	private Long pessoaId;
 
 	/**
 	 * @return the login
@@ -121,6 +124,21 @@ public class CadastrarUsuarioCommand {
 	 */
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	
+	/**
+	 * @return the pessoaId
+	 */
+	public Long getPessoaId() {
+		return pessoaId;
+	}
+	
+	/**
+	 * @param pessoaId
+	 * 			the pessoaId to set
+	 */
+	public void setPessoaId(Long pessoaId) {
+		this.pessoaId = pessoaId;
 	}
 
 }

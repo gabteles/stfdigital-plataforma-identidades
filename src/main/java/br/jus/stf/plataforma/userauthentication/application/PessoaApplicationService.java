@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.jus.stf.core.framework.component.command.Command;
+import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoaCommand;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoasCommand;
@@ -22,7 +23,8 @@ import br.jus.stf.plataforma.userauthentication.domain.model.identidade.PessoaRe
  * @since 1.0.0
  * @since 25.09.2015
  */
-@Component
+@ApplicationService
+@Transactional
 public class PessoaApplicationService {
 
 	@Autowired
@@ -30,12 +32,8 @@ public class PessoaApplicationService {
 	
 	@Autowired
 	private PessoaFactory pessoaFactory;
-	
-	// TODO: Verificar como será a integração com o Elastic
-//	@Autowired
-//	private PessoaApplicationEvent pessoaApplicationEvent;
 
-	@Transactional
+	@Command(description = "Aloca identificador de pessoas na ordem da lista passada para integração via eventos", value = "alocar-id-pessoas")
 	public List<PessoaId> alocarIdPessoas(CadastrarPessoasCommand command) {
 		return command.getNomes().stream().map(nome -> {
 			List<Pessoa> pessoas = pessoaRepository.findByNomeContaining(nome);
@@ -48,15 +46,18 @@ public class PessoaApplicationService {
 		}).collect(Collectors.toList());
 	}
 	
+	@Command("Cadastra uma pessoa")
 	@Transactional(propagation = REQUIRES_NEW)
-	public void handle(CadastrarPessoaCommand command) {
+	public Pessoa handle(CadastrarPessoaCommand command) {
 		Pessoa pessoa = pessoaFactory.novaPessoa(new PessoaId(command.getId()), command.getNome(), command.getCpf(),
 				command.getOab(), command.getEmail(), command.getTelefone());
 		
 		pessoaRepository.save(pessoa);
+		
+		return pessoa;
 	}
 	
-	@Transactional
+	@Command(description = "Recupera uma lista de pessoas, sejam estas novas ou existentes na base", value = "cadastrar-pessoas")
 	public List<Pessoa> handle(CadastrarPessoasCommand command) {
 		return command.getNomes().stream().map(nome -> carregarPessoa(nome)).collect(Collectors.toList());
 	}
@@ -68,7 +69,7 @@ public class PessoaApplicationService {
 			Pessoa pessoa = new Pessoa(pessoaRepository.nextId(), nome);
 
 			pessoaRepository.save(pessoa);
-//			pessoaApplicationEvent.pessoaCadastrada(pessoa);
+			
 			return pessoa;
 		}
 		

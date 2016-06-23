@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.plataforma.userauthentication.application.PessoaApplicationService;
+import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoaCommand;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoasCommand;
 import br.jus.stf.plataforma.userauthentication.domain.model.identidade.Pessoa;
 import br.jus.stf.plataforma.userauthentication.domain.model.identidade.PessoaRepository;
@@ -56,6 +57,23 @@ public class PessoaRestResource {
 		
 		return pessoaApplicationService.alocarIdPessoas(command).stream().map(pessoaId -> pessoaId.toLong())
 				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Retorna um Dto com a Pessoa cadastrada
+	 * 
+	 * @param command
+	 * @return Dto com a Pessoa cadastrada
+	 */
+	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
+	public PessoaDto cadastrarPessoa(@RequestBody @Valid CadastrarPessoaCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
+		}
+		
+		Pessoa pessoa = pessoaApplicationService.handle(command);
+		
+		return pessoaDtoAssembler.toDto(pessoa);
 	}
 	
 	/**

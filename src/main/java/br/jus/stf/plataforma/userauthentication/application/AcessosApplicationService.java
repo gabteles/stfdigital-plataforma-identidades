@@ -1,30 +1,26 @@
 package br.jus.stf.plataforma.userauthentication.application;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import br.jus.stf.core.framework.component.command.Command;
+import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.userauthentication.GrupoId;
 import br.jus.stf.core.shared.userauthentication.PapelId;
 import br.jus.stf.core.shared.userauthentication.UsuarioId;
+import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarUsuarioCommand;
 import br.jus.stf.plataforma.userauthentication.application.commands.ConfigurarPermissoesUsuarioCommand;
 import br.jus.stf.plataforma.userauthentication.domain.model.Grupo;
 import br.jus.stf.plataforma.userauthentication.domain.model.GrupoRepository;
 import br.jus.stf.plataforma.userauthentication.domain.model.Papel;
 import br.jus.stf.plataforma.userauthentication.domain.model.PapelRepository;
-import br.jus.stf.plataforma.userauthentication.domain.model.Permissao;
 import br.jus.stf.plataforma.userauthentication.domain.model.Pessoa;
-import br.jus.stf.plataforma.userauthentication.domain.model.Recurso;
-import br.jus.stf.plataforma.userauthentication.domain.model.RecursoRepository;
-import br.jus.stf.plataforma.userauthentication.domain.model.ResourceType;
 import br.jus.stf.plataforma.userauthentication.domain.model.TipoGrupo;
 import br.jus.stf.plataforma.userauthentication.domain.model.Usuario;
 import br.jus.stf.plataforma.userauthentication.domain.model.UsuarioRepository;
@@ -33,18 +29,12 @@ import br.jus.stf.plataforma.userauthentication.domain.model.UsuarioRepository;
  * @author Lucas.Rodrigues
  *
  */
-@Service
+@ApplicationService
 @Transactional
 public class AcessosApplicationService {
 	
-//	@Autowired
-//	private PessoaRepository pessoaRepository;
-	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private RecursoRepository recursoRepository;
 	
 	@Autowired
 	private GrupoRepository grupoRepository;
@@ -52,61 +42,7 @@ public class AcessosApplicationService {
 	@Autowired
 	private PapelRepository papelRepository;
 	
-//	@Autowired
-//	private PessoaApplicationEvent pessoaApplicationEvent;
-	
-	//TODO: Implementar recuperação de permissões do usuário
-	public Set<Permissao> carregarPermissoesUsuario(String login) {
-		return Collections.emptySet();
-	}
-	
-	public Set<Recurso> carregarRecursosUsuario(String login) {
-		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> usuario.recursos())
-				.orElse(Collections.emptySet());
-	}
-	
-	public Set<Papel> carregarPapeisUsuario(String login) {
-		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> {
-					usuario.papeis().size(); //inicializa o proxy
-					return usuario.papeis();	
-				})
-				.orElse(Collections.emptySet());
-	}
-	
-	public Set<Grupo> carregarGruposUsuario(String login) {
-		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> {
-					usuario.grupos().size(); //inicializa o proxy
-					return usuario.grupos();	
-				})
-				.orElse(Collections.emptySet());
-	}
-	
-	/**
-	 * Carrega todos os papeis do sistema
-	 * 
-	 * @return List<Papel> Lista de todos os papeis
-	 */
-	public List<Papel> todosPapeis() {
-		return papelRepository.findAll();
-	}
-	
-	/**
-	 * Carrega todos os grupos do sistema
-	 * 
-	 * @return List<Grupo> Lista de todos os grupos
-	 */
-	public List<Grupo> todosGrupos() {
-		return grupoRepository.findAll();
-	}
-	
-	/**
-	 * Registra os grupos e papéis associados a um usuário.
-	 * 
-	 * @param command
-	 */
+	@Command(description = "Registra os grupos e papéis associados a um usuário")
 	public void handle(ConfigurarPermissoesUsuarioCommand command) {
 		Set<Papel> papeisAdic = new HashSet<Papel>();
 		Set<PapelId> papeisRemov = new HashSet<PapelId>();
@@ -135,84 +71,20 @@ public class AcessosApplicationService {
 		usuarioRepository.save(usuario);
 	}
 	
-	/**
-	 * Recupera as informações do usuário.
-	 * 
-	 * @param login Login do usuário.
-	 * @return Informações do usuário.
-	 */
-	public Usuario recuperarUsuario(String login){
-		return usuarioRepository.findOne(login);
-	}
-	
-	/**
-	 * Recupera as informações do usuário pelo id.
-	 * 
-	 * @param login Login do usuário.
-	 * @return Informações do usuário.
-	 */
-	public Usuario recuperarUsuario(Long id){
-		UsuarioId usuarioId = new UsuarioId(id);
-		return usuarioRepository.findOne(usuarioId);
-	}
-	
-	/**
-	 * Cadastra um novo usuário
-	 * 
-	 * @param String login
-	 * @param String nome
-	 * @param string cpf
-	 * @param String oab
-	 * @param String email
-	 * @param String telefone
-	 * 
-	 * @return Usuario Usuário criado
-	 */
-	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
-        // TODO: Verificar como será feito o cadastro de usuários e pessoas...
-//		PessoaId idPessoa = pessoaRepository.nextId();
-		PessoaId idPessoa = new PessoaId((long)(Math.random()*11)+5);
-		Pessoa pessoa;
-		
-//		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
-//			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
-//			
-//		} else if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
-//			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
-//			
-//		} else if (StringUtils.isNotBlank(cpf)) {
-//			pessoa = new Pessoa(idPessoa, nome, cpf);
-//			
-//		} else {
-			pessoa = new Pessoa(idPessoa, nome);
-//		}
-		
-//		pessoaRepository.save(pessoa);
-		
-		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
-		Usuario principal = new Usuario(idUsuario, pessoa, login);
-				
+	@Command(description = "Cadastra um novo usuário")
+	public Usuario handle(CadastrarUsuarioCommand command) {
+		Pessoa pessoa = new Pessoa(new PessoaId(command.getPessoaId()), command.getNome(), command.getCpf(),
+				command.getOab(), command.getEmail(), command.getTelefone());
+		UsuarioId idUsuario = new UsuarioId(pessoa.id().toLong());
+		Usuario principal = new Usuario(idUsuario, pessoa, command.getLogin());
 		Grupo grupoUsuario = grupoRepository.findOne("usuario", TipoGrupo.CONFIGURACAO);
-		Set<Grupo> grupos = new HashSet<Grupo>();
+		Set<Grupo> grupos = new HashSet<>(0);
+
 		grupos.add(grupoUsuario);
-		
 		principal.atribuirGrupos(grupos);		
-		
 		usuarioRepository.save(principal);
-//		pessoaApplicationEvent.pessoaCadastrada(pessoa);
 		
 		return principal;
 	}
-	
-	/**
-	 * @param nome
-	 * @param tipo
-	 * @return
-	 */
-	public List<Papel> carregarPapeisRecurso(String nome, String tipo) {
-		return Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
-				.map(recurso -> papelRepository.findPapelByRecurso(recurso.identity()))
-				.orElse(Collections.emptyList());
-    }
 
 }
