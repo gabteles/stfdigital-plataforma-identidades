@@ -24,7 +24,7 @@ public class UsuarioDtoAssembler {
 			return null;
 		}
 		
-		SetorDto setor = setorDtoAssembler.toDto(usuario.setor());
+		SetorDto setor = setorDtoAssembler.toDto(usuario.lotacao());
 		
 		return new UsuarioDto(usuario.identity().toLong(), usuario.login(),
 				usuario.pessoa().nome(), usuario.pessoa().id().toLong(), setor);

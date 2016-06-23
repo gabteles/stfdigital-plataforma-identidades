@@ -173,10 +173,6 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		return lotacao;
 	}
 	
-	public Setor setor(){
-		return lotacao;
-	}
-	
 	@Override
 	public UsuarioId identity() {
 		return id;
