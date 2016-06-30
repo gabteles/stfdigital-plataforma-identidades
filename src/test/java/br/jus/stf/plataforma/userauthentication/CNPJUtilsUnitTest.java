@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.userauthentication.domain.model;
+package br.jus.stf.plataforma.userauthentication;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
