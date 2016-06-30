@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.userauthentication.domain.model;
+package br.jus.stf.plataforma.userauthentication;
 
 import java.util.HashSet;
 import java.util.Set;

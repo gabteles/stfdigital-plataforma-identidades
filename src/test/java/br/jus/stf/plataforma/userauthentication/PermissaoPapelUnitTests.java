@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.userauthentication.domain.model;
+package br.jus.stf.plataforma.userauthentication;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,16 +7,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.jus.stf.core.shared.userauthentication.GrupoId;
+import br.jus.stf.core.shared.userauthentication.PapelId;
 import br.jus.stf.core.shared.userauthentication.RecursoId;
-import br.jus.stf.plataforma.userauthentication.domain.model.Grupo;
+import br.jus.stf.plataforma.userauthentication.domain.model.Papel;
 import br.jus.stf.plataforma.userauthentication.domain.model.Recurso;
 import br.jus.stf.plataforma.userauthentication.domain.model.ResourceType;
-import br.jus.stf.plataforma.userauthentication.domain.model.TipoGrupo;
 
-public class PermissaoGrupoUnitTests {
+public class PermissaoPapelUnitTests {
 	
-	private Grupo grupo;
+	private Papel papel;
 	private Recurso criarPeticaoEletronica;
 	private Set<Recurso> recursos;
 	
@@ -27,20 +26,20 @@ public class PermissaoGrupoUnitTests {
 		
 		recursos.add(criarPeticaoEletronica);
 		
-		grupo = new Grupo(new GrupoId(1L), "STI", TipoGrupo.SETOR);
-		grupo.atribuirRecursos(recursos);
+		papel = new Papel(new PapelId(1L), "Advogado");
+		papel.atribuirRecursos(recursos);
 	}
 	
 	@Test
-	public void grupoPossuiAcessoNoRecurso() {
-		Assert.assertTrue(grupo.possuiAcessoNo(criarPeticaoEletronica));
+	public void papelPossuiAcessoNoRecurso() {
+		Assert.assertTrue(papel.possuiAcessoNo(criarPeticaoEletronica));
 	}
 	
 	@Test
-	public void grupoNaoPossuiAcessoNoRecurso() {
+	public void papelNaoPossuiAcessoNoRecurso() {
 		Recurso distribuir = new Recurso(new RecursoId(1L), "Distribuir", ResourceType.ACAO);
 		
-		Assert.assertFalse(grupo.possuiAcessoNo(distribuir));
+		Assert.assertFalse(papel.possuiAcessoNo(distribuir));
 	}
 
 }
