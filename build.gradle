@@ -51,6 +51,7 @@ dependencyManagement {
     imports {
         mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
         mavenBom("org.springframework.cloud:spring-cloud-netflix:${springCloudVersion}")
+        mavenBom("org.springframework.cloud:spring-cloud-starter-parent:Brixton.RELEASE")
         mavenBom("io.spring.platform:platform-bom:${springPlatformVersion}")
     }
 }
@@ -65,6 +66,12 @@ dependencies {
     }
     
     compile("org.springframework.boot:spring-boot-starter-undertow")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-oauth2")
+    
+    compile("org.springframework.boot:spring-boot-starter-security")
+    
+    compile("org.springframework.security.oauth:spring-security-oauth2")
     
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
 
@@ -95,18 +102,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-test")
 }
 
-import org.gradle.plugins.ide.eclipse.model.SourceFolder 
-eclipse.classpath.file {
-    beforeMerged { classpath -> 
-        classpath.entries.clear()
-    }
-    whenMerged {  cp -> 
-        cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith("src/main/") }*.output = "bin/main" 
-        cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith("src/test/") }*.output = "bin/test" 
-        cp.entries.removeAll { it.kind == "output" }
-    }
-}
-
 node {
   // Version of node to use.
   version = '5.9.1'
@@ -134,17 +129,9 @@ npmInstall {
     }
 }
 
-task gulpTestUnit(type: GulpTask) {
-    args = ['test:unit']
-}
-
-task gulpBuildDist(type: GulpTask) {
-    args = ['build:dist']
-}
-
 npmInstall.dependsOn npm_prune
-gulpBuildDist.dependsOn tasks.npmInstall
-processResources.dependsOn tasks.gulpBuildDist
+gulp_build.dependsOn tasks.npmInstall
+processResources.dependsOn gulp_build
 
 ext.dockerImageTag = project.hasProperty('dockerImageTag') ? project.getProperty('dockerImageTag') : ''
 
