@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,6 +13,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,30 +91,47 @@ public class AcessosRestResource {
 	@Autowired
 	private PapelRepository papelRepository;
 	
+	/**
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("/usuarios/permissoes")
 	public Set<PermissaoDto> permissoes(@RequestParam("login") String login) {
 		// TODO: Verificar como as permissões serão utilizadas para finalizar implementação
 		Set<Permissao> permissoes = new HashSet<>(0);
 		
-		return permissoes.stream().map(permissao -> permissaoDtoAssembler.toDto(permissao)).collect(Collectors.toSet());
+		return permissoes.stream().map(permissaoDtoAssembler::toDto).collect(Collectors.toSet());
 	}
 	
+	/**
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("/usuarios/recursos")
 	public Set<RecursoDto> recursos(@RequestParam("login") String login) {
 		Set<Recurso> recursos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> usuario.recursos())
 				.orElse(Collections.emptySet());
 		
-		return recursos.stream().map(permissao -> recursoDtoAssembler.toDto(permissao)).collect(Collectors.toSet());
+		return recursos.stream().map(recursoDtoAssembler::toDto).collect(Collectors.toSet());
 	}
 	
+	/**
+	 * @param nome
+	 * @param tipo
+	 * @return
+	 */
 	@RequestMapping("/recursos/papeis")
 	public List<PapelDto> papeis(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
 		List<Papel> papeis = Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
 				.map(recurso -> papelRepository.findPapelByRecurso(recurso.identity())).orElse(Collections.emptyList());
 		
-		return papeis.stream().map(papel -> papelDtoAssembler.toDto(papel)).collect(Collectors.toList());
+		return papeis.stream().map(papelDtoAssembler::toDto).collect(Collectors.toList());
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("/usuarios/papeis")
 	public Set<PapelDto> papeis(@RequestParam("login") String login) {
 		Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
@@ -119,25 +139,35 @@ public class AcessosRestResource {
 			return usuario.papeis();
 		}).orElse(Collections.emptySet());
 		
-		return papeis.stream().map(papel -> papelDtoAssembler.toDto(papel))
+		return papeis.stream().map(papelDtoAssembler::toDto)
 				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping("/papeis")
 	public Set<PapelDto> todosPapeis() {
-		return papelRepository.findAll().stream().map(papel -> papelDtoAssembler.toDto(papel))
+		return papelRepository.findAll().stream().map(papelDtoAssembler::toDto)
 				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping("/grupos")
 	public Set<GrupoDto> todosGrupos() {
-		return grupoRepository.findAll().stream().map(grupo -> grupoDtoAssembler.toDto(grupo))
+		return grupoRepository.findAll().stream().map(grupoDtoAssembler::toDto)
 				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	/**
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("/usuarios/grupos")
 	public Set<GrupoDto> grupos(@RequestParam("login") String login) {
 		Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
@@ -145,11 +175,14 @@ public class AcessosRestResource {
 			return usuario.grupos();
 		}).orElse(Collections.emptySet());
 		
-		return grupos.stream().map(grupo -> grupoDtoAssembler.toDto(grupo))
+		return grupos.stream().map(grupoDtoAssembler::toDto)
 				.sorted((g1, g2) -> g1.getNome().compareTo(g2.getNome()))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	/**
+	 * @param command
+	 */
 	@ApiOperation("Configura as permissões a grupos e papéis de um usuário.")
 	@RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
@@ -162,12 +195,13 @@ public class AcessosRestResource {
 	 *
 	 * @return Informações do usuário.
 	 */
+	@SuppressWarnings("unchecked")
 	@ApiOperation("Recupera as informações do usuário logado.")
 	@RequestMapping(value="/usuario", method = RequestMethod.GET)
 	public UsuarioDto recuperarUsuario() {
-        // TODO: Ver como será recuperado o usuário logado...
-//		String login = SecurityContextUtil.getUser().getUsername();
-		String login = "usuario-teste";
+		OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
+		Map<String, Object> principal = (Map<String, Object>) authentication.getUserAuthentication().getDetails();
+		String login = principal.get("login").toString();
 		
 		return usuarioDtoAssembler.toDto(usuarioRepository.findOne(login));
 	}
@@ -199,7 +233,7 @@ public class AcessosRestResource {
 	/**
 	 * Recupera o ID de determinado usuário
 	 * 
-	 * @param String login Login do usuário.
+	 * @param login Login do usuário.
 	 * @return ID do usuário
 	 */
 	@ApiOperation("Recupera o ID de um usuário.")
@@ -213,8 +247,8 @@ public class AcessosRestResource {
 	/**
 	 * Cadastra um novo usuário
 	 * 
-	 * @param CadastrarUsuarioCommand command
-	 * @param BindingResult binding
+	 * @param command
+	 * @param binding
 	 * @return Dto do usuário criado
 	 */
 	@ApiOperation("Cadastra um novo usuário")

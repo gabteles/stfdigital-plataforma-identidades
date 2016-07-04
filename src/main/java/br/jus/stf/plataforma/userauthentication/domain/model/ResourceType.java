@@ -1,5 +1,11 @@
 package br.jus.stf.plataforma.userauthentication.domain.model;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 03.06.2016
+ */
 public enum ResourceType {
 	
 	ACAO("Ação"),
@@ -15,6 +21,9 @@ public enum ResourceType {
 		this.descricao = descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}

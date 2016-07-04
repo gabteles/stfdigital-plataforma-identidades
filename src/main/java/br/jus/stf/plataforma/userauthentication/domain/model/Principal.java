@@ -10,12 +10,25 @@ import java.util.Set;
  */
 public interface Principal {
 
-	public Set<Recurso> recursos();
+	/**
+	 * @return
+	 */
+	Set<Recurso> recursos();
 	
-	public void atribuirRecursos(final Set<Recurso> recursos);
+	/**
+	 * @param recursos
+	 */
+	void atribuirRecursos(final Set<Recurso> recursos);
 	
-	public void removerRecursos(final Set<Recurso> recursos);
+	/**
+	 * @param recursos
+	 */
+	void removerRecursos(final Set<Recurso> recursos);
 	
+	/**
+	 * @param recurso
+	 * @return
+	 */
 	public default boolean possuiAcessoNo(Recurso recurso) {
 		return recursos().contains(recurso);
 	}
