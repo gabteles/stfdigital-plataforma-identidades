@@ -41,6 +41,10 @@ public class Pessoa extends ValueObjectSupport<Pessoa> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public Pessoa(PessoaId id, String nome) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -49,6 +53,14 @@ public class Pessoa extends ValueObjectSupport<Pessoa> {
 		this.nome = nome;
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 * @param cpf
+	 * @param oab
+	 * @param email
+	 * @param telefone
+	 */
 	public Pessoa(PessoaId id, String nome, String cpf, String oab, String email, String telefone) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -62,26 +74,44 @@ public class Pessoa extends ValueObjectSupport<Pessoa> {
 		this.telefone = telefone;
 	}
 
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public PessoaId id() {
 		return id;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String cpf() {
 		return cpf;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String oab() {
 		return oab;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String email() {
 		return email;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String telefone() {
 		return telefone;
 	}

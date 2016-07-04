@@ -70,6 +70,11 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param pessoa
+	 * @param login
+	 */
 	public Usuario(UsuarioId id, Pessoa pessoa, String login) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notNull(pessoa, "Pessoa requerida.");
@@ -80,6 +85,12 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		this.login = login;
 	}
 	
+	/**
+	 * @param id
+	 * @param pessoa
+	 * @param login
+	 * @param lotacao
+	 */
 	public Usuario(UsuarioId id, Pessoa pessoa, String login, Setor lotacao) {
 		this(id, pessoa, login);
 		
@@ -88,24 +99,39 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		this.lotacao = lotacao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Pessoa pessoa() {
 		return pessoa;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String login() {
 		return login;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Papel> papeis() {
 		return Collections.unmodifiableSet(papeis);
 	}
 	
+	/**
+	 * @param papeis
+	 */
 	public void atribuirPapeis(Set<Papel> papeis) {
 		Validate.notEmpty(papeis, "Papeis requeridos.");
 		
 		this.papeis.addAll(papeis);
 	}
 	
+	/**
+	 * @param papeis
+	 */
 	public void removerPapeis(Set<PapelId> papeis) {
 		Validate.notEmpty(papeis, "Papeis requeridos.");
 		
@@ -120,16 +146,25 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		}
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Grupo> grupos() {
 		return Collections.unmodifiableSet(grupos);
 	}
 	
+	/**
+	 * @param grupos
+	 */
 	public void atribuirGrupos(Set<Grupo> grupos) {
 		Validate.notEmpty(grupos, "Grupos requeridos.");
 		
 		this.grupos.addAll(grupos);
 	}
 	
+	/**
+	 * @param grupos
+	 */
 	public void removerGrupos(Set<GrupoId> grupos) {
 		Validate.notEmpty(grupos, "Grupos requeridos.");
 		
@@ -144,13 +179,20 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		}
 	}
 	
+	/**
+	 * @return
+	 */
+	public Setor lotacao(){
+		return lotacao;
+	}
+	
 	@Override
 	public Set<Recurso> recursos() {
 		Set<Recurso> recursosCompletos = new HashSet<>();
 		
 		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> recursosCompletos.addAll(papel.recursos())));
 		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> recursosCompletos.addAll(grupo.recursos())));
-		Optional.ofNullable(recursos).ifPresent(p -> recursosCompletos.addAll(p));
+		Optional.ofNullable(recursos).ifPresent(recursosCompletos::addAll);
 		
 		return Collections.unmodifiableSet(recursosCompletos);
 	}
@@ -167,10 +209,6 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 		Validate.notEmpty(recursos, "Recursos requeridos.");
 		
 		this.recursos.removeAll(recursos);
-	}
-	
-	public Setor lotacao(){
-		return lotacao;
 	}
 	
 	@Override

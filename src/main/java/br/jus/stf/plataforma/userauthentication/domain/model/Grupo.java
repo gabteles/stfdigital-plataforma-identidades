@@ -46,12 +46,17 @@ public class Grupo extends EntitySupport<Grupo, GrupoId> implements Principal {
 	@JoinTable(name = "GRUPO_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
-	private Set<Recurso> recursos = new HashSet<Recurso>(0);
+	private Set<Recurso> recursos = new HashSet<>(0);
 	
 	public Grupo() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 * @param tipo
+	 */
 	public Grupo(GrupoId id, String nome, TipoGrupo tipo) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -62,10 +67,16 @@ public class Grupo extends EntitySupport<Grupo, GrupoId> implements Principal {
 		this.tipo = tipo;
 	}
 
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public TipoGrupo tipo() {
 		return tipo;
 	}

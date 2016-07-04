@@ -21,6 +21,9 @@ public enum TipoGrupo {
 		this.descricao = descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}

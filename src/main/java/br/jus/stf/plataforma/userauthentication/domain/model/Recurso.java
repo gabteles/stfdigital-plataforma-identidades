@@ -12,6 +12,12 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.userauthentication.RecursoId;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 03.06.2016
+ */
 @javax.persistence.Entity
 @Table(name = "RECURSO", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_RECURSO", "TIP_RECURSO"}))
 public class Recurso extends EntitySupport<Recurso, RecursoId> {
@@ -26,10 +32,15 @@ public class Recurso extends EntitySupport<Recurso, RecursoId> {
 	@Enumerated(EnumType.STRING)
 	private ResourceType tipo;
 	
-	Recurso() {
-		
+	public Recurso() {
+		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 * @param tipo
+	 */
 	public Recurso(RecursoId id, String nome, ResourceType tipo) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -40,17 +51,23 @@ public class Recurso extends EntitySupport<Recurso, RecursoId> {
 		this.tipo = tipo;
 	}
 	
-	@Override
-	public RecursoId identity() {
-		return id;
-	}
-	
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public ResourceType tipo() {
 		return tipo;
+	}
+	
+	@Override
+	public RecursoId identity() {
+		return id;
 	}
 
 }

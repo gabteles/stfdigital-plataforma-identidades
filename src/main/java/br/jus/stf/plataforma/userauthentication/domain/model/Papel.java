@@ -22,6 +22,12 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.userauthentication.PapelId;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 03.06.2016
+ */
 @Entity
 @Table(name = "PAPEL", schema = "UAA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_PAPEL"}))
 public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
@@ -40,12 +46,16 @@ public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 	@JoinTable(name = "PAPEL_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
-	private Set<Recurso> recursos = new HashSet<Recurso>(0);
+	private Set<Recurso> recursos = new HashSet<>(0);
 	
 	public Papel() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public Papel(PapelId id, String nome) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -54,6 +64,11 @@ public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 		this.nome = nome;
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 * @param grupo
+	 */
 	public Papel(PapelId id, String nome, Grupo grupo) {
 		this(id, nome);
 		
@@ -62,10 +77,16 @@ public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 		this.grupo = grupo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Grupo grupo() {
 		return grupo;
 	}
@@ -77,7 +98,7 @@ public class Papel extends EntitySupport<Papel, PapelId> implements Principal {
 
 	@Override
 	public Set<Recurso> recursos() {
-		Set<Recurso> recursosCompletos = new HashSet<Recurso>();
+		Set<Recurso> recursosCompletos = new HashSet<>();
 		
 		recursosCompletos.addAll(recursos);
 		Optional.ofNullable(grupo).ifPresent(g -> recursosCompletos.addAll(g.recursos()));

@@ -35,6 +35,11 @@ public class Setor extends ValueObjectSupport<Setor> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param codigo
+	 * @param nome
+	 * @param sigla
+	 */
 	public Setor(Long codigo, String nome, String sigla) {
 		Validate.notNull(codigo, "Código requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -45,14 +50,23 @@ public class Setor extends ValueObjectSupport<Setor> {
 		this.sigla = sigla;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Long codigo() {
 		return codigo;
 	}
 
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String sigla() {
 		return sigla;
 	}
