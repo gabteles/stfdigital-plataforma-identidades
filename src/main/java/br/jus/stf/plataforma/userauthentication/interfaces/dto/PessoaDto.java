@@ -16,6 +16,10 @@ public class PessoaDto {
 	@ApiModelProperty(value = "O nome da pessoa")
 	private String nome;
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public PessoaDto(Long id, String nome) {
 		this.id = id;
 		this.nome = nome;

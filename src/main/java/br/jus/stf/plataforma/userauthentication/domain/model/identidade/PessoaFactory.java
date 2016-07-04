@@ -14,6 +14,15 @@ import br.jus.stf.core.shared.identidade.PessoaId;
 @Component
 public class PessoaFactory {
 
+	/**
+	 * @param id
+	 * @param nome
+	 * @param cpf
+	 * @param oab
+	 * @param email
+	 * @param telefone
+	 * @return
+	 */
 	public Pessoa novaPessoa(PessoaId id, String nome, String cpf, String oab, String email, String telefone) {
 		Pessoa pessoa;
 

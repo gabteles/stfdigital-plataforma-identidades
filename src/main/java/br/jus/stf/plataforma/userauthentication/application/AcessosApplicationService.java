@@ -42,12 +42,15 @@ public class AcessosApplicationService {
 	@Autowired
 	private PapelRepository papelRepository;
 	
+	/**
+	 * @param command
+	 */
 	@Command(description = "Registra os grupos e papéis associados a um usuário")
 	public void handle(ConfigurarPermissoesUsuarioCommand command) {
-		Set<Papel> papeisAdic = new HashSet<Papel>();
-		Set<PapelId> papeisRemov = new HashSet<PapelId>();
-		Set<Grupo> gruposAdic = new HashSet<Grupo>();
-		Set<GrupoId> gruposRemov = new HashSet<GrupoId>();
+		Set<Papel> papeisAdic = new HashSet<>();
+		Set<PapelId> papeisRemov = new HashSet<>();
+		Set<Grupo> gruposAdic = new HashSet<>();
+		Set<GrupoId> gruposRemov = new HashSet<>();
 		
 		Optional.ofNullable(command.getPapeisRemovidos()).ifPresent(p2 -> p2.forEach(p -> papeisRemov.add(new PapelId(p))));
 		Optional.ofNullable(command.getGruposRemovidos()).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
@@ -71,6 +74,10 @@ public class AcessosApplicationService {
 		usuarioRepository.save(usuario);
 	}
 	
+	/**
+	 * @param command
+	 * @return
+	 */
 	@Command(description = "Cadastra um novo usuário")
 	public Usuario handle(CadastrarUsuarioCommand command) {
 		Pessoa pessoa = new Pessoa(new PessoaId(command.getPessoaId()), command.getNome(), command.getCpf(),

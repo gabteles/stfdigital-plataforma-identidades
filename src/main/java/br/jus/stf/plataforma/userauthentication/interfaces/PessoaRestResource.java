@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.userauthentication.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.plataforma.userauthentication.application.PessoaApplicationService;
+import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarAssociadoCommand;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoaCommand;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoasCommand;
 import br.jus.stf.plataforma.userauthentication.domain.model.identidade.Pessoa;
@@ -47,6 +49,8 @@ public class PessoaRestResource {
 	 * Retorna uma lista de IDs alocados para
 	 * cadastro ou reutilização de pessoas
 	 * 
+	 * @param command
+	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value = "/alocar", method = RequestMethod.POST)
@@ -63,6 +67,7 @@ public class PessoaRestResource {
 	 * Retorna um Dto com a Pessoa cadastrada
 	 * 
 	 * @param command
+	 * @param result
 	 * @return Dto com a Pessoa cadastrada
 	 */
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
@@ -80,6 +85,7 @@ public class PessoaRestResource {
 	 * Retorna as pessoas cadastradas na mesma ordem de envio dos nomes
 	 * 
 	 * @param command
+	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -88,8 +94,8 @@ public class PessoaRestResource {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		
-		return pessoaApplicationService.handle(command).stream()
-				.map(pessoa -> pessoaDtoAssembler.toDto(pessoa)).collect(Collectors.toList());
+		return pessoaApplicationService.handle(command).stream().map(pessoaDtoAssembler::toDto)
+				.collect(Collectors.toList());
 	}
 	
 	/**
@@ -110,28 +116,48 @@ public class PessoaRestResource {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<PessoaDto> listar() {
-		return pessoaRepository.findAll().stream().map(pessoa -> pessoaDtoAssembler.toDto(pessoa))
-				.collect(Collectors.toList());
+		return pessoaRepository.findAll().stream().map(pessoaDtoAssembler::toDto).collect(Collectors.toList());
 	}
 	
+	/**
+	 * @param numero
+	 * @return
+	 */
 	@RequestMapping(value = "/documento/{numero}", method = RequestMethod.GET)
 	public List<PessoaDto> consultarPessoasPorNumero(@PathVariable("numero") String numero) {
-		List<PessoaDto> pessoas = new ArrayList<PessoaDto>();
-		PessoaDto pessoa = null;
+		List<PessoaDto> pessoas = new ArrayList<>();
+		PessoaDto pessoa;
 		
 		if (CPFUtils.isValido(numero)){
 			pessoa = consultarPessoaPorCPF(numero);
 			
-			if (pessoa != null){
+			if (pessoa != null) {
 				pessoas.add(pessoa);
 			} else {
 				pessoa = consultarPessoaWSRF(numero);
+
+				Optional.ofNullable(pessoa).ifPresent(pessoas::add);
 			}
-		} else if (CNPJUtils.isValido(numero)){
+		} else if (CNPJUtils.isValido(numero)) {
 			
 		}
 		
-		return null;
+		return pessoas;
+	}
+	
+	/**
+	 * Cria ou carrega uma pessoa e a associa a um Órgão.
+	 * 
+	 * @param command
+	 * @param result
+	 */
+	@RequestMapping(value = "/associado", method = RequestMethod.POST)
+	public void cadastrarAssociado(@RequestBody @Valid CadastrarAssociadoCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
+		}
+		
+		pessoaApplicationService.handle(command);
 	}
 	
 	private PessoaDto consultarPessoaPorCPF(String cpf){

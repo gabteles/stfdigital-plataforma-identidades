@@ -13,6 +13,10 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 1.0.0
  * @since 10.06.2016
  */
+/**
+ * @author rafael.alencar
+ *
+ */
 public class CadastrarPessoaCommand {
 
 	@ApiModelProperty(value = "Identificador", required = true)
@@ -34,7 +38,19 @@ public class CadastrarPessoaCommand {
 
 	@ApiModelProperty(value = "Telefone")
 	private String telefone;
+	
+	public CadastrarPessoaCommand() {
+		// Construtor default
+	}
 
+	/**
+	 * @param id
+	 * @param nome
+	 * @param cpf
+	 * @param oab
+	 * @param email
+	 * @param telefone
+	 */
 	public CadastrarPessoaCommand(Long id, String nome, String cpf, String oab, String email, String telefone) {
 		this.id = id;
 		this.nome = nome;

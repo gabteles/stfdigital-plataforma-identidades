@@ -24,6 +24,9 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
 	public PessoaRepositoryImpl(EntityManager entityManager) {
 		super(Pessoa.class, entityManager);
@@ -53,7 +56,9 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		
 		query.setParameter("cpf", cpf.trim());
 		
-		return query.getSingleResult();
+		List<Pessoa> pessoas = query.getResultList();
+		
+		return pessoas.isEmpty() ? null : pessoas.get(0);
 	}
 
 }

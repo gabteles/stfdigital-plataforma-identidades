@@ -12,16 +12,38 @@ import br.jus.stf.core.shared.identidade.PessoaId;
  */
 public interface PessoaRepository {
 
-	public Pessoa findOne(PessoaId pessoaId);
+	/**
+	 * @param pessoaId
+	 * @return
+	 */
+	Pessoa findOne(PessoaId pessoaId);
 
-	public <P extends Pessoa> P save(P pessoa);
+	/**
+	 * @param pessoa
+	 * @return
+	 */
+	<P extends Pessoa> P save(P pessoa);
 	
-	public PessoaId nextId();
+	/**
+	 * @return
+	 */
+	PessoaId nextId();
 	
-	public List<Pessoa> findByNomeContaining(String nome);
+	/**
+	 * @param nome
+	 * @return
+	 */
+	List<Pessoa> findByNomeContaining(String nome);
 	
-	public Pessoa findByCpf(String cpf);
+	/**
+	 * @param cpf
+	 * @return
+	 */
+	Pessoa findByCpf(String cpf);
 	
-	public List<Pessoa> findAll();
+	/**
+	 * @return
+	 */
+	List<Pessoa> findAll();
 	
 }
