@@ -33,7 +33,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         Optional<Usuario> usuario = Optional.ofNullable(usuarioRepository.findOne(login));
         
         if (usuario.isPresent()) {
-        	User user = new User(login, PROTECTED, Collections.emptyList());
+        	User user = new UserDetails(login, usuario.get().pessoa().id().toLong(), Collections.emptyList());
             return new UsernamePasswordAuthenticationToken(user, PROTECTED, user.getAuthorities());
         }
         

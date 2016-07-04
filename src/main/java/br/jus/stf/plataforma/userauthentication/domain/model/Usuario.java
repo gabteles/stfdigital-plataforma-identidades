@@ -52,19 +52,19 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 	@JoinTable(name = "USUARIO_RECURSO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
-	private Set<Recurso> recursos = new HashSet<Recurso>(0);
+	private Set<Recurso> recursos = new HashSet<>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "PAPEL_USUARIO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
-	private Set<Papel> papeis = new HashSet<Papel>(0);
+	private Set<Papel> papeis = new HashSet<>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "GRUPO_USUARIO", schema = "UAA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
-	private Set<Grupo> grupos = new HashSet<Grupo>(0);
+	private Set<Grupo> grupos = new HashSet<>(0);
 	
 	public Usuario() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
@@ -146,7 +146,7 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 	
 	@Override
 	public Set<Recurso> recursos() {
-		Set<Recurso> recursosCompletos = new HashSet<Recurso>();
+		Set<Recurso> recursosCompletos = new HashSet<>();
 		
 		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> recursosCompletos.addAll(papel.recursos())));
 		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> recursosCompletos.addAll(grupo.recursos())));
