@@ -9,7 +9,9 @@ addons:
   - docker
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-- docker save -o $HOME/docker_cache/docker.tar stfdigital-plataforma-userauthentication $(docker history -q stfdigital-plataforma-userauthentication | tail -n +2 | grep -v \<missing\> | tr '\n' ' ')
+- docker save -o $HOME/docker_cache/docker.tar stfdigital-plataforma-userauthentication
+  $(docker history -q stfdigital-plataforma-userauthentication | tail -n +2 | grep
+  -v \<missing\> | tr '\n' ' ')
 cache:
   directories:
   - "$HOME/.gradle/caches/"
@@ -20,7 +22,20 @@ before_install:
 - "./scripts/upgrade-docker.sh"
 - mkdir -p $HOME/docker_cache
 install: docker load -i $HOME/docker_cache/docker.tar || true
-script: gradle docker && gradle gulpTestUnit && ./scripts/test-e2e.sh
+script: gradle docker && gradle gulpTestUnit
+after_success:
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=supremotribunalfederal/stfdigital-plataforma-userauthentication
+- docker tag stfdigital-plataforma-userauthentication $REPO:latest
+- docker push $REPO:latest
 notifications:
   slack:
     secure: iuMsywvOvKw0LIqm3P6aLzA3jPrrMnxOC5fXfBSp2AgQGDnz211kW2VVpaKK/5WV4yJ4dnGHm2TSJYl4+ODbcQ1Te9Vhpl2drEq3FkCuwrCze4hgGSzIs4DyYLeFO7UVmdAHwXohN9pgqr4twRr0ImSQZ6uXfGJNMpiPh1xUPLCeiY6jy2Hy7s3jejjsWnzLcNtP0hytL83oTIrnk1VFab5jkWBaZLEw6SCZFlilzLb2Ztku1AYChjmnMxrYdr+Bc1tPH3S1EmW1txRhpoELYsu+ZG9oZzFm0HY9s0m21n2QAPDluHAAyMlP9HtBaoIP9c4xbgGx0Vk87hXLHFI7p76sVLy5g6vFVjcMxqh3WEKQX5WaYMJ8OkjfKyzZE0mngA9OJOTz41B7MtzLVGWn0ENA5wnh5Vf4hHT1SC0G7S6fjWXsFhYDF2f2fHQj5kOOjiaktYdqMFwmyRHjAXBKvs8VXVHcf1qCZY+ZLJVow2iMKXEF9Bs5ekcV0rlD0tAWJqq9zDPQPEtnj4mkDMG4Q16byPeKFYozEIBMSEdC+RAJmdvYC1EyKcojY0VnACB+6xTzLos0bf356PdHhG8Jh/ApPke4ATkFF1yKLrB/xhTl2Lq0TVUMCzEvxQrOZxDiXo9XGJf6seo5JXq+OPMfZVB0u9ZHoqvxqkXY3cmuJrc=
+env:
+  global:
+  # DOCKER_EMAIL
+  - secure: ELrjAdLnuoT8Al4FBSniRr3uUL73bGbpukGm+1u80ROpWh5+D/EA5WMfh3HFDHPhyRvycMGFTAbrhYyvkpHRjhml4qhWBZEqfY7FISj108vFFhqZe/jRz/uu2rJa5+qp/VAXO+8N3hL3OkkKr86lFAREZHQP4z4ZOho0SdBwClDmeeY2cTN9J0wnmD4jMKo3lBSYoS/CWTe906iKghpdS5D9D9qL7VqSYQz2z4jQ6STDSK0TLQRIXCxIShSdAUZsEAdgLpGbI13wKTkAKfpwD1lJRlQ9I0Kn45MwBVVocotYt+EFa+RkK/xnBfiJelGoltXptrl7mKV8jj3Bvu7LLVEQmL3xgq9CreSQvpcwgChTkOA1ZHfTcNeL1D9y3ihHSQB1l0LQLe4lUzi/mzQ5euumpLXcv8zxkfRy8AYKE25CFM3k0HELMOT9vVSJ/DTuBMinZDME//gy5m2lpxhcRMzYW0sfNaJ8myy24oLVe6otrQfPjsEl5dfRGOgkQ0ODJR81yVfOveRD25TViFFyliR64DCr1sALBr7qmTjiqWmIqdAYODTd/L5O4H+QF+9BlztdG0kWLwZL5ta8UOzo37qUgJaTlIAA/+LjLi3GQqmg0EPVM5Wuyo4rZqcGPy2U30q1hWEkDMjmL6HlR5uG+oUyqLYG4fbunrnsyyCyHWo=
+  # DOCKER_USER
+  - secure: RHA+0Er/ctzJG/e7eUnJHKWWPtnztuagm5o65voXxxMQE5u7CnON5fwaEDpSrKkXPqEEgDASQjuN/cIoHkF4D9yDmuxZojnJgiEZBQAtY6TFtDB6wj3CVxRB0pddF/hmvmffr7PXKG6ag7iWlvMdKNMlSUr9zGtjwPxZ53jFhpONa5xyD6nLRZuW0pG4A8+cEIz+JAEVHgiVJc6bRR8bkh0IljlQqRqw3lxMEkArnHkGBTPzDPfsJfYAd2MbGhl6jbiVfUTKPEVmK0mE+yQNKb1HJUjh6J3MmT28r+du1Oc4E24vWMwAv/BnO1FjIXP/Vz7Je0Iu3bO1BtflUgrsGxZcWjCO+zfK4FruL+dw4J7BjXdRjIY8JH/M2oynXVn9czPwhPnmZStaSeua+BahXBT5Kth/iqMu63YixYE+pGILyKKtowCua0lZEa0tai/m74NVsiZhIh9IhqNjpaWQD/qppxgEiW94ErOfc2f1OZkALCNBbiiCqGBDTIrPQby/BQNu0xJpSw7gOLX9sLQEVXoxTLgwmddPc7MLiKRMm7vBi9k4TX/O9PSSbYZzgsWrr9T58vw/UW2BKPOVz4wLUrUIopl5+KWsLmRZ/JbM3lrH5U+vJix2czW4GIVNy2J6wTB2V8JBzYhHokXIvpTyrAQuxLuJsWWKU4n8TbRPjdQ=
+  # DOCKER_PASS
+  - secure: oXGrGqAyVNI9BUZDKCmwqWJxnFBHEfE2V7xdEc1XFquHhffnRP8VQSkVCb+4Cfy3G0JZsmc+nHw7ISkS3SkkTBw5cqcUs4cOiftd4JLVgJy9aDpkRpKZZKP8s0Mck7G7L75fzpbScnGXGnWD4vMmOI4n9iFSIyHPzeIHGhwtKinQul5v4GnIRHb6bv/IOiuibF49+6A8A9rhfHfTXVo58S4D0CsPLj2MrfYzJjDnTz9n4IuLZ7sQA5v/jGDnHWLzf8UBLZlQJDo+3QpEa728X+N0AJceNgomniRxPkNVRZhyP1f2IQHuW1m6uwo5DEq65MM9DbyZoXxv2Uh7dnmOn1HZ1f1fa3FP7tT6kxvRtckGQJfX1kxnslI0xCbuaXG9eOGilK7quJZwhnqd7mdeGmJWV7mZJqBqcL5RZBl8xRhhYnlC0Zd0eLeMHMGa0zsfaPxpNpdF+oV+08Eu2ttPW6xyzS193Vz7j+7Da1cZHioXoUr1li9Ah5mS9rz9FOshmZkqeDqI9+EB1IJxrM4ssQ+IeukJ7CuJlYlwlI3zd4taUqdg4Tx6YatC2sQ+mXjop+njtBqgWB//t/Ny4jShWU7kC9WkFfUDoZNprew0YaVS7LZhnqbGpFhLMUx4hEKEJJyYgHq1KFNz3ZhKgI6/P82KAeMiq72JgVY+5Bsh5RQ=
