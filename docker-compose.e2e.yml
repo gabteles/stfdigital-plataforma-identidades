@@ -14,6 +14,15 @@ services:
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_SERVICE_OPTS}
+  userauthentication:
+    image: stfdigital-plataforma-userauthentication
+    ports:
+     - "8095:8095"
+     - "8195:8195"
+     - "47995:${JAVA_DEBUG_PORT}"
+    environment:
+     - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
+     - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
   selenium:
     container_name: selenium
     image: selenium/standalone-chrome:2.53.0
