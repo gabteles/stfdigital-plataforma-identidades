@@ -1,0 +1,9 @@
+# Define a configuração para rodar o recebimento
+version: '2'
+services:
+  userauthentication:
+    extends:
+      file: compose/shared/common.yml
+      service: userauthentication
+    depends_on:
+     - discovery
