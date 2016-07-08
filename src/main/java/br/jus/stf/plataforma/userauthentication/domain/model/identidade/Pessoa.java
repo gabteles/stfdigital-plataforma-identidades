@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.identidade.PessoaId;
+import br.jus.stf.plataforma.userauthentication.domain.model.validation.CPFUtils;
 
 /**
  * @author Rafael Alencar
@@ -65,6 +66,7 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
 		this(id, nome);
 		
 		Validate.notBlank(cpf, "CPF requerido.");
+		Validate.isTrue(CPFUtils.isValido(cpf), "CPF inválido.");
 				
 		this.cpf = cpf;
 	}
