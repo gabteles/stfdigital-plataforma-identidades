@@ -15,3 +15,4 @@ seq_pessoa_orgao number not null
 alter table corporativo.associado add constraint corporativo.pk_associado primary key(seq_associado);
 alter table corporativo.associado add constraint corporativo.ck_asso_tip_associado check(tip_associado in ('ASSOCIADO', 'GESTOR', 'REPRESENTANTE'));
 alter table corporativo.associado add constraint corporativo.fk_orgao_asso foreign key(seq_pessoa_orgao) references corporativo.orgao(seq_pessoa); 
+alter table corporativo.associado add constraint corporativo.fk_pessoa_asso foreign key(seq_pessoa) references corporativo.pessoa(seq_pessoa);
