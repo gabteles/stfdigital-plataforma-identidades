@@ -3,7 +3,8 @@ version: '2'
 services:
   userauthentication:
     extends:
-      file: compose/shared/common.yml
+      file: shared/compose/common.yml
       service: userauthentication
+    image: stfdigital-plataforma-userauthentication
     depends_on:
      - discovery
