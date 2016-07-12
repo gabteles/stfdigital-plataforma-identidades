@@ -12,14 +12,38 @@ import br.jus.stf.core.shared.userauthentication.UsuarioId;
  */
 public interface UsuarioRepository {
 	
-	public List<Usuario> findAll();
+	/**
+	 * @return
+	 */
+	List<Usuario> findAll();
 	
-	public Usuario findOne(UsuarioId id);
+	/**
+	 * @param id
+	 * @return
+	 */
+	Usuario findOne(UsuarioId id);
 	
-	public Usuario findOne(String login);
+	/**
+	 * @param login
+	 * @return
+	 */
+	Usuario findOne(String login);
 	
-	public <U extends Usuario> U save(U principal);
+	/**
+	 * @param principal
+	 * @return
+	 */
+	<U extends Usuario> U save(U principal);
 	
-	public List<Recurso> findRecursoByUsuario(String login);
+	/**
+	 * @param login
+	 * @return
+	 */
+	List<Recurso> findRecursoByUsuario(String login);
+
+	/**
+	 * @return
+	 */
+	UsuarioId nextId();
 
 }

@@ -186,7 +186,7 @@ public class AcessosRestResource {
 	@ApiOperation("Configura as permissões a grupos e papéis de um usuário.")
 	@RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public void configurarPermissoesUsuario(@RequestBody ConfigurarPermissoesUsuarioCommand command ){
+	public void configurarPermissoesUsuario(@RequestBody @Valid ConfigurarPermissoesUsuarioCommand command ){
 		acessosApplicationService.handle(command);
 	}
 	
@@ -213,7 +213,7 @@ public class AcessosRestResource {
 	 * @return Informações do usuário.
 	 */
 	@ApiOperation("Recupera as informações do usuário informado.")
-	@RequestMapping(value="/usuarios/:usuarioId", method = RequestMethod.GET)
+	@RequestMapping(value="/usuarios/{usuarioId:[\\d]+}", method = RequestMethod.GET)
 	public UsuarioDto recuperarUsuario(@PathVariable("usuarioId") Long usuarioId) {
 		return usuarioDtoAssembler.toDto(usuarioRepository.findOne(new UsuarioId(usuarioId)));
 	}
@@ -225,8 +225,8 @@ public class AcessosRestResource {
 	 * @return Informações do usuário.
 	 */
 	@ApiOperation("Recupera as informações do usuário informado.")
-	@RequestMapping(value="/usuarios/:login.+", method = RequestMethod.GET)
-	public UsuarioDto recuperarUsuario(@PathVariable("login") String login) {
+	@RequestMapping(value="/usuarios", method = RequestMethod.GET)
+	public UsuarioDto recuperarUsuario(@RequestParam("login") String login) {
 		return usuarioDtoAssembler.toDto(usuarioRepository.findOne(login));
 	}
 	

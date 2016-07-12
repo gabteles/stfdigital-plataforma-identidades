@@ -19,6 +19,10 @@ public class UsuarioDtoAssembler {
 	@Autowired
 	private SetorDtoAssembler setorDtoAssembler;
 	
+	/**
+	 * @param usuario
+	 * @return
+	 */
 	public UsuarioDto toDto(Usuario usuario) {
 		if (usuario == null) {
 			return null;

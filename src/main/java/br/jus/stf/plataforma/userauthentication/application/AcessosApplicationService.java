@@ -82,7 +82,7 @@ public class AcessosApplicationService {
 	public Usuario handle(CadastrarUsuarioCommand command) {
 		Pessoa pessoa = new Pessoa(new PessoaId(command.getPessoaId()), command.getNome(), command.getCpf(),
 				command.getOab(), command.getEmail(), command.getTelefone());
-		UsuarioId idUsuario = new UsuarioId(pessoa.id().toLong());
+		UsuarioId idUsuario = usuarioRepository.nextId();
 		Usuario principal = new Usuario(idUsuario, pessoa, command.getLogin());
 		Grupo grupoUsuario = grupoRepository.findOne("usuario", TipoGrupo.CONFIGURACAO);
 		Set<Grupo> grupos = new HashSet<>(0);

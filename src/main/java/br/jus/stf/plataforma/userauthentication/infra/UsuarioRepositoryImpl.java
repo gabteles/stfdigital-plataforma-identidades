@@ -1,8 +1,10 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,6 +32,9 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 	
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
 	public UsuarioRepositoryImpl(EntityManager entityManager) {
 		super(Usuario.class, entityManager);
@@ -53,6 +58,14 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 		query.setParameter("login", login);
 		
 		return query.getResultList();
+	}
+	
+	@Override
+	public UsuarioId nextId() {
+		Query query = entityManager.createNativeQuery("SELECT uaa.seq_usuario.NEXTVAL FROM DUAL");
+		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		
+		return new UsuarioId(sequencial);
 	}
 
 }

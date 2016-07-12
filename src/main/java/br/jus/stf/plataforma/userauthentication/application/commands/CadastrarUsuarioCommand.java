@@ -35,6 +35,29 @@ public class CadastrarUsuarioCommand {
 	
 	@ApiModelProperty(value = "Id da pessoa no contexto de identidades")
 	private Long pessoaId;
+	
+	public CadastrarUsuarioCommand() {
+		// Construtor default
+	}
+	
+	/**
+	 * @param login
+	 * @param nome
+	 * @param email
+	 * @param cpf
+	 * @param oab
+	 * @param telefone
+	 * @param pessoaId
+	 */
+	public CadastrarUsuarioCommand(String login, String nome, String email, String cpf, String oab, String telefone, Long pessoaId) {
+		this.login = login;
+		this.nome = nome;
+		this.email = email;
+		this.cpf = cpf;
+		this.oab = oab;
+		this.telefone = telefone;
+		this.pessoaId = pessoaId;
+	}
 
 	/**
 	 * @return the login

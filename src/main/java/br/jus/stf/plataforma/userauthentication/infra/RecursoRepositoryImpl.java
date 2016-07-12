@@ -26,6 +26,9 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> im
 	
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
 	public RecursoRepositoryImpl(EntityManager entityManager) {
 		super(Recurso.class, entityManager);
