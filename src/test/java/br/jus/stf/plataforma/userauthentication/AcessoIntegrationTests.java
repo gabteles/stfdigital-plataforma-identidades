@@ -11,8 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,8 +28,7 @@ import net.minidev.json.JSONArray;
  * @since 30.11.2015
  *
  */
-@SpringApplicationConfiguration(ApplicationContextInitializer.class)
-@WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
 public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
 	private StringBuilder permissoesUsuario;

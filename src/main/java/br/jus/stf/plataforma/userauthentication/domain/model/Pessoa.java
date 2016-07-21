@@ -3,8 +3,8 @@ package br.jus.stf.plataforma.userauthentication.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.elasticsearch.common.lang3.StringUtils;
 
 import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
 import br.jus.stf.core.shared.identidade.PessoaId;
