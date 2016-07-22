@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import net.minidev.json.JSONArray;
 
 /**
@@ -29,6 +30,7 @@ import net.minidev.json.JSONArray;
  *
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@WithMockOauth2User("usuario-teste")
 public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
 	private StringBuilder permissoesUsuario;

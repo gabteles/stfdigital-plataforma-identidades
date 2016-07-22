@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 
 /**
  * Classe responsável pelos testes de integração da API de identidade da Plataforma.
@@ -26,6 +27,7 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  *
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@WithMockOauth2User("gestor-cadastro")
 public class PessoaIntegrationTests extends IntegrationTestsSupport {
 	
 	@Before
