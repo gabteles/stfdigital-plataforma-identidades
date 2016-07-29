@@ -22,10 +22,14 @@ public class UserRestResource {
 	@RequestMapping({ "/user" })
 	public Map<String, Object> user(Principal principal) {
 		OAuth2Authentication authentication = (OAuth2Authentication) principal;
-		UserDetails user = (UserDetails) authentication.getPrincipal();
 		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("pessoaId", user.getPessoaId());
-		map.put("login", user.getUsername());
+		if (authentication.getPrincipal() instanceof UserDetails) {
+			UserDetails user = (UserDetails) authentication.getPrincipal();
+			map.put("pessoaId", user.getPessoaId());
+			map.put("login", user.getUsername());
+		} else {
+			map.put("login", authentication.getPrincipal().toString());
+		}
 		return map;
 	}
 
