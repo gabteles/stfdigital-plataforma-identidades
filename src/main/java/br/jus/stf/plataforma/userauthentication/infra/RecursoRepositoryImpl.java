@@ -22,7 +22,7 @@ import br.jus.stf.plataforma.userauthentication.domain.model.ResourceType;
  * @since 03.06.2016
  */
 @Repository
-public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> implements RecursoRepository {
+public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, RecursoId> implements RecursoRepository {
 	
 	private EntityManager entityManager;
 	

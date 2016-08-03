@@ -1,5 +1,8 @@
 package br.jus.stf.plataforma.userauthentication;
 
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -8,14 +11,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.jsonj.JsonObject;
 
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
@@ -33,24 +33,9 @@ import net.minidev.json.JSONArray;
 @WithMockOauth2User("usuario-teste")
 public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
-	private StringBuilder permissoesUsuario;
-	private ObjectMapper mapper;
-	
-	@Before
-	public void carregarDadosTeste() {
-		permissoesUsuario = new StringBuilder();
-		permissoesUsuario.append("{\"idUsuario\":9,");
-		permissoesUsuario.append("\"papeisAdicionados\":[1,2,3,4],");
-		permissoesUsuario.append("\"gruposAdicionados\":[2],");
-		permissoesUsuario.append("\"papeisRemovidos\":[5],");
-		permissoesUsuario.append("\"gruposRemovidos\":[1,2]}");
-		
-		mapper = new ObjectMapper();
-	}
-	@Ignore
 	@Test
 	public void recuperaInformacoesUsuarioLogado() throws Exception {
-		mockMvc.perform(get("/api/acessos/usuario").header("login", "usuario-teste")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/acessos/usuario")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(9))).andExpect(jsonPath("$.nome", is("Usuario Teste")))
 				.andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
 				.andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
@@ -71,17 +56,42 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void configuraPermissoesUsuario() throws Exception {
+		JsonObject permissoesUsuarioJson = object(
+				field("idUsuario", 9),
+				field("papeisAdicionados", array(1,2,3,4)),
+				field("gruposAdicionados", array(2)),
+				field("recursosAdicionados", array(45)),
+				field("papeisRemovidos", array(5)),
+				field("gruposRemovidos", array(1,2)),
+				field("recursosRemovidos", array(51))
+		);
+		
 		mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
-				.content(permissoesUsuario.toString())).andExpect(status().isOk());
+				.content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void tentaConfigurarPermissoesSemUsuario() throws Exception {
+		JsonObject permissoesUsuarioJson = object(
+				field("papeisAdicionados", array(1,2,3,4)),
+				field("gruposAdicionados", array(2)),
+				field("recursosAdicionados", array(45)),
+				field("papeisRemovidos", array(5)),
+				field("gruposRemovidos", array(1,2)),
+				field("recursosRemovidos", array(51))
+		);
+		
+		mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
+				.content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
 	}
 
     @Test
 	public void cadastraNovoUsuario() throws Exception {
-		ObjectNode userJson = mapper.createObjectNode();
-		
-		userJson.put("login", "joao.silva");
-		userJson.put("nome", "João da Silva");
-		userJson.put("pessoaId", 9000);
+    	JsonObject userJson = object(
+    			field("login", "joao.silva"),
+    			field("nome", "João da Silva"),
+    			field("pessoaId", 9000)
+    	);
 		
 		mockMvc.perform(
 				post("/api/acessos/usuarios").contentType(MediaType.APPLICATION_JSON).content(userJson.toString()))
@@ -92,8 +102,9 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 
     @Test
 	public void tentaCadastrarNovoUsuarioSemInformacoesObrigatorias() throws Exception {
-		ObjectNode userJson = mapper.createObjectNode();		
-		userJson.put("login", "joao.silva");
+    	JsonObject userJson = object(
+    			field("login", "joao.silva")
+		);
 		
 		mockMvc.perform(
 				post("/api/acessos/usuarios")

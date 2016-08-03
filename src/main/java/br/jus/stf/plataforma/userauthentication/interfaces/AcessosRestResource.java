@@ -183,7 +183,7 @@ public class AcessosRestResource {
 	/**
 	 * @param command
 	 */
-	@ApiOperation("Configura as permissões a grupos e papéis de um usuário.")
+	@ApiOperation("Configura as permissões a grupos, papéis e recursos de um usuário.")
 	@RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void configurarPermissoesUsuario(@RequestBody @Valid ConfigurarPermissoesUsuarioCommand command ){
