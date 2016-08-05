@@ -29,7 +29,7 @@ import net.minidev.json.JSONArray;
  * @since 30.11.2015
  *
  */
-@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false"}, classes = ApplicationContextInitializer.class)
 @WithMockOauth2User("usuario-teste")
 public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
