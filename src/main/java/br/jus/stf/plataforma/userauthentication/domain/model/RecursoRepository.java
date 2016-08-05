@@ -12,14 +12,33 @@ import br.jus.stf.core.shared.userauthentication.RecursoId;
  */
 public interface RecursoRepository {
 	
-	public Recurso findOne(Long id);
+	/**
+	 * @param id
+	 * @return
+	 */
+	Recurso findOne(RecursoId id);
 	
-	public Recurso findOne(String nome, ResourceType tipoRecurso);
+	/**
+	 * @param nome
+	 * @param tipoRecurso
+	 * @return
+	 */
+	Recurso findOne(String nome, ResourceType tipoRecurso);
 	
-	public List<Recurso> findAll();
+	/**
+	 * @return
+	 */
+	List<Recurso> findAll();
 	
-	public <R extends Recurso> R save(R recurso);
+	/**
+	 * @param recurso
+	 * @return
+	 */
+	<R extends Recurso> R save(R recurso);
 	
-	public RecursoId nextId();
+	/**
+	 * @return
+	 */
+	RecursoId nextId();
 
 }

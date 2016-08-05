@@ -22,17 +22,23 @@ public class ConfigurarPermissoesUsuarioCommand {
 	@NotNull
 	private Long idUsuario;
 	
-	@ApiModelProperty(value = "Papéis do usuário.")
+	@ApiModelProperty(value = "Papéis adicionados ao usuário.")
 	private Set<Long> papeisAdicionados;
 	
-	@ApiModelProperty(value = "Papéis do usuário.")
+	@ApiModelProperty(value = "Grupos adicionados ao usuário.")
 	private Set<Long> gruposAdicionados;
 	
-	@ApiModelProperty(value = "Papéis do usuário.")
+	@ApiModelProperty(value = "Recursos adicionados ao usuário.")
+	private Set<Long> recursosAdicionados;
+	
+	@ApiModelProperty(value = "Papéis removidos do usuário.")
 	private Set<Long> papeisRemovidos;
 	
-	@ApiModelProperty(value = "Papéis do usuário.")
+	@ApiModelProperty(value = "Grupos removidos do usuário.")
 	private Set<Long> gruposRemovidos;
+	
+	@ApiModelProperty(value = "Recursos removidos do usuário.")
+	private Set<Long> recursosRemovidos;
 	
 	public ConfigurarPermissoesUsuarioCommand() {
 		// Construtor default
@@ -42,16 +48,21 @@ public class ConfigurarPermissoesUsuarioCommand {
 	 * @param idUsuario
 	 * @param papeisAdicionados
 	 * @param gruposAdicionados
+	 * @param recursosAdicionados
 	 * @param papeisRemovidos
 	 * @param gruposRemovidos
+	 * @param recursosRemovidos
 	 */
 	public ConfigurarPermissoesUsuarioCommand(Long idUsuario, Set<Long> papeisAdicionados, Set<Long> gruposAdicionados,
-			Set<Long> papeisRemovidos, Set<Long> gruposRemovidos) {
+			Set<Long> recursosAdicionados, Set<Long> papeisRemovidos, Set<Long> gruposRemovidos,
+			Set<Long> recursosRemovidos) {
 		this.idUsuario = idUsuario;
 		this.papeisAdicionados = papeisAdicionados;
 		this.gruposAdicionados = gruposAdicionados;
+		this.recursosAdicionados = recursosAdicionados;
 		this.papeisRemovidos = papeisRemovidos;
 		this.gruposRemovidos = gruposRemovidos;
+		this.recursosRemovidos = recursosRemovidos;
 	}
 
 	public Long getIdUsuario() {
@@ -78,6 +89,14 @@ public class ConfigurarPermissoesUsuarioCommand {
 		this.gruposAdicionados = gruposAdicionados;
 	}
 	
+	public Set<Long> getRecursosAdicionados() {
+		return recursosAdicionados;
+	}
+
+	public void setRecursosAdicionados(Set<Long> recursosAdicionados) {
+		this.recursosAdicionados = recursosAdicionados;
+	}
+	
 	public Set<Long> getPapeisRemovidos() {
 		return papeisRemovidos;
 	}
@@ -92,5 +111,13 @@ public class ConfigurarPermissoesUsuarioCommand {
 
 	public void setGruposRemovidos(Set<Long> gruposRemovidos) {
 		this.gruposRemovidos = gruposRemovidos;
+	}
+	
+	public Set<Long> getRecursosRemovidos() {
+		return recursosRemovidos;
+	}
+
+	public void setRecursosRemovidos(Set<Long> recursosRemovidos) {
+		this.recursosRemovidos = recursosRemovidos;
 	}
 }

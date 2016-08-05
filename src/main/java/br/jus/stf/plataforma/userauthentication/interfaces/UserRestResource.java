@@ -19,6 +19,10 @@ import br.jus.stf.plataforma.userauthentication.infra.configuration.UserDetails;
 @RestController
 public class UserRestResource {
 
+	/**
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping({ "/user" })
 	public Map<String, Object> user(Principal principal) {
 		OAuth2Authentication authentication = (OAuth2Authentication) principal;
