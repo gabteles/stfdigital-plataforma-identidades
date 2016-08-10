@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra.configuration;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.jus.stf.plataforma.userauthentication.domain.model.Usuario;
 import br.jus.stf.plataforma.userauthentication.domain.model.UsuarioRepository;
@@ -28,16 +28,16 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 	private UsuarioRepository usuarioRepository;
 
 	@Override
+	@Transactional
 	public Authentication authenticate(Authentication authentication) {
-		String login = authentication.getName();
-        Optional<Usuario> usuario = Optional.ofNullable(usuarioRepository.findOne(login));
+        Optional<Usuario> usuario = Optional.ofNullable(usuarioRepository.findOne(authentication.getName()));
         
-        if (usuario.isPresent()) {
-        	User user = new UserDetails(login, usuario.get().pessoa().id().toLong(), Collections.emptyList());
-            return new UsernamePasswordAuthenticationToken(user, PROTECTED, user.getAuthorities());
-        }
-        
-        return null;
+        return usuario.map(this::extractUserDetails).orElse(null);
+	}
+
+	private Authentication extractUserDetails(Usuario usuario) {
+		User user = new UserDetails(usuario.login(), usuario.pessoa().id().toLong(), usuario.papeis(), usuario.recursos());
+		return new UsernamePasswordAuthenticationToken(user, PROTECTED, user.getAuthorities());
 	}
 
 	@Override

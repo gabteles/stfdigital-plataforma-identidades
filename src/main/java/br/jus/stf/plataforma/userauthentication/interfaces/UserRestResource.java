@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.userauthentication.interfaces;
 
+import static java.util.stream.Collectors.toList;
+
 import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class UserRestResource {
 		Map<String, Object> map = new LinkedHashMap<>();
 		if (authentication.getPrincipal() instanceof UserDetails) {
 			UserDetails user = (UserDetails) authentication.getPrincipal();
+			map.put("componentes", user.getRecursos().stream().map(r -> r.nome()).collect(toList()));
+			map.put("authorities", user.getAuthorities());
 			map.put("pessoaId", user.getPessoaId());
 			map.put("login", user.getUsername());
 		} else {
