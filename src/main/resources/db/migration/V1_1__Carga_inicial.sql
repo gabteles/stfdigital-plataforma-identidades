@@ -85,9 +85,9 @@ INSERT INTO UAA.SEGMENTO(SEQ_SEGMENTO, NOM_SEGMENTO, SEQ_TIPO_INFORMACAO) VALUES
 
 -- 50 +/- SELECT COUNT(*) FROM UAA.RECURSO;            
 INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
-(1, 'registrar-peticao-eletronica', 'ACAO'),
-(2, 'registrar-peticao-fisica', 'ACAO'),
-(3, 'registrar-peticao-eletronica-orgao', 'ACAO'),
+(1, 'peticionar', 'ACAO'),
+(2, 'registrar-remessa', 'ACAO'),
+(3, 'peticionar-orgao', 'ACAO'),
 (4, 'preautuar', 'ACAO'),
 (5, 'autuar', 'ACAO'),
 (6, 'distribuir-processo', 'ACAO'),
