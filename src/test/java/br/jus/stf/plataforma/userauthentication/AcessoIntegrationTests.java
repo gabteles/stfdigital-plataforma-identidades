@@ -55,6 +55,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+    @WithMockOauth2User(value = "usuario-teste", components = "configurar-permissoes-usuario")
 	public void configuraPermissoesUsuario() throws Exception {
 		JsonObject permissoesUsuarioJson = object(
 				field("idUsuario", 9),
@@ -86,6 +87,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	}
 
     @Test
+    @WithMockOauth2User(value = "usuario-teste", components = "cadastrar-usuario")
 	public void cadastraNovoUsuario() throws Exception {
     	JsonObject userJson = object(
     			field("login", "joao.silva"),

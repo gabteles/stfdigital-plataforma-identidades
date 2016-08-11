@@ -46,7 +46,7 @@ public class PessoaApplicationService {
 	 * @param command
 	 * @return
 	 */
-	@Command(description = "Aloca identificador de pessoas na ordem da lista passada para integração via eventos", value = "alocar-id-pessoas")
+	@Command(description = "Aloca identificador de pessoas na ordem da lista passada para integração via eventos")
 	public List<PessoaId> alocarIdPessoas(CadastrarPessoasCommand command) {
 		return command.getNomes().stream().map(nome -> {
 			List<Pessoa> pessoas = pessoaRepository.findByNomeContaining(nome);
@@ -63,7 +63,7 @@ public class PessoaApplicationService {
 	 * @param command
 	 * @return
 	 */
-	@Command("Cadastra uma pessoa")
+	@Command(description = "Cadastra uma pessoa")
 	@Transactional(propagation = REQUIRES_NEW)
 	public Pessoa handle(CadastrarPessoaCommand command) {
 		Pessoa pessoa = pessoaFactory.novaPessoa(new PessoaId(command.getId()), command.getNome(), command.getCpf(),

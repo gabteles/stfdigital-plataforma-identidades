@@ -36,6 +36,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-pessoas")
 	public void cadastrarPessoas() throws Exception {
 		loadDataTests("cadastrarPessoas.sql");
 		
@@ -47,6 +48,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-pessoa")
 	public void cadastrarPessoa() throws Exception {
 		String pessoa = "{\"id\":9002,\"nome\":\"Joana\",\"cpf\":\"84548465146\",\"oab\":\"0123/DF\",\"email\":\"joana@stf.jus.br\",\"telefone\":\"(61)3217-1477\"}";
 		
@@ -56,6 +58,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-pessoas")
 	public void alocarPessoas() throws Exception {
 		loadDataTests("cadastrarPessoas.sql");
 		
@@ -85,6 +88,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-associado")
 	public void cadastrarAssociado() throws Exception {
 		loadDataTests("cadastrarAssociado.sql");
 		
