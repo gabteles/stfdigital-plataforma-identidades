@@ -25,6 +25,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 	private static final String PROTECTED = "[PROTECTED]";
 	
 	@Autowired
+	private UserDetailsExtractor userDetailsExtractor;
+	
+	@Autowired
 	private UsuarioRepository usuarioRepository;
 
 	@Override
@@ -37,7 +40,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
 	private Authentication extractUserDetails(Usuario usuario) {
 		User user = new UserDetails(usuario.login(), usuario.pessoa().id().toLong(), usuario.papeis(), usuario.recursos());
-		return new UsernamePasswordAuthenticationToken(user, PROTECTED, user.getAuthorities());
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, PROTECTED, user.getAuthorities());
+		authentication.setDetails(userDetailsExtractor.extract(usuario, user));
+		return authentication;
 	}
 
 	@Override
