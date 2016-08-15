@@ -89,7 +89,7 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (2, 'registrar-remessa', 'ACAO'),
 (3, 'peticionar-orgao', 'ACAO'),
 (4, 'preautuar-originario', 'ACAO'),
-(5, 'autuar', 'ACAO'),
+(5, 'autuar-originario', 'ACAO'),
 (6, 'distribuir-processo', 'ACAO'),
 (7, 'gerar-texto-devolucao', 'ACAO'),
 (8, 'minhas-tarefas', 'DASHLET'),
@@ -115,7 +115,7 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (29, 'preautuar-recursal', 'ACAO'),
 (30, 'autuar-recursal-criminal-eleitoral', 'ACAO'),
 (31, 'analisar-pressupostos-formais', 'ACAO'),
-(32, 'revisar-processo-inapto', 'ACAO'),
+(32, 'revisar-pressupostos-formais', 'ACAO'),
 (33, 'analisar-repercussao-geral', 'ACAO'),
 (34, 'revisar-repercussao-geral', 'ACAO'),
 (35, 'autuar-recursal', 'ACAO'),
@@ -137,7 +137,9 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (51, 'gerar-acronimos', 'ACAO'),
 (52, 'upload-documento-assinado', 'ACAO'),
 (53, 'salvar-documentos', 'ACAO'),
-(54, 'cadastrar-pessoas', 'ACAO');
+(54, 'cadastrar-pessoas', 'ACAO'),
+(55, 'pesquisar-processos', 'PESQUISA'),
+(56, 'sugerir-processos', 'PESQUISA');
 
 -- 69 +/- SELECT COUNT(*) FROM UAA.INFORMACAO;         
 INSERT INTO UAA.INFORMACAO(SEQ_INFORMACAO, SEQ_TIPO_INFORMACAO, SEQ_SEGMENTO, COD_IDENTIDADE) VALUES
@@ -312,7 +314,9 @@ INSERT INTO UAA.GRUPO_USUARIO(SEQ_GRUPO, SEQ_USUARIO) VALUES
 INSERT INTO UAA.GRUPO_RECURSO(SEQ_GRUPO, SEQ_RECURSO) VALUES
 (1, 11),
 (1, 43),
-(1, 50);             
+(1, 50),
+(1, 55),
+(1, 56);             
 
 -- 91 +/- SELECT COUNT(*) FROM UAA.PAPEL_RECURSO;      
 INSERT INTO UAA.PAPEL_RECURSO(SEQ_PAPEL, SEQ_RECURSO) VALUES
