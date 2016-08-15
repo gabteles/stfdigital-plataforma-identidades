@@ -139,7 +139,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void listaPapeisRecurso() throws Exception {
-		mockMvc.perform(get("/api/acessos/recursos/papeis").param("nome", "preautuar").param("tipo", "ACAO"))
+		mockMvc.perform(get("/api/acessos/recursos/papeis").param("nome", "preautuar-originario").param("tipo", "ACAO"))
 				.andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
 	}
 	

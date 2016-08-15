@@ -1,16 +1,13 @@
 package br.jus.stf.plataforma.userauthentication.interfaces;
 
-import static java.util.stream.Collectors.toList;
-
 import java.security.Principal;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.stf.plataforma.userauthentication.infra.configuration.UserDetails;
+import br.jus.stf.plataforma.userauthentication.infra.configuration.UserDetailsExtractor;
 
 /**
  * @author Rodrigo Barreiros
@@ -21,24 +18,16 @@ import br.jus.stf.plataforma.userauthentication.infra.configuration.UserDetails;
 @RestController
 public class UserRestResource {
 
+	@Autowired
+	private UserDetailsExtractor userDetailsExtractor;
+	
 	/**
 	 * @param principal
 	 * @return
 	 */
 	@RequestMapping({ "/user" })
 	public Map<String, Object> user(Principal principal) {
-		OAuth2Authentication authentication = (OAuth2Authentication) principal;
-		Map<String, Object> map = new LinkedHashMap<>();
-		if (authentication.getPrincipal() instanceof UserDetails) {
-			UserDetails user = (UserDetails) authentication.getPrincipal();
-			map.put("componentes", user.getRecursos().stream().map(r -> r.nome()).collect(toList()));
-			map.put("authorities", user.getAuthorities());
-			map.put("pessoaId", user.getPessoaId());
-			map.put("login", user.getUsername());
-		} else {
-			map.put("login", authentication.getPrincipal().toString());
-		}
-		return map;
+		return userDetailsExtractor.extract(principal);
 	}
 
 }
