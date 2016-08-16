@@ -134,7 +134,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void listaRecursosUsuario() throws Exception {
 		mockMvc.perform(get("/api/acessos/usuarios/recursos").param("login", "gestor-autuacao"))
-				.andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(11)));
+				.andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(13)));
 	}
 	
 	@Test
