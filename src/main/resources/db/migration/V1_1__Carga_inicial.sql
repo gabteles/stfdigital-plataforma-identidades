@@ -99,7 +99,7 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (12, 'do-nothing-long', 'ACAO'),
 (13, 'do-nothing', 'ACAO'),
 (14, 'dummy-action', 'ACAO'),
-(15, 'devolver-peticao', 'ACAO'),
+(15, 'devolver-remessa', 'ACAO'),
 (16, 'registrar-associado', 'ACAO'),
 (17, 'configurar-permissao', 'ACAO'),
 (19, '1', 'DASHBOARD'),
@@ -416,7 +416,9 @@ INSERT INTO UAA.PAPEL_RECURSO(SEQ_PAPEL, SEQ_RECURSO) VALUES
 (7, 47),
 (23, 48),
 (23, 49),
-(23, 51);
+(23, 51),
+(14, 15),
+(4, 15);
 
 -- 1 +/- SELECT COUNT(*) FROM UAA.USUARIO_RECURSO;      
 INSERT INTO UAA.USUARIO_RECURSO(SEQ_USUARIO, SEQ_RECURSO) VALUES
