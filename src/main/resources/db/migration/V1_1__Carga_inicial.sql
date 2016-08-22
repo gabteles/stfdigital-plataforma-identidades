@@ -91,7 +91,7 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (4, 'preautuar-originario', 'ACAO'),
 (5, 'autuar-originario', 'ACAO'),
 (6, 'distribuir-processo', 'ACAO'),
-(7, 'gerar-texto-devolucao', 'ACAO'),
+(7, 'preparar-oficio-devolucao', 'ACAO'),
 (8, 'minhas-tarefas', 'DASHLET'),
 (9, 'minhas-peticoes', 'DASHLET'),
 (10, 'grafico-gestao', 'DASHLET'),
