@@ -1,13 +1,12 @@
 package br.jus.stf.plataforma.userauthentication.interfaces;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.core.shared.eventos.EnvolvidoRegistrado;
 import br.jus.stf.plataforma.userauthentication.application.PessoaApplicationService;
 import br.jus.stf.plataforma.userauthentication.application.commands.CadastrarPessoaCommand;
-import br.jus.stf.plataforma.userauthentication.infra.RabbitConfiguration;
 
 /**
  * @author Rafael Alencar
@@ -21,7 +20,7 @@ public class PessoaEventHandler {
     @Autowired
     private PessoaApplicationService pessoaApplicationService;
     
-    @RabbitListener(queues = RabbitConfiguration.PARTE_REGISTRADA_QUEUE)
+	@StreamListener(EnvolvidoRegistrado.EVENT_KEY)
     public void handle(EnvolvidoRegistrado event) {
     	pessoaApplicationService.handle(new CadastrarPessoaCommand(event.getPessoaId(), event.getNome(), null, null, null, null));
     }
