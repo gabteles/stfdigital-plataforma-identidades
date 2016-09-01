@@ -20,14 +20,6 @@ services:
     image: stfdigital-plataforma-gateway
     depends_on:
      - discovery
-  services:
-    extends:
-      file: shared/compose/common.yml
-      service: services
-    image: stfdigital-plataforma-services
-    depends_on:
-     - rabbit
-     - discovery
   ui:
     extends:
       file: shared/compose/common.yml

@@ -18,13 +18,6 @@ services:
       service: gateway
     depends_on:
      - discovery
-  services:
-    extends:
-      file: shared/compose/common.yml
-      service: services
-    depends_on:
-     - rabbit
-     - discovery
   ui:
     extends:
       file: shared/compose/common.yml
