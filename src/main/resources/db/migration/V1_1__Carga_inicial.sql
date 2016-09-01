@@ -140,7 +140,10 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (54, 'cadastrar-pessoas', 'ACAO'),
 (55, 'pesquisar-processos', 'PESQUISA'),
 (56, 'sugerir-processos', 'PESQUISA'),
-(57, 'concluir-texto', 'ACAO');
+(57, 'concluir-texto', 'ACAO'),
+(58, 'assinar-oficio-devolucao', 'ACAO'),
+(59, 'assinar-texto', 'ACAO'),
+(60, 'upload-documento', 'ACAO');
 
 -- 69 +/- SELECT COUNT(*) FROM UAA.INFORMACAO;         
 INSERT INTO UAA.INFORMACAO(SEQ_INFORMACAO, SEQ_TIPO_INFORMACAO, SEQ_SEGMENTO, COD_IDENTIDADE) VALUES
@@ -420,7 +423,10 @@ INSERT INTO UAA.PAPEL_RECURSO(SEQ_PAPEL, SEQ_RECURSO) VALUES
 (23, 51),
 (14, 15),
 (4, 15),
-(7, 57);
+(7, 57),
+(11, 58),
+(11, 59),
+(11, 60);
 
 -- 1 +/- SELECT COUNT(*) FROM UAA.USUARIO_RECURSO;      
 INSERT INTO UAA.USUARIO_RECURSO(SEQ_USUARIO, SEQ_RECURSO) VALUES
