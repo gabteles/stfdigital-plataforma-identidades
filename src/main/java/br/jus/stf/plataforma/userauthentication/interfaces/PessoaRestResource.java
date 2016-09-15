@@ -139,7 +139,7 @@ public class PessoaRestResource {
 				Optional.ofNullable(pessoa).ifPresent(pessoas::add);
 			}
 		} else if (CNPJUtils.isValido(numero)) {
-			
+			// TODO Implementar
 		}
 		
 		return pessoas;
@@ -167,6 +167,7 @@ public class PessoaRestResource {
 	}
 
 	private PessoaDto consultarPessoaWSRF(String cpf){
+		// TODO Implementar
 		return null;
 	}
 }
