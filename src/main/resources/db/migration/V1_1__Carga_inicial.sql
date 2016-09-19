@@ -102,14 +102,14 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (15, 'devolver-remessa', 'ACAO'),
 (16, 'registrar-associado', 'ACAO'),
 (17, 'configurar-permissao', 'ACAO'),
-(19, '1', 'DASHBOARD'),
-(20, '2', 'DASHBOARD'),
-(21, '3', 'DASHBOARD'),
-(22, '4', 'DASHBOARD'),
-(23, '5', 'DASHBOARD'),
-(24, '6', 'DASHBOARD'),
-(25, '7', 'DASHBOARD'),
-(26, '8', 'DASHBOARD'),
+(19, 'peticionamento', 'DASHBOARD'),
+(20, 'recebimento', 'DASHBOARD'),
+(21, 'gestao-recebimento', 'DASHBOARD'),
+(22, 'distribuicao', 'DASHBOARD'),
+(23, 'autuacao', 'DASHBOARD'),
+(24, 'gestao-autuacao', 'DASHBOARD'),
+(25, 'gestao-orgao', 'DASHBOARD'),
+(26, 'gestao-cadastro', 'DASHBOARD'),
 (27, 'assumir-tarefa', 'ACAO'),
 (28, 'delegar-tarefa', 'ACAO'),
 (29, 'preautuar-recursal', 'ACAO'),
@@ -143,7 +143,11 @@ INSERT INTO UAA.RECURSO(SEQ_RECURSO, NOM_RECURSO, TIP_RECURSO) VALUES
 (57, 'concluir-texto', 'ACAO'),
 (58, 'assinar-oficio-devolucao', 'ACAO'),
 (59, 'assinar-texto', 'ACAO'),
-(60, 'upload-documento', 'ACAO');
+(60, 'upload-documento', 'ACAO'),
+(61, 'gestao-modelos', 'DASHBOARD'),
+(62, 'minhas-remessas', 'DASHLET'),
+(63, 'grafico-remessas', 'DASHLET'),
+(64, 'modelos', 'DASHLET');
 
 -- 69 +/- SELECT COUNT(*) FROM UAA.INFORMACAO;         
 INSERT INTO UAA.INFORMACAO(SEQ_INFORMACAO, SEQ_TIPO_INFORMACAO, SEQ_SEGMENTO, COD_IDENTIDADE) VALUES
@@ -428,7 +432,12 @@ INSERT INTO UAA.PAPEL_RECURSO(SEQ_PAPEL, SEQ_RECURSO) VALUES
 (11, 59),
 (11, 60),
 (21, 52),
-(21, 53);
+(21, 53),
+(22, 61),
+(11, 62),
+(11, 63),
+(2, 62),
+(22, 64);
 
 -- 1 +/- SELECT COUNT(*) FROM UAA.USUARIO_RECURSO;      
 INSERT INTO UAA.USUARIO_RECURSO(SEQ_USUARIO, SEQ_RECURSO) VALUES
