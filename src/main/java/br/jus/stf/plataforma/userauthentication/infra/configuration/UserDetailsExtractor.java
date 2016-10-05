@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
@@ -23,28 +24,26 @@ import br.jus.stf.plataforma.userauthentication.domain.model.Usuario;
 @Component
 public class UserDetailsExtractor {
 
-	public Map<String, Object> extract(Usuario usuario, User user) {
+	public Map<String, Object> extract(Usuario usuario, List<GrantedAuthority> authorities) {
 		Map<String, Object> details = new LinkedHashMap<>();
 		details.put("componentes", extractComponents(usuario.recursos()));
-		details.put("authorities", user.getAuthorities());
+		details.put("authorities", authorities);
 		details.put("pessoaId", usuario.pessoa().id());
-		details.put("login", user.getUsername());
+		details.put("usuarioId", usuario.identity().toLong());
+		details.put("login", usuario.login());
 		return details;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> extract(Principal principal) {
 		OAuth2Authentication authentication = (OAuth2Authentication) principal;
-		Map<String, Object> map = new LinkedHashMap<>();
-		if (authentication.getPrincipal() instanceof UserDetails) {
-			UserDetails user = (UserDetails) authentication.getPrincipal();
-			map.put("componentes", extractComponents(user.getRecursos()));
-			map.put("authorities", user.getAuthorities());
-			map.put("pessoaId", user.getPessoaId());
-			map.put("login", user.getUsername());
+		if (authentication.getPrincipal() instanceof User) {
+			return (Map<String, Object>) authentication.getUserAuthentication().getDetails();
 		} else {
+			Map<String, Object> map = new LinkedHashMap<>();
 			map.put("login", authentication.getPrincipal().toString());
+			return map;
 		}
-		return map;
 	}
 	
 	private List<String> extractComponents(Set<Recurso> recursos) {

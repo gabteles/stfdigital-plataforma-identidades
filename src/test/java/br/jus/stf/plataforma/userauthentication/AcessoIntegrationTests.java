@@ -19,6 +19,7 @@ import com.github.jsonj.JsonObject;
 
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
+import br.jus.stf.plataforma.ApplicationContextInitializer;
 import net.minidev.json.JSONArray;
 
 /**

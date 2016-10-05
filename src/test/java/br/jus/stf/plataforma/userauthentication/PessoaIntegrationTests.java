@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
+import br.jus.stf.plataforma.ApplicationContextInitializer;
 
 /**
  * Classe responsável pelos testes de integração da API de identidade da Plataforma.

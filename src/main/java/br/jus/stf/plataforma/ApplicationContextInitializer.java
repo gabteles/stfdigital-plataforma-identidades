@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.userauthentication;
+package br.jus.stf.plataforma;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
