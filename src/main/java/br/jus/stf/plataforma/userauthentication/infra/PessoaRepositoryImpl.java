@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,7 +35,7 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 	@Override
 	public PessoaId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT corporativo.seq_pessoa.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		
 		return new PessoaId(sequencial);
 	}

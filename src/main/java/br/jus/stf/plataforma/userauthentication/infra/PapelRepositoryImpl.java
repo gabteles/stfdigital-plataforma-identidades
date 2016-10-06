@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -55,7 +54,7 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 	@Override
 	public PapelId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT uaa.seq_papel.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		
 		return new PapelId(sequencial);
 	}

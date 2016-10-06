@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.configuracao.infra;
 
-import java.math.BigInteger;
 import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
@@ -52,7 +51,7 @@ public class PesquisaRepositoryImpl extends SimpleJpaRepository<Pesquisa, Pesqui
 
 	public PesquisaId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT configuracao.seq_pesquisa.NEXTVAL as seq_pesquisa FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		return new PesquisaId(sequencial);
 	}
 

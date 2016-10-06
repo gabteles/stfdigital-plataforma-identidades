@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -56,7 +55,7 @@ public class GrupoRepositoryImpl extends SimpleJpaRepository<Grupo, GrupoId> imp
 	@Override
 	public GrupoId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT uaa.seq_grupo.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		
 		return new GrupoId(sequencial);
 	}

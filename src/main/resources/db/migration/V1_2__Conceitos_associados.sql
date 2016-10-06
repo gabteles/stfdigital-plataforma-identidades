@@ -1,5 +1,3 @@
-create schema corporativo;
-
 create sequence corporativo.seq_pessoa start with 1 nomaxvalue minvalue 1 nocycle nocache;
 create table corporativo.pessoa(
     seq_pessoa number not null,

@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,7 +62,7 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 	@Override
 	public UsuarioId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT uaa.seq_usuario.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		
 		return new UsuarioId(sequencial);
 	}

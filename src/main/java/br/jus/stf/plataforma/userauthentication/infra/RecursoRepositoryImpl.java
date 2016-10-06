@@ -1,7 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -48,7 +46,7 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, RecursoI
 	@Override
 	public RecursoId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT uaa.seq_recurso.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		
 		return new RecursoId(sequencial);
 	}

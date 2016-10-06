@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.userauthentication.infra;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -56,7 +55,7 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
 	@Override
 	public SegmentoId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT uaa.seq_segmento.NEXTVAL FROM DUAL");
-		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		Long sequencial = ((Number) query.getSingleResult()).longValue();
 		return new SegmentoId(sequencial);
 	}
 	
