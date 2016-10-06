@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS UAA;
-
 CREATE SEQUENCE UAA.SEQ_RECURSO START WITH 1 nomaxvalue minvalue 1 nocycle nocache;
 CREATE SEQUENCE UAA.SEQ_USUARIO START WITH 27 nomaxvalue minvalue 1 nocycle nocache;
 CREATE SEQUENCE UAA.SEQ_TIPO_INFORMACAO START WITH 70 nomaxvalue minvalue 1 nocycle nocache;

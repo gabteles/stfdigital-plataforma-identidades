@@ -1,5 +1,3 @@
-create schema if not exists configuracao;
-
 create sequence configuracao.seq_pesquisa start with 1 nomaxvalue minvalue 1 nocycle nocache;
 create table configuracao.pesquisa(
     seq_pesquisa number not null,
