@@ -31,7 +31,6 @@ after_success:
 - docker tag stfdigital-plataforma-userauthentication $REPO:latest
 - docker push $REPO:latest
 after_failure:
-- docker logs discovery
 - docker logs userauthentication
 notifications:
   slack:
