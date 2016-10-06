@@ -20,6 +20,7 @@ buildscript {
         jsonjVersion = '2.29'
         stfdigitalCoreVersion = '0.0.1-SNAPSHOT'
         stfdigitalTestVersion = '0.0.1-SNAPSHOT'
+        ojdbcVersion = '11.2.0.1.0'
     }
     repositories {
         mavenLocal()
@@ -27,6 +28,7 @@ buildscript {
         maven { url "http://repo.spring.io/release" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/libs-milestone" }
+        maven { url "https://repository.jboss.org/nexus/content/groups/public-jboss" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -122,7 +124,7 @@ dependencies {
         exclude module: 'activiti-spring-boot-starter-basic'
     }
     
-    compile("oracle:ojdbc6:11.2.0.3")
+    compile("com.oracle:ojdbc6:$ojdbcVersion")
     
     compile("org.flywaydb:flyway-core:$flywayVersion")
     
