@@ -28,7 +28,7 @@ public class UserDetailsExtractor {
 		Map<String, Object> details = new LinkedHashMap<>();
 		details.put("componentes", extractComponents(usuario.recursos()));
 		details.put("authorities", authorities);
-		details.put("pessoaId", usuario.pessoa().id());
+		details.put("pessoaId", usuario.pessoa().id().toLong());
 		details.put("usuarioId", usuario.identity().toLong());
 		details.put("login", usuario.login());
 		return details;
