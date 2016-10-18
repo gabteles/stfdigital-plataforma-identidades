@@ -1,4 +1,4 @@
-create schema if not exists uaa;       
+create schema if not exists identidades;       
 
 create schema if not exists corporativo;
 

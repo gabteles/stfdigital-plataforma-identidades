@@ -1,4 +1,5 @@
 create sequence configuracao.seq_pesquisa start with 1 nomaxvalue minvalue 1 nocycle nocache;
+
 create table configuracao.pesquisa(
     seq_pesquisa number not null,
     dsc_pesquisa varchar2(200) not null,

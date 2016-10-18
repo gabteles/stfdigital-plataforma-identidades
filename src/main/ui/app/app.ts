@@ -1,1 +1,1 @@
-import './userauthentication/exemplo';
+import './identidades/exemplo';

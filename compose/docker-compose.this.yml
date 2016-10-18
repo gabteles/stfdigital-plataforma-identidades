@@ -1,10 +1,10 @@
 # Define a configuração para rodar esse contexto construído localmente
 version: '2'
 services:
-  userauthentication:
+  identidades:
     extends:
       file: shared/compose/common.yml
-      service: userauthentication
-    image: stfdigital-plataforma-userauthentication
+      service: identidades
+    image: stfdigital-plataforma-identidades
     depends_on:
      - discovery

@@ -2,7 +2,7 @@ package br.jus.stf.plataforma.configuracao.domain.model;
 
 import java.util.stream.Stream;
 
-import br.jus.stf.core.shared.userauthentication.UsuarioId;
+import br.jus.stf.core.shared.identidades.UsuarioId;
 
 /**
  * @author Lucas Rodrigues
@@ -11,17 +11,17 @@ import br.jus.stf.core.shared.userauthentication.UsuarioId;
  * @since 22.09.2016
  */
 public interface PesquisaRepository {
-	
-	Pesquisa findOne(PesquisaId id);
-	
-	Stream<Pesquisa> findByUsuarioAutenticado();
-	
-	Stream<Pesquisa> findByUsuario(UsuarioId usuario);
-	
-	<P extends Pesquisa> P save(P pesquisa);
-	
-	void delete(Pesquisa pesquisa);
 
-	PesquisaId nextId();
+    Pesquisa findOne(PesquisaId id);
+
+    Stream<Pesquisa> findByUsuarioAutenticado();
+
+    Stream<Pesquisa> findByUsuario(UsuarioId usuario);
+
+    <P extends Pesquisa> P save(P pesquisa);
+
+    void delete(Pesquisa pesquisa);
+
+    PesquisaId nextId();
 
 }
