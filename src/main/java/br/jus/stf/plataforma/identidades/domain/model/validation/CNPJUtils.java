@@ -14,6 +14,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CNPJUtils {
 
+    private CNPJUtils() {
+
+    }
+
     public static boolean isValido(String numeroCNPJ) {
         String cnpj = removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCNPJ));
         int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };

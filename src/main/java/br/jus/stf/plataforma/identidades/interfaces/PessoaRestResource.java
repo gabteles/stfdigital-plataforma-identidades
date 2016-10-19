@@ -166,7 +166,7 @@ public class PessoaRestResource {
         return pessoaDtoAssembler.toDto(pessoa);
     }
 
-    private PessoaDto consultarPessoaWSRF(String cpf) {
+    private static PessoaDto consultarPessoaWSRF(String cpf) {
         // TODO Implementar
         return null;
     }

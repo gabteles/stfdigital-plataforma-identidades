@@ -14,6 +14,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CPFUtils {
 
+    private CPFUtils() {
+
+    }
+
     public static boolean isValido(String numeroCPF) {
         String cpf = removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCPF));
         int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };

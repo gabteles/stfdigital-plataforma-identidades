@@ -46,7 +46,7 @@ public class UserDetailsExtractor {
         }
     }
 
-    private List<String> extractComponents(Set<Recurso> recursos) {
+    private static List<String> extractComponents(Set<Recurso> recursos) {
         return recursos.stream().map(r -> r.nome()).collect(Collectors.toList());
     }
 
