@@ -8,23 +8,19 @@ services:
     extends:
       file: shared/compose/common.yml
       service: rabbit
-    image: registry.stf.jus.br/rabbitmq:management
   discovery:
     extends:
       file: shared/compose/common.yml
       service: discovery
-    image: registry.stf.jus.br/stfdigital/plataforma-discovery
   gateway:
     extends:
       file: shared/compose/common.yml
       service: gateway
-    image: registry.stf.jus.br/stfdigital/plataforma-gateway
     depends_on:
      - discovery
   ui:
     extends:
       file: shared/compose/common.yml
       service: ui
-    image: registry.stf.jus.br/stfdigital/plataforma-ui
     depends_on:
      - gateway
