@@ -1,3 +1,5 @@
+import 'identidades/exemplo/exemplo.module';
+
 describe('Exemplo Controller', () => {
 	
 	//beforeEach(angular.mock.module('app.novo-processo.devolucao'));
