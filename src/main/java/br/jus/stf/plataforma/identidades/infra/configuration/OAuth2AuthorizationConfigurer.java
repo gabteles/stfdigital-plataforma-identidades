@@ -17,27 +17,27 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @Configuration
 @EnableAuthorizationServer
 public class OAuth2AuthorizationConfigurer extends AuthorizationServerConfigurerAdapter {
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.authenticationManager(authenticationManager);
-	}
-	
-	@Override
-	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory()
-			.withClient("userinterface")
-			.secret("userinterface")
-			.authorizedGrantTypes("authorization_code", "refresh_token", "password")
-			.scopes("openid")
-		.and()
-			.withClient("peticionamento")
-			.secret("peticionamento")
-			.authorizedGrantTypes("client_credentials", "refresh_token")
-			.scopes("server");
-	}
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.authenticationManager(authenticationManager);
+    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("userinterface")
+                .secret("userinterface")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "password")
+                .scopes("openid")
+                .and()
+                .withClient("peticionamento")
+                .secret("peticionamento")
+                .authorizedGrantTypes("client_credentials", "refresh_token")
+                .scopes("server");
+    }
 
 }

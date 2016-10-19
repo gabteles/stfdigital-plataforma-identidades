@@ -27,38 +27,39 @@ import br.jus.stf.plataforma.identidades.domain.model.UsuarioRepository;
  */
 @Component
 public class AuthenticationProviderImpl implements AuthenticationProvider {
-	
-	private static final String PROTECTED = "[PROTECTED]";
-	
-	@Autowired
-	private UserDetailsExtractor userDetailsExtractor;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 
-	@Override
-	@Transactional
-	public Authentication authenticate(Authentication authentication) {
+    private static final String PROTECTED = "[PROTECTED]";
+
+    @Autowired
+    private UserDetailsExtractor userDetailsExtractor;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Override
+    @Transactional
+    public Authentication authenticate(Authentication authentication) {
         Optional<Usuario> usuario = Optional.ofNullable(usuarioRepository.findOne(authentication.getName()));
-        
-        return usuario.map(this::extractUserDetails).orElse(null);
-	}
 
-	@Override
-	public boolean supports(Class<?> authentication) {
-		return authentication.equals(UsernamePasswordAuthenticationToken.class);
-	}
-	
-	private Authentication extractUserDetails(Usuario usuario) {
-		List<GrantedAuthority> authorities = authorities(usuario.papeis());
-		User user = new User(usuario.login(), PROTECTED, authorities);
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, PROTECTED, authorities);
-		authentication.setDetails(userDetailsExtractor.extract(usuario, authorities));
-		return authentication;
-	}
-	
-	private static List<GrantedAuthority> authorities(Set<Papel> papeis) {
-		return papeis.stream().map(papel -> new SimpleGrantedAuthority(papel.nome())).collect(Collectors.toList());
-	}
+        return usuario.map(this::extractUserDetails).orElse(null);
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+
+    private Authentication extractUserDetails(Usuario usuario) {
+        List<GrantedAuthority> authorities = authorities(usuario.papeis());
+        User user = new User(usuario.login(), PROTECTED, authorities);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(user, PROTECTED, authorities);
+        authentication.setDetails(userDetailsExtractor.extract(usuario, authorities));
+        return authentication;
+    }
+
+    private static List<GrantedAuthority> authorities(Set<Papel> papeis) {
+        return papeis.stream().map(papel -> new SimpleGrantedAuthority(papel.nome())).collect(Collectors.toList());
+    }
 
 }

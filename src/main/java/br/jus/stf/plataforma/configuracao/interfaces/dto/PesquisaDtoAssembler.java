@@ -21,17 +21,19 @@ import br.jus.stf.plataforma.configuracao.domain.model.Pesquisa;
 @Component
 public class PesquisaDtoAssembler {
 
-	private ObjectMapper mapper = new ObjectMapper();
-	
-	public PesquisaDto toDto(Pesquisa pesquisa) {
-		TypeReference<List<Map<String, Object>>> typeRef = new TypeReference<List<Map<String, Object>>>(){};
-		List<Map<String, Object>> criterio;
-		try {
-			criterio = mapper.readValue(pesquisa.criterio(), typeRef);
-		} catch (IOException e) {
-			throw new RuntimeException("Não foi possível converter os critérios de pesquisa!", e);
-		}
-		return new PesquisaDto(pesquisa.identity().toLong(), pesquisa.descricao(), pesquisa.contexto(), pesquisa.isExecucaoAutomatica(), criterio);
-	}
-	
+    private ObjectMapper mapper = new ObjectMapper();
+
+    public PesquisaDto toDto(Pesquisa pesquisa) {
+        TypeReference<List<Map<String, Object>>> typeRef = new TypeReference<List<Map<String, Object>>>() {
+        };
+        List<Map<String, Object>> criterio;
+        try {
+            criterio = mapper.readValue(pesquisa.criterio(), typeRef);
+        } catch (IOException e) {
+            throw new RuntimeException("Não foi possível converter os critérios de pesquisa!", e);
+        }
+        return new PesquisaDto(pesquisa.identity().toLong(), pesquisa.descricao(), pesquisa.contexto(),
+                pesquisa.isExecucaoAutomatica(), criterio);
+    }
+
 }

@@ -28,43 +28,43 @@ import br.jus.stf.plataforma.configuracao.interfaces.dto.PesquisaDtoAssembler;
 @RequestMapping("/api/pesquisas")
 public class PesquisaRestResource {
 
-	@Autowired
-	private PesquisaApplicationService pesquisaApplicationService;
-	
-	@Autowired
-	private PesquisaRepository pesquisaRepository;
-	
-	@Autowired
-	private PesquisaDtoAssembler pesquisaDtoAssembler;
-	
-	/**
-	 * Retorna o id da pesquisa salva
-	 * 
-	 * @param command
-	 * @param result
-	 * @return
-	 */
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Long salvar(@RequestBody @Valid SalvarPesquisaAvancadaCommand command, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new IllegalArgumentException(result.getAllErrors().toString());
-		}
-		return pesquisaApplicationService.handle(command);
-	}
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<PesquisaDto> listar() {
-		return pesquisaRepository.findByUsuarioAutenticado()
-				.map(pesquisaDtoAssembler::toDto)
-				.collect(Collectors.toList());
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void excluir(@Valid ExcluirPesquisaAvancadaCommand command, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new IllegalArgumentException(result.getAllErrors().toString());
-		}
-		pesquisaApplicationService.handle(command);
-	}
-	
+    @Autowired
+    private PesquisaApplicationService pesquisaApplicationService;
+
+    @Autowired
+    private PesquisaRepository pesquisaRepository;
+
+    @Autowired
+    private PesquisaDtoAssembler pesquisaDtoAssembler;
+
+    /**
+     * Retorna o id da pesquisa salva
+     * 
+     * @param command
+     * @param result
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Long salvar(@RequestBody @Valid SalvarPesquisaAvancadaCommand command, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException(result.getAllErrors().toString());
+        }
+        return pesquisaApplicationService.handle(command);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<PesquisaDto> listar() {
+        return pesquisaRepository.findByUsuarioAutenticado()
+                .map(pesquisaDtoAssembler::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void excluir(@Valid ExcluirPesquisaAvancadaCommand command, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException(result.getAllErrors().toString());
+        }
+        pesquisaApplicationService.handle(command);
+    }
+
 }

@@ -21,29 +21,29 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private AuthenticationProvider authenticationProvider;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
-	}
+    }
 
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.sessionManagement().sessionCreationPolicy(IF_REQUIRED)
-		.and()
-			.authorizeRequests().anyRequest().authenticated()
-		.and()
-			.csrf().disable();
-	}
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .sessionManagement().sessionCreationPolicy(IF_REQUIRED)
+                .and()
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .csrf().disable();
+    }
 
 }

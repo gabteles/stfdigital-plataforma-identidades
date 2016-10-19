@@ -12,21 +12,21 @@ import br.jus.stf.core.shared.identidade.PessoaId;
  */
 public interface OrgaoRepository {
 
-	/**
-	 * @return
-	 */
-	List<Orgao> findAll();
-	
-	/**
-	 * @param id
-	 * @return
-	 */
-	Orgao findOne(PessoaId id);
-	
-	/**
-	 * @param orgao
-	 * @return
-	 */
-	<O extends Orgao> O save(O orgao);
+    /**
+     * @return
+     */
+    List<Orgao> findAll();
+
+    /**
+     * @param id
+     * @return
+     */
+    Orgao findOne(PessoaId id);
+
+    /**
+     * @param orgao
+     * @return
+     */
+    <O extends Orgao> O save(O orgao);
 
 }

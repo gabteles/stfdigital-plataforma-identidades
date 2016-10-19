@@ -6,10 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -39,16 +37,14 @@ public class PesquisaRepositoryImpl extends SimpleJpaRepository<Pesquisa, Pesqui
         return findByUsuario(Pesquisa.recuperarUsuarioId());
     }
 
+    @Override
     public Stream<Pesquisa> findByUsuario(UsuarioId usuario) {
-        return findAll(new Specification<Pesquisa>() {
-
-            @Override
-            public Predicate toPredicate(Root<Pesquisa> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return cb.equal(root.get("usuario"), usuario);
-            }
-        }).stream();
+        return findAll((Root<Pesquisa> root, CriteriaQuery<?> query, CriteriaBuilder cb) ->
+                        cb.equal(root.get("usuario"), usuario))
+                .stream();
     }
 
+    @Override
     public PesquisaId nextId() {
         Query query =
                 entityManager.createNativeQuery("SELECT configuracao.seq_pesquisa.NEXTVAL as seq_pesquisa FROM DUAL");

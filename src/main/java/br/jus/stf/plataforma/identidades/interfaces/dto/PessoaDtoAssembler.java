@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
 
-
 /**
  * @author anderson.araujo
  * 
@@ -14,9 +13,9 @@ import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
  */
 @Component
 public class PessoaDtoAssembler {
-	
-	public PessoaDto toDto(Pessoa pessoa) {
-		Validate.notNull(pessoa);
-		return new PessoaDto(pessoa.identity().toLong(), pessoa.nome());
-	}
+
+    public PessoaDto toDto(Pessoa pessoa) {
+        Validate.notNull(pessoa);
+        return new PessoaDto(pessoa.identity().toLong(), pessoa.nome());
+    }
 }

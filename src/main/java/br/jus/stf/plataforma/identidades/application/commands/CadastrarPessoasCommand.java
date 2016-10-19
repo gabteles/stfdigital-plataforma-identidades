@@ -12,21 +12,21 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class CadastrarPessoasCommand {
 
-	@NotEmpty
-	private List<String> nomes;
+    @NotEmpty
+    private List<String> nomes;
 
-	/**
-	 * @return the nomes
-	 */
-	public List<String> getNomes() {
-		return nomes;
-	}
+    /**
+     * @return the nomes
+     */
+    public List<String> getNomes() {
+        return nomes;
+    }
 
-	/**
-	 * @param nomes the nomes to set
-	 */
-	public void setNomes(List<String> nomes) {
-		this.nomes = nomes;
-	}
-	
+    /**
+     * @param nomes the nomes to set
+     */
+    public void setNomes(List<String> nomes) {
+        this.nomes = nomes;
+    }
+
 }

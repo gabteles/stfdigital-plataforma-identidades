@@ -13,31 +13,31 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(value = "Classe responsável por transportar dados de grupos de usuários para o front-end.")
 public class GrupoDto {
-	
-	@ApiModelProperty("Id do grupo de usuários.")
-	private Long id;
-	
-	@ApiModelProperty("Nome do grupo de usuários.")
-	private String nome;
-	
-	public GrupoDto(Long id, String nome) {
-		this.id = id;
-		this.nome = nome;
-	}
 
-	public Long getId() {
-		return id;
-	}
+    @ApiModelProperty("Id do grupo de usuários.")
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ApiModelProperty("Nome do grupo de usuários.")
+    private String nome;
 
-	public String getNome() {
-		return nome;
-	}
+    public GrupoDto(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }

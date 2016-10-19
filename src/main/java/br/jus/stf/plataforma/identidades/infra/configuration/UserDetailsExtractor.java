@@ -24,30 +24,30 @@ import br.jus.stf.plataforma.identidades.domain.model.Usuario;
 @Component
 public class UserDetailsExtractor {
 
-	public Map<String, Object> extract(Usuario usuario, List<GrantedAuthority> authorities) {
-		Map<String, Object> details = new LinkedHashMap<>();
-		details.put("componentes", extractComponents(usuario.recursos()));
-		details.put("authorities", authorities);
-		details.put("pessoaId", usuario.pessoa().id().toLong());
-		details.put("usuarioId", usuario.identity().toLong());
-		details.put("login", usuario.login());
-		return details;
-	}
+    public Map<String, Object> extract(Usuario usuario, List<GrantedAuthority> authorities) {
+        Map<String, Object> details = new LinkedHashMap<>();
+        details.put("componentes", extractComponents(usuario.recursos()));
+        details.put("authorities", authorities);
+        details.put("pessoaId", usuario.pessoa().id().toLong());
+        details.put("usuarioId", usuario.identity().toLong());
+        details.put("login", usuario.login());
+        return details;
+    }
 
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> extract(Principal principal) {
-		OAuth2Authentication authentication = (OAuth2Authentication) principal;
-		if (authentication.getPrincipal() instanceof User) {
-			return (Map<String, Object>) authentication.getUserAuthentication().getDetails();
-		} else {
-			Map<String, Object> map = new LinkedHashMap<>();
-			map.put("login", authentication.getPrincipal().toString());
-			return map;
-		}
-	}
-	
-	private List<String> extractComponents(Set<Recurso> recursos) {
-		return recursos.stream().map(r -> r.nome()).collect(Collectors.toList());
-	}
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> extract(Principal principal) {
+        OAuth2Authentication authentication = (OAuth2Authentication) principal;
+        if (authentication.getPrincipal() instanceof User) {
+            return (Map<String, Object>) authentication.getUserAuthentication().getDetails();
+        } else {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("login", authentication.getPrincipal().toString());
+            return map;
+        }
+    }
+
+    private List<String> extractComponents(Set<Recurso> recursos) {
+        return recursos.stream().map(r -> r.nome()).collect(Collectors.toList());
+    }
 
 }

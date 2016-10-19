@@ -7,11 +7,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -42,13 +40,8 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 
     @Override
     public Usuario findOne(String login) {
-        return super.findOne(new Specification<Usuario>() {
-
-            @Override
-            public Predicate toPredicate(Root<Usuario> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return cb.equal(root.get("login"), login);
-            }
-        });
+        return super.findOne(
+                (Root<Usuario> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> cb.equal(root.get("login"), login));
     }
 
     @Override

@@ -7,22 +7,22 @@ package br.jus.stf.plataforma.identidades.domain.model.corporativo;
  * @since 01.07.2016
  */
 public enum TipoAssociado {
-	
-	ASSOCIADO("Associado"),
-	GESTOR("Gestor"),
-	REPRESENTANTE("Representante");
-	
-	private String descricao;
-	
-	private TipoAssociado(String descricao) {
-		this.descricao = descricao;
-	}
-	
-	/**
-	 * @return
-	 */
-	public String descricao() {
-		return descricao;
-	}
+
+    ASSOCIADO("Associado"),
+    GESTOR("Gestor"),
+    REPRESENTANTE("Representante");
+
+    private String descricao;
+
+    private TipoAssociado(String descricao) {
+        this.descricao = descricao;
+    }
+
+    /**
+     * @return
+     */
+    public String descricao() {
+        return descricao;
+    }
 
 }

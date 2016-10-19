@@ -9,38 +9,43 @@ import java.util.Map;
  */
 public class PesquisaDto {
 
-	private Long id;
-	private String label;
-	private String context;
-	private boolean executable;
-	private List<Map<String, Object>> criterias;
-	
-	public PesquisaDto(Long id, String descricao, String contexto, Boolean execucaoAutomatica, List<Map<String, Object>> criterio) {
-		this.id = id;
-		this.label = descricao;
-		this.context = contexto;
-		this.executable = Boolean.TRUE.equals(execucaoAutomatica);
-		this.criterias = criterio;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-	
-	public String getContext() {
-		return context;
-	}
-	
-	public boolean isExecutable() {
-		return executable;
-	}
-	
-	public List<Map<String, Object>> getCriterias() {
-		return criterias;
-	}
-	
+    private Long id;
+
+    private String label;
+
+    private String context;
+
+    private boolean executable;
+
+    private List<Map<String, Object>> criterias;
+
+    public PesquisaDto(Long id, String descricao, String contexto, Boolean execucaoAutomatica,
+            List<Map<String, Object>> criterio) {
+        this.id = id;
+        this.label = descricao;
+        this.context = contexto;
+        this.executable = Boolean.TRUE.equals(execucaoAutomatica);
+        this.criterias = criterio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public boolean isExecutable() {
+        return executable;
+    }
+
+    public List<Map<String, Object>> getCriterias() {
+        return criterias;
+    }
+
 }

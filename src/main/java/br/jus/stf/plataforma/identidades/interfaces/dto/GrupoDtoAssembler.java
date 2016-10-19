@@ -14,7 +14,8 @@ import br.jus.stf.plataforma.identidades.domain.model.Grupo;
  */
 @Component
 public class GrupoDtoAssembler {
-	public GrupoDto toDto(Grupo grupo){
-		return new GrupoDto(grupo.identity().toLong(), grupo.nome());
-	}
+
+    public GrupoDto toDto(Grupo grupo) {
+        return new GrupoDto(grupo.identity().toLong(), grupo.nome());
+    }
 }
