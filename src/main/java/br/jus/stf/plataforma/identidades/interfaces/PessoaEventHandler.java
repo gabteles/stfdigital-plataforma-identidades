@@ -26,7 +26,7 @@ public class PessoaEventHandler {
     @StreamListener(EnvolvidoRegistrado.EVENT_KEY)
     public void handle(EnvolvidoRegistrado event) {
         pessoaApplicationService
-                .handle(new CadastrarPessoaCommand(event.getPessoaId(), event.getNome(), null, null, null, null));
+                .handle(new CadastrarPessoaCommand(event.getPessoaId(), event.getNome()));
     }
 
 }
