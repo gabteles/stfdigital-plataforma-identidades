@@ -68,7 +68,7 @@ public class SegmentoRepositoryUnitTests {
     @Test
     public void recuperarSegmentoPeloNomeETipo() {
         Segmento salvo = repository.save(entity());
-        Segmento recuperado = repository.findOne(salvo.nome(), salvo.tipo());
+        Segmento recuperado = repository.findOne(salvo.nome(), salvo.tipo().identity());
 
         assertNotNull("Segmento recuperado não pode ser nulo.", recuperado);
         assertEquals(String.format("Tipo de informação deve ser %s.", salvo.tipo().nome()),
@@ -93,6 +93,22 @@ public class SegmentoRepositoryUnitTests {
                 quantidadePreCarga + 2, lista.size());
     }
 
+    @Test
+    public void listarSegmentosPeloTipoInformacao() {
+        TipoInformacaoId tipo = new TipoInformacaoId(1L);
+        int quantidadePreCarga = repository.findByTipoInformacao(tipo).size();
+
+        repository.save(entity());
+        repository.save(entity());
+
+        List<Segmento> lista = repository.findByTipoInformacao(tipo);
+
+        assertNotNull("Lista de segmentos não pode ser nula.", lista);
+        assertEquals(String.format("Lista de segmentos deve ter %d elementos.", quantidadePreCarga + 2),
+                quantidadePreCarga + 2, lista.size());
+    }
+
+    @Test
     public void recuperarIdsConsecutivos() {
         SegmentoId id = repository.nextId();
 

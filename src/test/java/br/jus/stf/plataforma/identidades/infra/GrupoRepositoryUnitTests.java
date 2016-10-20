@@ -177,9 +177,9 @@ public class GrupoRepositoryUnitTests {
         Grupo entity = new Grupo(entityId, "Grupo " + entityId.toString(), TipoGrupo.CONFIGURACAO);
 
         if (hasRecursos) {
-            Recurso contracheque = new Recurso(new RecursoId(-1L), "Recurso fake", ResourceType.ACAO);
+            Recurso recurso = new Recurso(new RecursoId(-1L), "Recurso fake", ResourceType.ACAO);
 
-            entity.atribuirRecursos(new HashSet<Recurso>(Arrays.asList(contracheque)));
+            entity.atribuirRecursos(new HashSet<Recurso>(Arrays.asList(recurso)));
         }
 
         return entity;

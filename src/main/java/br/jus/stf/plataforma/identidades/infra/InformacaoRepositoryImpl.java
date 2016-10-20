@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.core.shared.identidades.InformacaoId;
+import br.jus.stf.core.shared.identidades.SegmentoId;
+import br.jus.stf.core.shared.identidades.TipoInformacaoId;
 import br.jus.stf.plataforma.identidades.domain.model.Informacao;
 import br.jus.stf.plataforma.identidades.domain.model.InformacaoRepository;
-import br.jus.stf.plataforma.identidades.domain.model.Segmento;
-import br.jus.stf.plataforma.identidades.domain.model.TipoInformacao;
 
 /**
  * @author Rafael Alencar
@@ -36,11 +36,11 @@ public class InformacaoRepositoryImpl extends SimpleJpaRepository<Informacao, In
     }
 
     @Override
-    public Informacao findOne(TipoInformacao tipo, Segmento segmento, String identidade) {
-        String sql = "FROM Informacao info WHERE info.tipo = :tipo AND info.identidade = :identidade";
+    public Informacao findOne(TipoInformacaoId tipo, SegmentoId segmento, String identidade) {
+        String sql = "FROM Informacao info WHERE info.tipo.id = :tipo AND info.identidade = :identidade";
 
         if (segmento != null) {
-            sql += " AND info.segmento = :segmento";
+            sql += " AND info.segmento.id = :segmento";
         }
 
         TypedQuery<Informacao> query = entityManager.createQuery(sql, Informacao.class);

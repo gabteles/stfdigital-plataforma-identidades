@@ -14,7 +14,6 @@ import br.jus.stf.core.shared.identidades.SegmentoId;
 import br.jus.stf.core.shared.identidades.TipoInformacaoId;
 import br.jus.stf.plataforma.identidades.domain.model.Segmento;
 import br.jus.stf.plataforma.identidades.domain.model.SegmentoRepository;
-import br.jus.stf.plataforma.identidades.domain.model.TipoInformacao;
 
 /**
  * @author Rafael Alencar
@@ -37,9 +36,9 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
     }
 
     @Override
-    public Segmento findOne(String nome, TipoInformacao tipo) {
+    public Segmento findOne(String nome, TipoInformacaoId tipo) {
         TypedQuery<Segmento> query = entityManager.createQuery(
-                "FROM Segmento segmento WHERE segmento.nome = :nome AND segmento.tipo = :tipo", Segmento.class);
+                "FROM Segmento segmento WHERE segmento.nome = :nome AND segmento.tipo.id = :tipo", Segmento.class);
 
         query.setParameter("nome", nome);
         query.setParameter("tipo", tipo);
@@ -50,7 +49,7 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
     @Override
     public List<Segmento> findByTipoInformacao(TipoInformacaoId tipo) {
         TypedQuery<Segmento> query = entityManager.createQuery(
-                "FROM Segmento segmento WHERE segmento.tipo = :tipo ORDER BY segmento.nome", Segmento.class);
+                "FROM Segmento segmento WHERE segmento.tipo.id = :tipo ORDER BY segmento.nome", Segmento.class);
 
         query.setParameter("tipo", tipo);
 

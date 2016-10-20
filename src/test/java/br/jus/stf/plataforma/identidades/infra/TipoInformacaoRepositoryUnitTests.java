@@ -75,6 +75,7 @@ public class TipoInformacaoRepositoryUnitTests {
                 quantidadePreCarga + 2, lista.size());
     }
 
+    @Test
     public void recuperarIdsConsecutivos() {
         TipoInformacaoId id = repository.nextId();
 

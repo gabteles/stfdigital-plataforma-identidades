@@ -1,6 +1,8 @@
 package br.jus.stf.plataforma.identidades.domain.model;
 
 import br.jus.stf.core.shared.identidades.InformacaoId;
+import br.jus.stf.core.shared.identidades.SegmentoId;
+import br.jus.stf.core.shared.identidades.TipoInformacaoId;
 
 /**
  * @author Rafael Alencar
@@ -22,7 +24,7 @@ public interface InformacaoRepository {
      * @param identidade
      * @return
      */
-    Informacao findOne(TipoInformacao tipo, Segmento segmento, String identidade);
+    Informacao findOne(TipoInformacaoId tipo, SegmentoId segmento, String identidade);
 
     /**
      * @return

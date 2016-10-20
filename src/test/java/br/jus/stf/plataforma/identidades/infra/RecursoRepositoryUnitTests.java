@@ -78,6 +78,7 @@ public class RecursoRepositoryUnitTests {
                 quantidadePreCarga + 2, lista.size());
     }
 
+    @Test
     public void recuperarIdsConsecutivos() {
         RecursoId id = repository.nextId();
 

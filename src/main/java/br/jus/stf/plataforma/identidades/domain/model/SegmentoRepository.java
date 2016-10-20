@@ -24,7 +24,7 @@ public interface SegmentoRepository {
      * @param tipo
      * @return
      */
-    Segmento findOne(String nome, TipoInformacao tipo);
+    Segmento findOne(String nome, TipoInformacaoId tipo);
 
     /**
      * @return
