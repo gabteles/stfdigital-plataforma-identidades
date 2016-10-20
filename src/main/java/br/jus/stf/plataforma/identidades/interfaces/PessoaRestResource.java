@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ import br.jus.stf.plataforma.identidades.interfaces.dto.PessoaDtoAssembler;
 @RequestMapping("/api/pessoas")
 public class PessoaRestResource {
 
+    private static final String PESSOA_INVALIDA_PATTERN = "Dados Inválidos: %S";
+
     @Autowired
     private PessoaApplicationService pessoaApplicationService;
 
@@ -55,9 +58,7 @@ public class PessoaRestResource {
      */
     @RequestMapping(value = "/alocar", method = RequestMethod.POST)
     public List<Long> alocarIdPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new IllegalArgumentException(result.getAllErrors().toString());
-        }
+        isValid(result);
 
         return pessoaApplicationService.alocarIdPessoas(command).stream().map(pessoaId -> pessoaId.toLong())
                 .collect(Collectors.toList());
@@ -72,9 +73,7 @@ public class PessoaRestResource {
      */
     @RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
     public PessoaDto cadastrarPessoa(@RequestBody @Valid CadastrarPessoaCommand command, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new IllegalArgumentException(result.getAllErrors().toString());
-        }
+        isValid(result);
 
         Pessoa pessoa = pessoaApplicationService.handle(command);
 
@@ -90,9 +89,7 @@ public class PessoaRestResource {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     public List<PessoaDto> cadastrarPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new IllegalArgumentException(result.getAllErrors().toString());
-        }
+        isValid(result);
 
         return pessoaApplicationService.handle(command).stream().map(pessoaDtoAssembler::toDto)
                 .collect(Collectors.toList());
@@ -153,9 +150,7 @@ public class PessoaRestResource {
      */
     @RequestMapping(value = "/associado", method = RequestMethod.POST)
     public void cadastrarAssociado(@RequestBody @Valid CadastrarAssociadoCommand command, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new IllegalArgumentException(result.getAllErrors().toString());
-        }
+        isValid(result);
 
         pessoaApplicationService.handle(command);
     }
@@ -169,5 +164,15 @@ public class PessoaRestResource {
     private static PessoaDto consultarPessoaWSRF(String cpf) {
         // TODO Implementar
         return null;
+    }
+
+    private static void isValid(BindingResult result) {
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException(message(result.getAllErrors()));
+        }
+    }
+
+    private static String message(List<ObjectError> errors) {
+        return String.format(PESSOA_INVALIDA_PATTERN, errors);
     }
 }

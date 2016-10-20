@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.identidades.domain.model;
+package br.jus.stf.plataforma.identidades.domain.model.corporativo;
 
 import java.util.Arrays;
 import java.util.HashSet;
