@@ -1,17 +1,15 @@
 package br.jus.stf.plataforma.identidades.domain.model;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
+import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
+import br.jus.stf.core.shared.identidades.TipoInformacaoId;
 
 /**
  * @author Rafael Alencar
@@ -22,13 +20,10 @@ import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
 @Entity
 @Table(name = "TIPO_INFORMACAO", schema = "IDENTIDADES",
         uniqueConstraints = @UniqueConstraint(columnNames = { "NOM_TIPO_INFORMACAO" }))
-public class TipoInformacao extends ValueObjectSupport<TipoInformacao> {
+public class TipoInformacao extends EntitySupport<TipoInformacao, TipoInformacaoId> {
 
-    @Id
-    @Column(name = "SEQ_TIPO_INFORMACAO")
-    @SequenceGenerator(name = "TIPOINFORMACAOID", sequenceName = "IDENTIDADES.SEQ_TIPO_INFORMACAO", allocationSize = 1)
-    @GeneratedValue(generator = "TIPOINFORMACAOID", strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @EmbeddedId
+    private TipoInformacaoId id;
 
     @Column(name = "NOM_TIPO_INFORMACAO", nullable = false)
     private String nome;
@@ -42,7 +37,7 @@ public class TipoInformacao extends ValueObjectSupport<TipoInformacao> {
      * @param id
      * @param nome
      */
-    public TipoInformacao(Long id, String nome) {
+    public TipoInformacao(TipoInformacaoId id, String nome) {
         Validate.notNull(id, "Identificador requerido.");
         Validate.notBlank(nome, "Nome requerido.");
 
@@ -53,15 +48,13 @@ public class TipoInformacao extends ValueObjectSupport<TipoInformacao> {
     /**
      * @return
      */
-    public Long toLong() {
-        return id;
-    }
-
-    /**
-     * @return
-     */
     public String nome() {
         return nome;
+    }
+
+    @Override
+    public TipoInformacaoId identity() {
+        return id;
     }
 
 }

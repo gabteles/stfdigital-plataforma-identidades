@@ -37,7 +37,7 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
     }
 
     @Override
-    public Segmento findOne(String nome, TipoInformacaoId tipo) {
+    public Segmento findOne(String nome, TipoInformacao tipo) {
         TypedQuery<Segmento> query = entityManager.createQuery(
                 "FROM Segmento segmento WHERE segmento.nome = :nome AND segmento.tipo = :tipo", Segmento.class);
 
@@ -62,24 +62,6 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
         Query query = entityManager.createNativeQuery("SELECT identidades.seq_segmento.NEXTVAL FROM DUAL");
         Long sequencial = ((Number) query.getSingleResult()).longValue();
         return new SegmentoId(sequencial);
-    }
-
-    /** Tipo de informação **/
-    @Override
-    public TipoInformacao findOneTipoInformacao(TipoInformacaoId tipo) {
-        TypedQuery<TipoInformacao> query =
-                entityManager.createQuery("FROM TipoInformacao tipo WHERE tipo.id = :id", TipoInformacao.class);
-        query.setParameter("id", tipo);
-
-        return query.getSingleResult();
-    }
-
-    @Override
-    public List<TipoInformacao> findAllTipoInformacao() {
-        TypedQuery<TipoInformacao> query =
-                entityManager.createQuery("FROM TipoInformacao tipo ORDER BY tipo.nome", TipoInformacao.class);
-
-        return query.getResultList();
     }
 
 }

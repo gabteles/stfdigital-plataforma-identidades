@@ -13,7 +13,6 @@ import br.jus.stf.core.shared.identidades.TipoInformacaoId;
  */
 public interface SegmentoRepository {
 
-    /** Segmento **/
     /**
      * @param id
      * @return
@@ -25,7 +24,7 @@ public interface SegmentoRepository {
      * @param tipo
      * @return
      */
-    Segmento findOne(String nome, TipoInformacaoId tipo);
+    Segmento findOne(String nome, TipoInformacao tipo);
 
     /**
      * @return
@@ -48,17 +47,5 @@ public interface SegmentoRepository {
      * @return
      */
     <S extends Segmento> S save(S segmento);
-
-    /** Tipo de informação **/
-    /**
-     * @param tipo
-     * @return
-     */
-    TipoInformacao findOneTipoInformacao(TipoInformacaoId tipo);
-
-    /**
-     * @return
-     */
-    List<TipoInformacao> findAllTipoInformacao();
 
 }

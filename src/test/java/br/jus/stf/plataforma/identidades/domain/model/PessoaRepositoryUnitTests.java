@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.identidades;
+package br.jus.stf.plataforma.identidades.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
