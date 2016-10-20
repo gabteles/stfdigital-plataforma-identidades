@@ -79,11 +79,11 @@ public class TipoInformacaoRepositoryUnitTests {
     public void recuperarIdsConsecutivos() {
         TipoInformacaoId id = repository.nextId();
 
-        assertEquals("Primeira execução id deve ser igual a 1.", new Long(1), id.toLong());
+        assertEquals("Primeira execução id deve ser igual a 70.", new Long(70), id.toLong());
 
         id = repository.nextId();
 
-        assertEquals("Segunda execução id deve ser igual a 2.", new Long(2), id.toLong());
+        assertEquals("Segunda execução id deve ser igual a 71.", new Long(71), id.toLong());
     }
 
     @Test
