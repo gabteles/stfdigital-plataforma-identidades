@@ -12,13 +12,10 @@ import org.apache.commons.lang.StringUtils;
  * @since 22.03.2016
  *
  */
-public class CPFUtils {
+public class CPFUtils extends DocumentoUtils {
 
-    private CPFUtils() {
-
-    }
-
-    public static boolean isValido(String numeroCPF) {
+    @Override
+    public boolean isValido(String numeroCPF) {
         String cpf = removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCPF));
         int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
@@ -34,7 +31,8 @@ public class CPFUtils {
         return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
     }
 
-    public static String retirarMascara(String cpf) {
+    @Override
+    public String retirarMascara(String cpf) {
         String novoCPF = "";
 
         if (isValido(cpf)) {
@@ -44,7 +42,8 @@ public class CPFUtils {
         return novoCPF;
     }
 
-    public static String aplicarMascara(String cpf) {
+    @Override
+    public String aplicarMascara(String cpf) {
         Pattern pattern = Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})");
         Matcher matcher = pattern.matcher(cpf);
         String novoCPF = "";
@@ -54,25 +53,6 @@ public class CPFUtils {
         }
 
         return novoCPF;
-    }
-
-    private static String removerCaracteresEspeciais(String str) {
-        if (str != null)
-            return str.replaceAll("\\p{Punct}", "");
-
-        return null;
-    }
-
-    private static int calcularDigito(String str, int[] peso) {
-        int soma = 0;
-
-        for (int indice = str.length() - 1, digito; indice >= 0; indice--) {
-            digito = Integer.parseInt(str.substring(indice, indice + 1));
-            soma += digito * peso[peso.length - str.length() + indice];
-        }
-        soma = 11 - soma % 11;
-
-        return soma > 9 ? 0 : soma;
     }
 
 }

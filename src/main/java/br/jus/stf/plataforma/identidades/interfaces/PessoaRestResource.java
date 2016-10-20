@@ -125,7 +125,7 @@ public class PessoaRestResource {
         List<PessoaDto> pessoas = new ArrayList<>();
         PessoaDto pessoa;
 
-        if (CPFUtils.isValido(numero)) {
+        if (new CPFUtils().isValido(numero)) {
             pessoa = consultarPessoaPorCPF(numero);
 
             if (pessoa != null) {
@@ -135,7 +135,7 @@ public class PessoaRestResource {
 
                 Optional.ofNullable(pessoa).ifPresent(pessoas::add);
             }
-        } else if (CNPJUtils.isValido(numero)) {
+        } else if (new CNPJUtils().isValido(numero)) {
             // TODO Implementar
         }
 

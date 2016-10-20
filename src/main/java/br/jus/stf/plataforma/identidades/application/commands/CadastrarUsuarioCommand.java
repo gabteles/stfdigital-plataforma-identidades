@@ -28,11 +28,6 @@ public class CadastrarUsuarioCommand extends CadastrarPessoaAbstractCommand {
     /**
      * @param login
      * @param nome
-     * @param email
-     * @param cpf
-     * @param oab
-     * @param telefone
-     * @param pessoaId
      */
     public CadastrarUsuarioCommand(String login, String nome) {
         super(nome);

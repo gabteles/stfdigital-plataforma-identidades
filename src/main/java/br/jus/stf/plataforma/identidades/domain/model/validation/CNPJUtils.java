@@ -12,13 +12,10 @@ import org.apache.commons.lang.StringUtils;
  * @since 22.03.2016
  *
  */
-public class CNPJUtils {
+public class CNPJUtils extends DocumentoUtils {
 
-    private CNPJUtils() {
-
-    }
-
-    public static boolean isValido(String numeroCNPJ) {
+    @Override
+    public boolean isValido(String numeroCNPJ) {
         String cnpj = removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCNPJ));
         int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
@@ -31,7 +28,8 @@ public class CNPJUtils {
         return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());
     }
 
-    public static String retirarMascara(String cnpj) {
+    @Override
+    public String retirarMascara(String cnpj) {
         String novoCNPJ = "";
 
         if (isValido(cnpj)) {
@@ -41,7 +39,8 @@ public class CNPJUtils {
         return novoCNPJ;
     }
 
-    public static String aplicarMascara(String cnpj) {
+    @Override
+    public String aplicarMascara(String cnpj) {
         Pattern pattern = Pattern.compile("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})");
         Matcher matcher = pattern.matcher(cnpj);
         String novoCNPJ = "";
@@ -51,25 +50,6 @@ public class CNPJUtils {
         }
 
         return novoCNPJ;
-    }
-
-    private static String removerCaracteresEspeciais(String str) {
-        if (str != null)
-            return str.replaceAll("\\p{Punct}", "");
-
-        return null;
-    }
-
-    private static int calcularDigito(String str, int[] peso) {
-        int soma = 0;
-
-        for (int indice = str.length() - 1, digito; indice >= 0; indice--) {
-            digito = Integer.parseInt(str.substring(indice, indice + 1));
-            soma += digito * peso[peso.length - str.length() + indice];
-        }
-        soma = 11 - soma % 11;
-
-        return soma > 9 ? 0 : soma;
     }
 
 }

@@ -41,7 +41,7 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
     @Column(name = "DSC_TELEFONE")
     private String telefone;
 
-    public Pessoa() {
+    Pessoa() {
         // Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova
         // instância.
     }
@@ -67,7 +67,7 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
         this(id, nome);
 
         Validate.notBlank(cpf, "CPF requerido.");
-        Validate.isTrue(CPFUtils.isValido(cpf), "CPF inválido.");
+        Validate.isTrue(new CPFUtils().isValido(cpf), "CPF inválido.");
 
         this.cpf = cpf;
     }
