@@ -7,22 +7,20 @@ package br.jus.stf.plataforma.identidades.domain.model.validation;
  * @since 20.10.2016
  *
  */
-public abstract class DocumentoUtils {
+public class DocumentoUtils {
 
-    public abstract boolean isValido(String numeroDocumento);
+    private DocumentoUtils() {
+        // Construtor default.
+    }
 
-    public abstract String retirarMascara(String numeroDocumento);
-
-    public abstract String aplicarMascara(String numeroDocumento);
-
-    protected String removerCaracteresEspeciais(String numeroDocumento) {
+    public static String removerCaracteresEspeciais(String numeroDocumento) {
         if (numeroDocumento != null)
             return numeroDocumento.replaceAll("\\p{Punct}", "");
 
         return null;
     }
 
-    protected int calcularDigito(String numeroDocumento, int[] peso) {
+    public static int calcularDigito(String numeroDocumento, int[] peso) {
         int soma = 0;
 
         for (int indice = numeroDocumento.length() - 1, digito; indice >= 0; indice--) {

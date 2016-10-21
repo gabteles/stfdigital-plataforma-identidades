@@ -23,7 +23,6 @@ import br.jus.stf.plataforma.identidades.application.commands.CadastrarPessoaCom
 import br.jus.stf.plataforma.identidades.application.commands.CadastrarPessoasCommand;
 import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
 import br.jus.stf.plataforma.identidades.domain.model.corporativo.PessoaRepository;
-import br.jus.stf.plataforma.identidades.domain.model.validation.CNPJUtils;
 import br.jus.stf.plataforma.identidades.domain.model.validation.CPFUtils;
 import br.jus.stf.plataforma.identidades.interfaces.dto.PessoaDto;
 import br.jus.stf.plataforma.identidades.interfaces.dto.PessoaDtoAssembler;
@@ -125,7 +124,7 @@ public class PessoaRestResource {
         List<PessoaDto> pessoas = new ArrayList<>();
         PessoaDto pessoa;
 
-        if (new CPFUtils().isValido(numero)) {
+        if (CPFUtils.isValido(numero)) {
             pessoa = consultarPessoaPorCPF(numero);
 
             if (pessoa != null) {
@@ -135,8 +134,6 @@ public class PessoaRestResource {
 
                 Optional.ofNullable(pessoa).ifPresent(pessoas::add);
             }
-        } else if (new CNPJUtils().isValido(numero)) {
-            // TODO Implementar
         }
 
         return pessoas;

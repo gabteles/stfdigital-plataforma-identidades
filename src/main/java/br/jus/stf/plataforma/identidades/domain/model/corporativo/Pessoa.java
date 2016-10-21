@@ -67,7 +67,7 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
         this(id, nome);
 
         Validate.notBlank(cpf, "CPF requerido.");
-        Validate.isTrue(new CPFUtils().isValido(cpf), "CPF inválido.");
+        Validate.isTrue(CPFUtils.isValido(cpf), "CPF inválido.");
 
         this.cpf = cpf;
     }
@@ -124,6 +124,20 @@ public class Pessoa extends EntitySupport<Pessoa, PessoaId> {
      */
     public String oab() {
         return oab;
+    }
+
+    /**
+     * @return
+     */
+    public String email() {
+        return email;
+    }
+
+    /**
+     * @return
+     */
+    public String telefone() {
+        return telefone;
     }
 
     /**

@@ -12,11 +12,14 @@ import org.apache.commons.lang.StringUtils;
  * @since 22.03.2016
  *
  */
-public class CPFUtils extends DocumentoUtils {
+public class CPFUtils {
 
-    @Override
-    public boolean isValido(String numeroCPF) {
-        String cpf = removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCPF));
+    private CPFUtils() {
+        // Construtor default.
+    }
+
+    public static boolean isValido(String numeroCPF) {
+        String cpf = DocumentoUtils.removerCaracteresEspeciais(StringUtils.deleteWhitespace(numeroCPF));
         int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
         if (!StringUtils.isNumeric(cpf))
@@ -25,25 +28,23 @@ public class CPFUtils extends DocumentoUtils {
         if (cpf == null || cpf.length() != 11)
             return false;
 
-        Integer digito1 = calcularDigito(cpf.substring(0, 9), pesoCPF);
-        Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
+        Integer digito1 = DocumentoUtils.calcularDigito(cpf.substring(0, 9), pesoCPF);
+        Integer digito2 = DocumentoUtils.calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
 
         return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
     }
 
-    @Override
-    public String retirarMascara(String cpf) {
+    public static String retirarMascara(String cpf) {
         String novoCPF = "";
 
         if (isValido(cpf)) {
-            novoCPF = removerCaracteresEspeciais(StringUtils.deleteWhitespace(cpf));
+            novoCPF = DocumentoUtils.removerCaracteresEspeciais(StringUtils.deleteWhitespace(cpf));
         }
 
         return novoCPF;
     }
 
-    @Override
-    public String aplicarMascara(String cpf) {
+    public static String aplicarMascara(String cpf) {
         Pattern pattern = Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})");
         Matcher matcher = pattern.matcher(cpf);
         String novoCPF = "";

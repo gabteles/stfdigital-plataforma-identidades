@@ -20,7 +20,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJInvalidoComCaracteresAlfanumericos() {
         String numeroCNPJ = "123hfh";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertFalse(cnpjValido);
     }
@@ -28,7 +28,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJInvalidoComMenos14Digitos() {
         String numeroCNPJ = "85462536";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertFalse(cnpjValido);
     }
@@ -36,7 +36,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJInvalidoComMais14Digitos() {
         String numeroCNPJ = "8210131700018910";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertFalse(cnpjValido);
     }
@@ -44,7 +44,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJInvalidoCom14Digitos() {
         String numeroCNPJ = "82101317000188";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertFalse(cnpjValido);
     }
@@ -52,7 +52,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJValido() {
         String numeroCNPJ = "82101317000189";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertTrue(cnpjValido);
     }
@@ -60,7 +60,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJValidoComCaracteresEspeciais() {
         String numeroCNPJ = "82.101.317/0001-89";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertTrue(cnpjValido);
     }
@@ -68,7 +68,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void criarCNPJValidoComEspacosBranco() {
         String numeroCNPJ = "82  101 317 0001 89";
-        Boolean cnpjValido = cnpjUtils().isValido(numeroCNPJ);
+        Boolean cnpjValido = CNPJUtils.isValido(numeroCNPJ);
 
         assertTrue(cnpjValido);
     }
@@ -76,7 +76,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void aplicaMascaraEmCNPJValido() {
         String numeroCNPJ = "82101317000189";
-        String cnpjComMascara = cnpjUtils().aplicarMascara(numeroCNPJ);
+        String cnpjComMascara = CNPJUtils.aplicarMascara(numeroCNPJ);
 
         assertEquals("82.101.317/0001-89", cnpjComMascara);
     }
@@ -84,7 +84,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void naoAplicaMascaraEmCNPJInvalido() {
         String numeroCPF = "82101317000181";
-        String cpfComMascara = cnpjUtils().aplicarMascara(numeroCPF);
+        String cpfComMascara = CNPJUtils.aplicarMascara(numeroCPF);
 
         assertEquals("", cpfComMascara);
     }
@@ -92,7 +92,7 @@ public class CNPJUtilsUnitTest {
     @Test
     public void removeMascaraCNPJValido() {
         String numeroCPF = "82.101.317/0001-89";
-        String cpfComMascara = cnpjUtils().retirarMascara(numeroCPF);
+        String cpfComMascara = CNPJUtils.retirarMascara(numeroCPF);
 
         assertEquals("82101317000189", cpfComMascara);
     }
@@ -100,12 +100,23 @@ public class CNPJUtilsUnitTest {
     @Test
     public void naoRemoveMascaraEmCNPJInvalido() {
         String numeroCPF = "82101317000181";
-        String cpfComMascara = cnpjUtils().aplicarMascara(numeroCPF);
+        String cpfComMascara = CNPJUtils.aplicarMascara(numeroCPF);
 
         assertEquals("", cpfComMascara);
     }
 
-    private CNPJUtils cnpjUtils() {
-        return new CNPJUtils();
+    @Test
+    public void criarCNPJInvalidoComNull() {
+        Boolean cnpjValido = CNPJUtils.isValido(null);
+
+        assertFalse(cnpjValido);
     }
+
+    @Test
+    public void criarCNPJInvalidoComVazio() {
+        Boolean cnpjValido = CNPJUtils.isValido("");
+
+        assertFalse(cnpjValido);
+    }
+
 }

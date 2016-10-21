@@ -9,10 +9,6 @@ import org.junit.Test;
 
 import br.jus.stf.core.shared.identidades.GrupoId;
 import br.jus.stf.core.shared.identidades.RecursoId;
-import br.jus.stf.plataforma.identidades.domain.model.Grupo;
-import br.jus.stf.plataforma.identidades.domain.model.Recurso;
-import br.jus.stf.plataforma.identidades.domain.model.ResourceType;
-import br.jus.stf.plataforma.identidades.domain.model.TipoGrupo;
 
 public class PermissaoGrupoUnitTests {
 
@@ -43,6 +39,15 @@ public class PermissaoGrupoUnitTests {
         Recurso distribuir = new Recurso(new RecursoId(1L), "Distribuir", ResourceType.ACAO);
 
         Assert.assertFalse(grupo.possuiAcessoNo(distribuir));
+    }
+
+    @Test
+    public void grupoNaoPossuiAcessoAposRetiradaDoRecurso() {
+        Assert.assertTrue(grupo.possuiAcessoNo(criarPeticaoEletronica));
+
+        grupo.removerRecursos(recursos);
+
+        Assert.assertFalse(grupo.possuiAcessoNo(criarPeticaoEletronica));
     }
 
 }

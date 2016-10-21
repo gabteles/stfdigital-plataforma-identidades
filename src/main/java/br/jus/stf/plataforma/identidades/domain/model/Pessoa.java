@@ -65,7 +65,7 @@ public class Pessoa extends ValueObjectSupport<Pessoa> {
     public Pessoa(PessoaId id, String nome, String cpf, String oab, String email, String telefone) {
         Validate.notNull(id, "Identificador requerido.");
         Validate.notBlank(nome, "Nome requerido.");
-        Validate.isTrue(StringUtils.isBlank(cpf) || new CPFUtils().isValido(cpf), "CPF inválido.");
+        Validate.isTrue(StringUtils.isBlank(cpf) || CPFUtils.isValido(cpf), "CPF inválido.");
 
         this.id = id;
         this.nome = nome;

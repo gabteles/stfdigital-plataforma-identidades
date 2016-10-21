@@ -41,6 +41,8 @@ public class PessoaUnitTests {
 
         Assert.assertEquals("OAB deve ser igual a 0142/DF.", "0142/DF", pessoa.oab());
         Assert.assertTrue("Com OAB deve ser advogado.", pessoa.ehAdvogado());
+        Assert.assertEquals("E-mails devem ser iguais.", "jose.silva@myemail.com", pessoa.email());
+        Assert.assertEquals("Telefones devem ser iguais.", "(61)98547-8966", pessoa.telefone());
     }
 
     @Test(expected = IllegalArgumentException.class)

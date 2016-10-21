@@ -46,23 +46,9 @@ public class ConfigurarPermissoesUsuarioCommand {
 
     /**
      * @param idUsuario
-     * @param papeisAdicionados
-     * @param gruposAdicionados
-     * @param recursosAdicionados
-     * @param papeisRemovidos
-     * @param gruposRemovidos
-     * @param recursosRemovidos
      */
-    public ConfigurarPermissoesUsuarioCommand(Long idUsuario, Set<Long> papeisAdicionados, Set<Long> gruposAdicionados,
-            Set<Long> recursosAdicionados, Set<Long> papeisRemovidos, Set<Long> gruposRemovidos,
-            Set<Long> recursosRemovidos) {
+    public ConfigurarPermissoesUsuarioCommand(Long idUsuario) {
         this.idUsuario = idUsuario;
-        this.papeisAdicionados = papeisAdicionados;
-        this.gruposAdicionados = gruposAdicionados;
-        this.recursosAdicionados = recursosAdicionados;
-        this.papeisRemovidos = papeisRemovidos;
-        this.gruposRemovidos = gruposRemovidos;
-        this.recursosRemovidos = recursosRemovidos;
     }
 
     public Long getIdUsuario() {

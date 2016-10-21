@@ -41,14 +41,12 @@ public class CadastrarAssociadoCommand {
      * @param nome
      * @param cpf
      * @param tipo
-     * @param cargoFuncao
      * @param orgao
      */
-    public CadastrarAssociadoCommand(String nome, String cpf, String tipo, String cargoFuncao, Long orgao) {
+    public CadastrarAssociadoCommand(String nome, String cpf, String tipo, Long orgao) {
         this.nome = nome;
         this.cpf = cpf;
         this.tipo = tipo;
-        this.cargoFuncao = cargoFuncao;
         this.orgao = orgao;
     }
 

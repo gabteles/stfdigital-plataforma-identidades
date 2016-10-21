@@ -44,4 +44,13 @@ public class PermissaoPapelUnitTests {
         Assert.assertFalse(papel.possuiAcessoNo(distribuir));
     }
 
+    @Test
+    public void papelNaoPossuiAcessoAposRetiradaDoRecurso() {
+        Assert.assertTrue(papel.possuiAcessoNo(criarPeticaoEletronica));
+
+        papel.removerRecursos(recursos);
+
+        Assert.assertFalse(papel.possuiAcessoNo(criarPeticaoEletronica));
+    }
+
 }

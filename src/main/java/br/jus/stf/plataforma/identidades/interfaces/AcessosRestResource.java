@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,8 @@ import br.jus.stf.plataforma.identidades.interfaces.dto.UsuarioDtoAssembler;
 @RestController
 @RequestMapping("/api/acessos")
 public class AcessosRestResource {
+    
+    private static final String USUARIO_INVALIDA_PATTERN = "Usuário Inválido: %S";
 
     @Autowired
     private AcessosApplicationService acessosApplicationService;
@@ -256,12 +259,20 @@ public class AcessosRestResource {
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Usuário Inválido") })
     @RequestMapping(value = "/usuarios", method = RequestMethod.POST)
     public UsuarioDto cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
-        if (binding.hasErrors()) {
-            throw new IllegalArgumentException("Usuário inválido: " + binding.getAllErrors());
-        }
+        isValid(binding);
 
         Usuario usuario = acessosApplicationService.handle(command);
 
         return usuarioDtoAssembler.toDto(usuario);
+    }
+    
+    private static void isValid(BindingResult result) {
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException(message(result.getAllErrors()));
+        }
+    }
+
+    private static String message(List<ObjectError> errors) {
+        return String.format(USUARIO_INVALIDA_PATTERN, errors);
     }
 }
