@@ -45,40 +45,20 @@ public class UsuarioDto {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getNome() {
         return this.nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public Long getPessoaId() {
         return this.pessoaId;
     }
 
-    public void setPessoaId(Long pessoaId) {
-        this.pessoaId = pessoaId;
-    }
-
     public SetorDto getSetorLotacao() {
         return this.setorLotacao;
-    }
-
-    public void setSetorLotacao(SetorDto setorLotacao) {
-        this.setorLotacao = setorLotacao;
     }
 
 }
