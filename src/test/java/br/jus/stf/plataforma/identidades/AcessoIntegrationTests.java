@@ -85,7 +85,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 .content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void tentaConfigurarPermissoesSemUsuario() throws Exception {
         JsonObject permissoesUsuarioJson = object(
                 field("papeisAdicionados", array(1, 2, 3, 4)),
@@ -96,7 +96,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 field("recursosRemovidos", array(51)));
 
         mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
-                .content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
+                .content(permissoesUsuarioJson.toString())).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -170,6 +170,12 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 .andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
                 .andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
                 .andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")));
+    }
+
+    @Test
+    public void recuperaPermissoesPorLogin() throws Exception {
+        mockMvc.perform(get("/api/acessos/usuarios/permissoes").param("login", "usuario-teste"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     }
 
 }

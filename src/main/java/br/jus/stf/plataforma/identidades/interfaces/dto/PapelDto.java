@@ -11,18 +11,23 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 27.11.2015
  *
  */
-@ApiModel(value = "Objeto responsável por transportar dados de um papél de usuário do back-end para o front-end.")
+@ApiModel(value = "Objeto responsável por transportar dados de um papel do back-end para o front-end.")
 public class PapelDto {
 
-    @ApiModelProperty(value = "Id do papel do usuário.", required = true)
+    @ApiModelProperty(value = "Id do papel.")
     private Long id;
 
-    @ApiModelProperty(value = "Nome do papel do usuário.", required = true)
+    @ApiModelProperty(value = "Nome do papel.")
     private String nome;
 
-    @ApiModelProperty(value = "Nome do setor associado ao papel.", required = true)
+    @ApiModelProperty(value = "Nome do setor associado.")
     private String setor;
 
+    /**
+     * @param id Id do papel.
+     * @param nome Nome do papel.
+     * @param setor Nome do setor associado.
+     */
     public PapelDto(Long id, String nome, String setor) {
         this.id = id;
         this.nome = nome;

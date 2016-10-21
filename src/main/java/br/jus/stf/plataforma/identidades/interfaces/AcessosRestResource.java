@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
 
 import br.jus.stf.core.shared.identidades.UsuarioId;
 import br.jus.stf.plataforma.identidades.application.AcessosApplicationService;
@@ -61,7 +59,7 @@ import br.jus.stf.plataforma.identidades.interfaces.dto.UsuarioDtoAssembler;
 @RestController
 @RequestMapping("/api/acessos")
 public class AcessosRestResource {
-    
+
     private static final String USUARIO_INVALIDA_PATTERN = "Usuário Inválido: %S";
 
     @Autowired
@@ -107,9 +105,10 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login
-     * @return
+     * @param login Login do usuário.
+     * @return Lista de recursos associados ao usuário do login informado.
      */
+    @ApiOperation(value = "Lista todos os recursos associados ao usuário do login informado.")
     @RequestMapping("/usuarios/recursos")
     public Set<RecursoDto> recursos(@RequestParam("login") String login) {
         Set<Recurso> recursos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> usuario.recursos())
@@ -119,10 +118,11 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param nome
-     * @param tipo
-     * @return
+     * @param nome Nome do recurso.
+     * @param tipo Tipo do recurso. {@link br.jus.stf.plataforma.identidades.domain.model.ResourceType ResourceType}
+     * @return Lista de papeis associados ao recurso cujo nome e tipo foram informados.
      */
+    @ApiOperation(value = "Lista todos os papeis associados ao recurso cujo nome e tipo foram informados.")
     @RequestMapping("/recursos/papeis")
     public List<PapelDto> papeis(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
         List<Papel> papeis = Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
@@ -132,9 +132,10 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login
-     * @return
+     * @param login Login do usuário.
+     * @return Lista de papeis associados ao usuário do login informado.
      */
+    @ApiOperation(value = "Lista todos os papeis associados ao usuário do login informado.")
     @RequestMapping("/usuarios/papeis")
     public Set<PapelDto> papeis(@RequestParam("login") String login) {
         Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
@@ -148,8 +149,9 @@ public class AcessosRestResource {
     }
 
     /**
-     * @return
+     * @return Todos os papeis cadastrados.
      */
+    @ApiOperation(value = "Lista todos os papeis cadastrados.")
     @RequestMapping("/papeis")
     public Set<PapelDto> todosPapeis() {
         return papelRepository.findAll().stream().map(papelDtoAssembler::toDto)
@@ -158,8 +160,9 @@ public class AcessosRestResource {
     }
 
     /**
-     * @return
+     * @return Todos os grupos cadastrados.
      */
+    @ApiOperation(value = "Lista todos os grupos cadastrados.")
     @RequestMapping("/grupos")
     public Set<GrupoDto> todosGrupos() {
         return grupoRepository.findAll().stream().map(grupoDtoAssembler::toDto)
@@ -168,9 +171,10 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login
-     * @return
+     * @param login Login do usuário.
+     * @return Lista de grupos associados ao usuário do login informado.
      */
+    @ApiOperation(value = "Lista todos os grupos associados ao usuário do login informado.")
     @RequestMapping("/usuarios/grupos")
     public Set<GrupoDto> grupos(@RequestParam("login") String login) {
         Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
@@ -184,12 +188,15 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param command
+     * @param command Permissões de grupos, papeis e recursos para um usuário.
+     * @param binding Resultado das validações.
      */
-    @ApiOperation("Configura as permissões a grupos, papéis e recursos de um usuário.")
+    @ApiOperation("Configura as permissões de grupos, papeis e recursos de um usuário.")
     @RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void configurarPermissoesUsuario(@RequestBody @Valid ConfigurarPermissoesUsuarioCommand command) {
+    public void configurarPermissoesUsuario(@RequestBody @Valid ConfigurarPermissoesUsuarioCommand command,
+            BindingResult binding) {
+        isValid(binding);
         acessosApplicationService.handle(command);
     }
 
@@ -251,12 +258,11 @@ public class AcessosRestResource {
     /**
      * Cadastra um novo usuário
      * 
-     * @param command
-     * @param binding
-     * @return Dto do usuário criado
+     * @param command Dados do usuário.
+     * @param binding Resultado das validações.
+     * @return Dto do usuário criado.
      */
-    @ApiOperation("Cadastra um novo usuário")
-    @ApiResponses(value = { @ApiResponse(code = 400, message = "Usuário Inválido") })
+    @ApiOperation("Cadastra um novo usuário.")
     @RequestMapping(value = "/usuarios", method = RequestMethod.POST)
     public UsuarioDto cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
         isValid(binding);
@@ -265,7 +271,7 @@ public class AcessosRestResource {
 
         return usuarioDtoAssembler.toDto(usuario);
     }
-    
+
     private static void isValid(BindingResult result) {
         if (result.hasErrors()) {
             throw new IllegalArgumentException(message(result.getAllErrors()));

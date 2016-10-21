@@ -33,6 +33,13 @@ public class UsuarioDto {
         // Construtor default
     }
 
+    /**
+     * @param id Id do usuário.
+     * @param login Login do usuário.
+     * @param nome Nome do usuário.
+     * @param pessoaId Identificador da pessoa.
+     * @param setorLotacao Setor de lotação do usuário.
+     */
     public UsuarioDto(Long id, String login, String nome, Long pessoaId, SetorDto setorLotacao) {
         this.id = id;
         this.login = login;
