@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.plataforma.identidades.application.PessoaApplicationService;
 import br.jus.stf.plataforma.identidades.application.commands.CadastrarAssociadoCommand;
@@ -49,27 +51,30 @@ public class PessoaRestResource {
 
     /**
      * Retorna uma lista de IDs alocados para
-     * cadastro ou reutilização de pessoas
+     * cadastro ou reutilização de pessoas.
      * 
-     * @param command
-     * @param result
-     * @return
+     * @param command Command com a lista de nomes.
+     * @param result Resultado das validações.
+     * @return Lista de IDs alocados.
      */
+    @ApiOperation("Retorna uma lista de IDs alocados para cadastro ou reutilização de pessoas.")
     @RequestMapping(value = "/alocar", method = RequestMethod.POST)
     public List<Long> alocarIdPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
         isValid(result);
 
-        return pessoaApplicationService.alocarIdPessoas(command).stream().map(pessoaId -> pessoaId.toLong())
+        return pessoaApplicationService.alocarIdPessoas(command).stream()
+                .map(pessoaId -> pessoaId.toLong())
                 .collect(Collectors.toList());
     }
 
     /**
-     * Retorna um Dto com a Pessoa cadastrada
+     * Retorna um Dto com a Pessoa cadastrada.
      * 
-     * @param command
-     * @param result
-     * @return Dto com a Pessoa cadastrada
+     * @param command Command com os dados da pessoa a ser cadastrada.
+     * @param result Resultado das validações.
+     * @return Dto com a Pessoa cadastrada.
      */
+    @ApiOperation("Retorna um Dto com a Pessoa cadastrada.")
     @RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
     public PessoaDto cadastrarPessoa(@RequestBody @Valid CadastrarPessoaCommand command, BindingResult result) {
         isValid(result);
@@ -80,45 +85,52 @@ public class PessoaRestResource {
     }
 
     /**
-     * Retorna as pessoas cadastradas na mesma ordem de envio dos nomes
+     * Retorna as pessoas cadastradas na mesma ordem de envio dos nomes.
      * 
-     * @param command
-     * @param result
-     * @return
+     * @param command Command com a lista de nomes.
+     * @param result Resultado das validações.
+     * @return Lista das pessoas cadastradas na mesma ordem de envio dos nomes.
      */
+    @ApiOperation("Retorna as pessoas cadastradas na mesma ordem de envio dos nomes.")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public List<PessoaDto> cadastrarPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
         isValid(result);
 
-        return pessoaApplicationService.handle(command).stream().map(pessoaDtoAssembler::toDto)
+        return pessoaApplicationService.handle(command).stream()
+                .map(pessoaDtoAssembler::toDto)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Pesquisa uma pessoa pela identificação
+     * Pesquisa uma pessoa pela identificação.
      * 
-     * @param pessoaId
-     * @return
+     * @param pessoaId Identificação da pessoa pesquisada.
+     * @return Dto com os dados da pessoa.
      */
+    @ApiOperation("Pesquisa uma pessoa pela identificação.")
     @RequestMapping(value = "/{pessoaId}", method = RequestMethod.GET)
     public PessoaDto pesquisar(@PathVariable("pessoaId") Long pessoaId) {
         return pessoaDtoAssembler.toDto(pessoaRepository.findOne(new PessoaId(pessoaId)));
     }
 
     /**
-     * Retorna uma lista com todas as pessoas
+     * Retorna uma lista com todas as pessoas.
      * 
-     * @return
+     * @return Listas com as pessoas cadastradas.
      */
+    @ApiOperation("Retorna uma lista com todas as pessoas.")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<PessoaDto> listar() {
-        return pessoaRepository.findAll().stream().map(pessoaDtoAssembler::toDto).collect(Collectors.toList());
+        return pessoaRepository.findAll().stream()
+                .map(pessoaDtoAssembler::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
-     * @param numero
-     * @return
+     * @param numero Número do documento pesquisado.
+     * @return Lista de pessoas que possuem esse documento.
      */
+    @ApiOperation("Retorna uma lista pessoas que possuem o documento informado.")
     @RequestMapping(value = "/documento/{numero}", method = RequestMethod.GET)
     public List<PessoaDto> consultarPessoasPorNumero(@PathVariable("numero") String numero) {
         List<PessoaDto> pessoas = new ArrayList<>();
@@ -143,8 +155,9 @@ public class PessoaRestResource {
      * Cria ou carrega uma pessoa e a associa a um Órgão.
      * 
      * @param command
-     * @param result
+     * @param result Resultado da validação.
      */
+    @ApiOperation("Cria ou carrega uma pessoa e a associa a um Órgão.")
     @RequestMapping(value = "/associado", method = RequestMethod.POST)
     public void cadastrarAssociado(@RequestBody @Valid CadastrarAssociadoCommand command, BindingResult result) {
         isValid(result);

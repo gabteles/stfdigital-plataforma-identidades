@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.identidades.domain.model;
+package br.jus.stf.plataforma.identidades.domain.model.validation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

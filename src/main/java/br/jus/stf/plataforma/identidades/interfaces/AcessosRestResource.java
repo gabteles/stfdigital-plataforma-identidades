@@ -93,15 +93,18 @@ public class AcessosRestResource {
     private PapelRepository papelRepository;
 
     /**
-     * @param login
-     * @return
+     * @param login Login do usuário.
+     * @return Conjunto de permissões associadas ao usuário do login informado.
      */
+    @ApiOperation("Conjunto de permissões associadas ao usuário do login informado.")
     @RequestMapping("/usuarios/permissoes")
     public Set<PermissaoDto> permissoes(@RequestParam("login") String login) {
         // TODO: Verificar como as permissões serão utilizadas para finalizar implementação
         Set<Permissao> permissoes = new HashSet<>(0);
 
-        return permissoes.stream().map(permissaoDtoAssembler::toDto).collect(Collectors.toSet());
+        return permissoes.stream()
+                .map(permissaoDtoAssembler::toDto)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -114,7 +117,9 @@ public class AcessosRestResource {
         Set<Recurso> recursos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> usuario.recursos())
                 .orElse(Collections.emptySet());
 
-        return recursos.stream().map(recursoDtoAssembler::toDto).collect(Collectors.toSet());
+        return recursos.stream()
+                .map(recursoDtoAssembler::toDto)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -126,9 +131,12 @@ public class AcessosRestResource {
     @RequestMapping("/recursos/papeis")
     public List<PapelDto> papeis(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
         List<Papel> papeis = Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
-                .map(recurso -> papelRepository.findPapelByRecurso(recurso.identity())).orElse(Collections.emptyList());
+                .map(recurso -> papelRepository.findPapelByRecurso(recurso.identity()))
+                .orElse(Collections.emptyList());
 
-        return papeis.stream().map(papelDtoAssembler::toDto).collect(Collectors.toList());
+        return papeis.stream()
+                .map(papelDtoAssembler::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -138,12 +146,15 @@ public class AcessosRestResource {
     @ApiOperation(value = "Lista todos os papeis associados ao usuário do login informado.")
     @RequestMapping("/usuarios/papeis")
     public Set<PapelDto> papeis(@RequestParam("login") String login) {
-        Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
-            usuario.papeis().size(); // inicializa o proxy
-            return usuario.papeis();
-        }).orElse(Collections.emptySet());
+        Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(login))
+                .map(usuario -> {
+                    usuario.papeis().size(); // inicializa o proxy
+                    return usuario.papeis();
+                })
+                .orElse(Collections.emptySet());
 
-        return papeis.stream().map(papelDtoAssembler::toDto)
+        return papeis.stream()
+                .map(papelDtoAssembler::toDto)
                 .sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -154,7 +165,8 @@ public class AcessosRestResource {
     @ApiOperation(value = "Lista todos os papeis cadastrados.")
     @RequestMapping("/papeis")
     public Set<PapelDto> todosPapeis() {
-        return papelRepository.findAll().stream().map(papelDtoAssembler::toDto)
+        return papelRepository.findAll().stream()
+                .map(papelDtoAssembler::toDto)
                 .sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -165,7 +177,8 @@ public class AcessosRestResource {
     @ApiOperation(value = "Lista todos os grupos cadastrados.")
     @RequestMapping("/grupos")
     public Set<GrupoDto> todosGrupos() {
-        return grupoRepository.findAll().stream().map(grupoDtoAssembler::toDto)
+        return grupoRepository.findAll().stream()
+                .map(grupoDtoAssembler::toDto)
                 .sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -177,12 +190,15 @@ public class AcessosRestResource {
     @ApiOperation(value = "Lista todos os grupos associados ao usuário do login informado.")
     @RequestMapping("/usuarios/grupos")
     public Set<GrupoDto> grupos(@RequestParam("login") String login) {
-        Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> {
-            usuario.grupos().size(); // inicializa o proxy
-            return usuario.grupos();
-        }).orElse(Collections.emptySet());
+        Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(login))
+                .map(usuario -> {
+                    usuario.grupos().size(); // inicializa o proxy
+                    return usuario.grupos();
+                })
+                .orElse(Collections.emptySet());
 
-        return grupos.stream().map(grupoDtoAssembler::toDto)
+        return grupos.stream()
+                .map(grupoDtoAssembler::toDto)
                 .sorted((g1, g2) -> g1.getNome().compareTo(g2.getNome()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }

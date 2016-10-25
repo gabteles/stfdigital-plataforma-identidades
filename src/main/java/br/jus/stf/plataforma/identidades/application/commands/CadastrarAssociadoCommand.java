@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
@@ -12,6 +13,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 1.0.0
  * @since 01.07.2016
  */
+@ApiModel("Command utilizado para cadastro de um associado.")
 public class CadastrarAssociadoCommand {
 
     @ApiModelProperty(value = "Nome do associado.", required = true)
@@ -35,19 +37,6 @@ public class CadastrarAssociadoCommand {
 
     public CadastrarAssociadoCommand() {
         // Construtor default
-    }
-
-    /**
-     * @param nome
-     * @param cpf
-     * @param tipo
-     * @param orgao
-     */
-    public CadastrarAssociadoCommand(String nome, String cpf, String tipo, Long orgao) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.tipo = tipo;
-        this.orgao = orgao;
     }
 
     public String getNome() {

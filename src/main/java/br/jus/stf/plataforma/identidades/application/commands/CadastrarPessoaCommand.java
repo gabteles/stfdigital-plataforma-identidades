@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.identidades.application.commands;
 
 import javax.validation.constraints.NotNull;
 
+import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
@@ -15,19 +16,20 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @author rafael.alencar
  *
  */
+@ApiModel("Classe usada para transportar os dados de pessoa do front-end para o back-end.")
 public class CadastrarPessoaCommand extends CadastrarPessoaAbstractCommand {
 
     @NotNull
-    @ApiModelProperty(value = "Identificador", required = true)
+    @ApiModelProperty(value = "Identificador.", required = true)
     private Long id;
-    
+
     public CadastrarPessoaCommand() {
         // Construtor default.
     }
 
     /**
-     * @param id
-     * @param nome
+     * @param id Identificador.
+     * @param nome Nome.
      */
     public CadastrarPessoaCommand(Long id, String nome) {
         super(nome);
@@ -36,18 +38,10 @@ public class CadastrarPessoaCommand extends CadastrarPessoaAbstractCommand {
     }
 
     /**
-     * @return the id
+     * @return O identificador.
      */
     public Long getId() {
         return id;
-    }
-
-    /**
-     * @param id
-     *        the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
     }
 
 }

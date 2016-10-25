@@ -11,14 +11,14 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 1.0.0
  * @since 03.12.2015
  */
-@ApiModel(value = "Contem as informações necessárias para cadastrar um usuário")
+@ApiModel(value = "Contém as informações necessárias para cadastrar um usuário.")
 public class CadastrarUsuarioCommand extends CadastrarPessoaAbstractCommand {
 
     @NotBlank
-    @ApiModelProperty(value = "Login de acesso", required = true)
+    @ApiModelProperty(value = "Login de acesso.", required = true)
     private String login;
 
-    @ApiModelProperty(value = "Id da pessoa no contexto de identidades")
+    @ApiModelProperty(value = "Id da pessoa no contexto de identidades.")
     private Long pessoaId;
 
     public CadastrarUsuarioCommand() {
@@ -26,43 +26,17 @@ public class CadastrarUsuarioCommand extends CadastrarPessoaAbstractCommand {
     }
 
     /**
-     * @param login
-     * @param nome
-     */
-    public CadastrarUsuarioCommand(String login, String nome) {
-        super(nome);
-
-        this.login = login;
-    }
-
-    /**
-     * @return the login
+     * @return O login
      */
     public String getLogin() {
         return login;
     }
 
     /**
-     * @param login
-     *        the login to set
-     */
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    /**
-     * @return the pessoaId
+     * @return O pessoaId.
      */
     public Long getPessoaId() {
         return pessoaId;
-    }
-
-    /**
-     * @param pessoaId
-     *        the pessoaId to set
-     */
-    public void setPessoaId(Long pessoaId) {
-        this.pessoaId = pessoaId;
     }
 
 }
