@@ -30,7 +30,7 @@ public class PesquisaDtoAssembler {
         try {
             criterio = mapper.readValue(pesquisa.criterio(), typeRef);
         } catch (IOException e) {
-            throw new RuntimeException("Não foi possível converter os critérios de pesquisa!", e);
+            throw new IllegalArgumentException("Não foi possível converter os critérios de pesquisa!", e);
         }
         return new PesquisaDto(pesquisa.identity().toLong(), pesquisa.descricao(), pesquisa.contexto(),
                 pesquisa.isExecucaoAutomatica(), criterio);
