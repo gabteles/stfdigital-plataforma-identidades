@@ -12,6 +12,10 @@ import br.jus.stf.plataforma.identidades.domain.model.Recurso;
 public class RecursoDtoAssembler {
 
     public RecursoDto toDto(Recurso recurso) {
+        if (recurso == null) {
+            return null;
+        }
+
         return new RecursoDto(recurso.identity().toLong(), recurso.nome(), recurso.tipo().name());
     }
 

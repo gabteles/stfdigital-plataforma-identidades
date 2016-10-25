@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.identidades.interfaces.dto;
 
-import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
@@ -15,7 +14,10 @@ import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
 public class PessoaDtoAssembler {
 
     public PessoaDto toDto(Pessoa pessoa) {
-        Validate.notNull(pessoa);
+        if (pessoa == null) {
+            return null;
+        }
+
         return new PessoaDto(pessoa.identity().toLong(), pessoa.nome());
     }
 }

@@ -22,8 +22,9 @@ public class DocumentoUtils {
 
     public static int calcularDigito(String numeroDocumento, int[] peso) {
         int soma = 0;
+        int digito;
 
-        for (int indice = numeroDocumento.length() - 1, digito; indice >= 0; indice--) {
+        for (int indice = numeroDocumento.length() - 1; indice >= 0; indice--) {
             digito = Integer.parseInt(numeroDocumento.substring(indice, indice + 1));
             soma += digito * peso[peso.length - numeroDocumento.length() + indice];
         }

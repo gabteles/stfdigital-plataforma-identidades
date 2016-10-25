@@ -92,7 +92,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
     }
 
     @Test
-    public void pesquisar() throws Exception {
+    public void pesquisarPessoaPorId() throws Exception {
         loadDataTests("pesquisar.sql");
 
         mockMvc.perform(get("/api/pessoas/9005")).andExpect(status().isOk())
@@ -100,12 +100,24 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
     }
 
     @Test
-    public void consultarPessoasPorNumero() throws Exception {
+    public void consultarPessoasPorNumeroValidoNaBaseSTF() throws Exception {
         loadDataTests("consultarPessoasPorNumero.sql");
 
         mockMvc.perform(get("/api/pessoas/documento/10213124955")).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].nome", equalTo("Marta")))
                 .andExpect(jsonPath("$[0].id", equalTo(9004)));
+    }
+
+    @Test
+    public void consultarPessoasPorNumeroInvalido() throws Exception {
+        mockMvc.perform(get("/api/pessoas/documento/52213124954")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+    
+    @Test
+    public void consultarPessoasPorNumeroValidoViaWSRF() throws Exception {
+        mockMvc.perform(get("/api/pessoas/documento/44777343600")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -131,7 +143,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
     }
 
     @Test
-    public void listar() throws Exception {
+    public void listarPessoas() throws Exception {
         loadDataTests("listar.sql");
 
         mockMvc.perform(get("/api/pessoas")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(5)));

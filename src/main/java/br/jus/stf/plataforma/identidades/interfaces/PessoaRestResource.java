@@ -159,7 +159,7 @@ public class PessoaRestResource {
     }
 
     private static PessoaDto consultarPessoaWSRF(String cpf) {
-        // TODO Implementar
+        // TODO Implementar chamada ao WS da Receita
         return null;
     }
 

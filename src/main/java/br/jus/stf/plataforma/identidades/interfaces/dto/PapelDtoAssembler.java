@@ -16,6 +16,10 @@ import br.jus.stf.plataforma.identidades.domain.model.Papel;
 public class PapelDtoAssembler {
 
     public PapelDto toDto(Papel papel) {
+        if (papel == null) {
+            return null;
+        }
+
         return new PapelDto(papel.identity().toLong(), papel.nome(), papel.grupo() == null ? "" : papel.grupo().nome());
     }
 }
