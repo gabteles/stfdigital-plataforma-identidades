@@ -189,7 +189,7 @@ public class Usuario extends EntitySupport<Usuario, UsuarioId> implements Princi
 
     @Override
     public Set<Recurso> recursos() {
-        Set<Recurso> recursosCompletos = new HashSet<>();
+        Set<Recurso> recursosCompletos = new HashSet<>(0);
 
         Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> recursosCompletos.addAll(papel.recursos())));
         Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> recursosCompletos.addAll(grupo.recursos())));

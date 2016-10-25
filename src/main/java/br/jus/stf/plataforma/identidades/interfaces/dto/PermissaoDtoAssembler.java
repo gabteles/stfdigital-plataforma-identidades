@@ -14,6 +14,10 @@ import br.jus.stf.plataforma.identidades.domain.model.Permissao;
 public class PermissaoDtoAssembler {
 
     public PermissaoDto toDto(Permissao permissao) {
+        if (permissao == null) {
+            return null;
+        }
+
         StringBuilder sb = new StringBuilder()
                 .append(permissao.tipo().name())
                 .append("_")

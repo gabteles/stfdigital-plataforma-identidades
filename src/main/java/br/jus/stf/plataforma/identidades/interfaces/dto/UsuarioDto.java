@@ -53,7 +53,7 @@ public class UsuarioDto {
     }
 
     public String getLogin() {
-        return login;
+        return this.login;
     }
 
     public String getNome() {
