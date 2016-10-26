@@ -45,11 +45,11 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
     }
 
     @Override
-    public List<Recurso> findRecursoByUsuario(String login) {
+    public List<Recurso> findRecursoByUsuario(UsuarioId id) {
         TypedQuery<Recurso> query = entityManager.createQuery(
-                "SELECT recu FROM Usuario usua INNER JOIN usua.recursos recu WITH usua.login = :login", Recurso.class);
+                "SELECT recu FROM Usuario usua INNER JOIN usua.recursos recu WITH usua.id = :id", Recurso.class);
 
-        query.setParameter("login", login);
+        query.setParameter("id", id);
 
         return query.getResultList();
     }

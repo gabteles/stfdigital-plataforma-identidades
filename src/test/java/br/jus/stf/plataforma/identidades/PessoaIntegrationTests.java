@@ -20,7 +20,7 @@ import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import br.jus.stf.plataforma.ApplicationContextInitializer;
 
 /**
- * Classe responsável pelos testes de integração da API de identidade da Plataforma.
+ * Classe responsável pelos testes de integração da API de pessoas da Plataforma.
  * 
  * @author Rafael Alencar
  * 
@@ -29,7 +29,7 @@ import br.jus.stf.plataforma.ApplicationContextInitializer;
  */
 @SpringBootTest(value = { "server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false" },
         classes = ApplicationContextInitializer.class)
-@WithMockOauth2User("gestor-cadastro")
+@WithMockOauth2User(value = "gestor-cadastro")
 public class PessoaIntegrationTests extends IntegrationTestsSupport {
 
     @Before
@@ -64,7 +64,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
         String pessoa =
                 "{\"id\":9002,\"nome\":\"Joana\",\"cpf\":\"84548465146\",\"oab\":\"0123/DF\",\"email\":\"joana@stf.jus.br\",\"telefone\":\"(61)3217-1477\"}";
 
-        mockMvc.perform(post("/api/pessoas/cadastrar").contentType(MediaType.APPLICATION_JSON).content(pessoa))
+        mockMvc.perform(post("/api/pessoas/cadastro").contentType(MediaType.APPLICATION_JSON).content(pessoa))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(9002)))
                 .andExpect(jsonPath("$.nome", equalTo("Joana")));
     }
@@ -76,7 +76,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 
         String pessoas = "{\"nomes\":[\"Maria\",\"Carla\",\"Lara\"]}";
 
-        mockMvc.perform(post("/api/pessoas/alocar").contentType(MediaType.APPLICATION_JSON).content(pessoas))
+        mockMvc.perform(post("/api/pessoas/alocacoes-id").contentType(MediaType.APPLICATION_JSON).content(pessoas))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0]", equalTo(9000))).andExpect(jsonPath("$[1]", lessThanOrEqualTo(3)))
                 .andExpect(jsonPath("$[2]", equalTo(9001)));
@@ -87,7 +87,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
     public void naoDeveAlocarPessoasSemNomes() throws Exception {
         String pessoas = "{\"nomes\":[]}";
 
-        mockMvc.perform(post("/api/pessoas/alocar").contentType(MediaType.APPLICATION_JSON).content(pessoas))
+        mockMvc.perform(post("/api/pessoas/alocacoes-id").contentType(MediaType.APPLICATION_JSON).content(pessoas))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -103,43 +103,21 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
     public void consultarPessoasPorNumeroValidoNaBaseSTF() throws Exception {
         loadDataTests("consultarPessoasPorNumero.sql");
 
-        mockMvc.perform(get("/api/pessoas/documento/10213124955")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/pessoas").param("documento", "10213124955")).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].nome", equalTo("Marta")))
                 .andExpect(jsonPath("$[0].id", equalTo(9004)));
     }
 
     @Test
     public void consultarPessoasPorNumeroInvalido() throws Exception {
-        mockMvc.perform(get("/api/pessoas/documento/52213124954")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/pessoas").param("documento", "52213124954")).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
-    
+
     @Test
     public void consultarPessoasPorNumeroValidoViaWSRF() throws Exception {
-        mockMvc.perform(get("/api/pessoas/documento/44777343600")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/pessoas").param("documento", "44777343600")).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
-    }
-
-    @Test
-    @WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-associado")
-    public void cadastrarAssociado() throws Exception {
-        loadDataTests("cadastrarAssociado.sql");
-
-        String associado =
-                "{\"nome\":\"Paula\",\"cpf\":\"17602433530\",\"tipo\":\"REPRESENTANTE\",\"cargoFuncao\":\"Advogado\",\"orgao\":9003}";
-
-        mockMvc.perform(post("/api/pessoas/associado").contentType(MediaType.APPLICATION_JSON).content(associado))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockOauth2User(value = "gestor-cadastro", components = "cadastrar-associado")
-    public void naoDeveCadastrarAssociadoInvalido() throws Exception {
-        String associado =
-                "{\"cpf\":\"17602433530\",\"tipo\":\"REPRESENTANTE\",\"cargoFuncao\":\"Advogado\",\"orgao\":9003}";
-
-        mockMvc.perform(post("/api/pessoas/associado").contentType(MediaType.APPLICATION_JSON).content(associado))
-                .andExpect(status().is4xxClientError());
     }
 
     @Test

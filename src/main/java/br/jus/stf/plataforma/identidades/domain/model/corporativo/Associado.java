@@ -45,7 +45,7 @@ public class Associado extends ValueObjectSupport<Associado> {
     @Column(name = "DSC_CARGO_FUNCAO")
     private String cargoFuncao;
 
-    public Associado() {
+    Associado() {
         // Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova
         // instância.
     }

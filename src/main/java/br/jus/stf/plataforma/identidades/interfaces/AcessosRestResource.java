@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.identidades.interfaces;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -97,8 +98,8 @@ public class AcessosRestResource {
      * @return Conjunto de permissões associadas ao usuário do login informado.
      */
     @ApiOperation("Conjunto de permissões associadas ao usuário do login informado.")
-    @RequestMapping("/usuarios/permissoes")
-    public Set<PermissaoDto> permissoes(@RequestParam("login") String login) {
+    @RequestMapping(value = "/usuarios/{usuarioId}/permissoes", method = RequestMethod.GET)
+    public Set<PermissaoDto> permissoes(@PathVariable("usuarioId") Long usuarioId) {
         // TODO: Verificar como as permissões serão utilizadas para finalizar implementação
         Set<Permissao> permissoes = new HashSet<>(0);
 
@@ -108,13 +109,14 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login Login do usuário.
-     * @return Lista de recursos associados ao usuário do login informado.
+     * @param usuarioId Identificador do usuário.
+     * @return Lista de recursos associados ao usuário informado.
      */
-    @ApiOperation(value = "Lista todos os recursos associados ao usuário do login informado.")
-    @RequestMapping("/usuarios/recursos")
-    public Set<RecursoDto> recursos(@RequestParam("login") String login) {
-        Set<Recurso> recursos = Optional.ofNullable(usuarioRepository.findOne(login)).map(usuario -> usuario.recursos())
+    @ApiOperation(value = "Lista todos os recursos associados ao usuário informado.")
+    @RequestMapping(value = "/usuarios/{usuarioId}/recursos", method = RequestMethod.GET)
+    public Set<RecursoDto> recursos(@PathVariable("usuarioId") Long usuarioId) {
+        Set<Recurso> recursos = Optional.ofNullable(usuarioRepository.findOne(new UsuarioId(usuarioId)))
+                .map(usuario -> usuario.recursos())
                 .orElse(Collections.emptySet());
 
         return recursos.stream()
@@ -128,7 +130,7 @@ public class AcessosRestResource {
      * @return Lista de papeis associados ao recurso cujo nome e tipo foram informados.
      */
     @ApiOperation(value = "Lista todos os papeis associados ao recurso cujo nome e tipo foram informados.")
-    @RequestMapping("/recursos/papeis")
+    @RequestMapping(value = "/recursos/papeis", method = RequestMethod.GET)
     public List<PapelDto> papeis(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
         List<Papel> papeis = Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
                 .map(recurso -> papelRepository.findPapelByRecurso(recurso.identity()))
@@ -140,13 +142,13 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login Login do usuário.
-     * @return Lista de papeis associados ao usuário do login informado.
+     * @param usuarioId Identificador do usuário.
+     * @return Lista de papeis associados ao usuário informado.
      */
-    @ApiOperation(value = "Lista todos os papeis associados ao usuário do login informado.")
-    @RequestMapping("/usuarios/papeis")
-    public Set<PapelDto> papeis(@RequestParam("login") String login) {
-        Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(login))
+    @ApiOperation(value = "Lista todos os papeis associados ao usuário informado.")
+    @RequestMapping(value = "/usuarios/{usuarioId}/papeis", method = RequestMethod.GET)
+    public Set<PapelDto> papeis(@PathVariable("usuarioId") Long usuarioId) {
+        Set<Papel> papeis = Optional.ofNullable(usuarioRepository.findOne(new UsuarioId(usuarioId)))
                 .map(usuario -> {
                     usuario.papeis().size(); // inicializa o proxy
                     return usuario.papeis();
@@ -163,7 +165,7 @@ public class AcessosRestResource {
      * @return Todos os papeis cadastrados.
      */
     @ApiOperation(value = "Lista todos os papeis cadastrados.")
-    @RequestMapping("/papeis")
+    @RequestMapping(value = "/papeis", method = RequestMethod.GET)
     public Set<PapelDto> todosPapeis() {
         return papelRepository.findAll().stream()
                 .map(papelDtoAssembler::toDto)
@@ -175,7 +177,7 @@ public class AcessosRestResource {
      * @return Todos os grupos cadastrados.
      */
     @ApiOperation(value = "Lista todos os grupos cadastrados.")
-    @RequestMapping("/grupos")
+    @RequestMapping(value = "/grupos", method = RequestMethod.GET)
     public Set<GrupoDto> todosGrupos() {
         return grupoRepository.findAll().stream()
                 .map(grupoDtoAssembler::toDto)
@@ -184,13 +186,13 @@ public class AcessosRestResource {
     }
 
     /**
-     * @param login Login do usuário.
-     * @return Lista de grupos associados ao usuário do login informado.
+     * @param usuarioId Identificador do usuário.
+     * @return Lista de grupos associados ao usuário informado.
      */
-    @ApiOperation(value = "Lista todos os grupos associados ao usuário do login informado.")
-    @RequestMapping("/usuarios/grupos")
-    public Set<GrupoDto> grupos(@RequestParam("login") String login) {
-        Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(login))
+    @ApiOperation(value = "Lista todos os grupos associados ao usuário informado.")
+    @RequestMapping(value = "/usuarios/{usuarioId}/grupos", method = RequestMethod.GET)
+    public Set<GrupoDto> grupos(@PathVariable("usuarioId") Long usuarioId) {
+        Set<Grupo> grupos = Optional.ofNullable(usuarioRepository.findOne(new UsuarioId(usuarioId)))
                 .map(usuario -> {
                     usuario.grupos().size(); // inicializa o proxy
                     return usuario.grupos();
@@ -204,15 +206,17 @@ public class AcessosRestResource {
     }
 
     /**
+     * @param usuarioId Identificador do usuário.
      * @param command Permissões de grupos, papeis e recursos para um usuário.
      * @param binding Resultado das validações.
      */
     @ApiOperation("Configura as permissões de grupos, papeis e recursos de um usuário.")
-    @RequestMapping(value = "/permissoes/configuracao", method = RequestMethod.POST)
+    @RequestMapping(value = "/usuarios/{usuarioId}/configuracoes-permissao", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void configurarPermissoesUsuario(@RequestBody @Valid ConfigurarPermissoesUsuarioCommand command,
+    public void configurarPermissoesUsuario(@PathVariable("usuarioId") Long usuarioId,
+            @RequestBody @Valid ConfigurarPermissoesUsuarioCommand command,
             BindingResult binding) {
-        isValid(binding);
+        isValid(usuarioId, command.getIdUsuario(), binding);
         acessosApplicationService.handle(command);
     }
 
@@ -240,7 +244,7 @@ public class AcessosRestResource {
      * @return Informações do usuário.
      */
     @ApiOperation("Recupera as informações do usuário informado.")
-    @RequestMapping(value = "/usuarios/{usuarioId:[\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/usuarios/{usuarioId}", method = RequestMethod.GET)
     public UsuarioDto recuperarUsuario(@PathVariable("usuarioId") Long usuarioId) {
         return usuarioDtoAssembler.toDto(usuarioRepository.findOne(new UsuarioId(usuarioId)));
     }
@@ -264,7 +268,7 @@ public class AcessosRestResource {
      * @return ID do usuário
      */
     @ApiOperation("Recupera o ID de um usuário.")
-    @RequestMapping("/usuarios/id")
+    @RequestMapping(value = "/usuarios/id", method = RequestMethod.GET)
     public Long recuperarId(@RequestParam("login") String login) {
         Usuario usuario = usuarioRepository.findOne(login);
 
@@ -286,6 +290,16 @@ public class AcessosRestResource {
         Usuario usuario = acessosApplicationService.handle(command);
 
         return usuarioDtoAssembler.toDto(usuario);
+    }
+
+    private static void isValid(Long usuarioIdPath, Long usuarioIdCommand, BindingResult binding) {
+        isValid(binding);
+
+        if (!usuarioIdPath.equals(usuarioIdCommand)) {
+            throw new IllegalArgumentException(message(
+                    Arrays.asList(
+                            new ObjectError("Usuário", "Identificadores do comando incompatíveis."))));
+        }
     }
 
     private static void isValid(BindingResult result) {

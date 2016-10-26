@@ -46,7 +46,7 @@ public class UsuarioRepositoryUnitTests {
         Mockito.when(usuarioRepository.findOne("joao.silva")).thenReturn(usuario);
         Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
         Mockito.when(usuarioRepository.nextId()).thenReturn(new UsuarioId(2L));
-        Mockito.when(usuarioRepository.findRecursoByUsuario("joao.silva")).thenReturn(recursos);
+        Mockito.when(usuarioRepository.findRecursoByUsuario(new UsuarioId(1L))).thenReturn(recursos);
     }
 
     @Test
@@ -87,8 +87,8 @@ public class UsuarioRepositoryUnitTests {
 
     @Test
     public void encontraRecursosDoUsuario() {
-        Assert.assertEquals(recursos, usuarioRepository.findRecursoByUsuario("joao.silva"));
-        Mockito.verify(usuarioRepository, Mockito.times(1)).findRecursoByUsuario("joao.silva");
+        Assert.assertEquals(recursos, usuarioRepository.findRecursoByUsuario(new UsuarioId(1L)));
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findRecursoByUsuario(new UsuarioId(1L));
     }
 
     private Usuario usuario() {

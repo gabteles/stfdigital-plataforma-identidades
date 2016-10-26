@@ -38,7 +38,7 @@ public class Orgao extends EntitySupport<Orgao, PessoaId> {
     @JoinColumn(name = "SEQ_PESSOA_ORGAO", referencedColumnName = "SEQ_PESSOA", nullable = false)
     private Set<Associado> associados = new HashSet<>();
 
-    public Orgao() {
+    Orgao() {
         // Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova
         // instância.
     }

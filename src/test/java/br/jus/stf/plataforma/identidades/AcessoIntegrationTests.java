@@ -46,13 +46,17 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 
     @Test
     public void listaGruposUsuario() throws Exception {
-        mockMvc.perform(get("/api/acessos/usuarios/grupos").param("login", "gestor-autuacao"))
+        Long gestorAutuacaoId = 8L;
+
+        mockMvc.perform(get("/api/acessos/usuarios/" + gestorAutuacaoId + "/grupos"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
     public void listaPapeisUsuario() throws Exception {
-        mockMvc.perform(get("/api/acessos/usuarios/papeis").param("login", "gestor-autuacao"))
+        Long gestorAutuacaoId = 8L;
+
+        mockMvc.perform(get("/api/acessos/usuarios/" + gestorAutuacaoId + "/papeis"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     }
 
@@ -68,8 +72,30 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 field("gruposRemovidos", array(1, 2)),
                 field("recursosRemovidos", array(51)));
 
-        mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
-                .content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
+        mockMvc.perform(
+                post("/api/acessos/usuarios/" + permissoesUsuarioJson.get("idUsuario") + "/configuracoes-permissao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permissoesUsuarioJson.toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockOauth2User(value = "usuario-teste", components = "configurar-permissoes-usuario")
+    public void naoDeveConfigurarPermissoesUsuarioComIdsIncompativeis() throws Exception {
+        JsonObject permissoesUsuarioJson = object(
+                field("idUsuario", 9),
+                field("papeisAdicionados", array(1, 2, 3, 4)),
+                field("gruposAdicionados", array(2)),
+                field("recursosAdicionados", array(45)),
+                field("papeisRemovidos", array(5)),
+                field("gruposRemovidos", array(1, 2)),
+                field("recursosRemovidos", array(51)));
+
+        mockMvc.perform(
+                post("/api/acessos/usuarios/2/configuracoes-permissao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permissoesUsuarioJson.toString()))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -81,8 +107,11 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 field("gruposAdicionados", array(2)),
                 field("recursosAdicionados", array(45)));
 
-        mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
-                .content(permissoesUsuarioJson.toString())).andExpect(status().isOk());
+        mockMvc.perform(
+                post("/api/acessos/usuarios/" + permissoesUsuarioJson.get("idUsuario") + "/configuracoes-permissao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permissoesUsuarioJson.toString()))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -95,7 +124,7 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
                 field("gruposRemovidos", array(1, 2)),
                 field("recursosRemovidos", array(51)));
 
-        mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/acessos/usuarios/9/configuracoes-permissao").contentType(MediaType.APPLICATION_JSON)
                 .content(permissoesUsuarioJson.toString())).andExpect(status().is4xxClientError());
     }
 
@@ -144,7 +173,9 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
 
     @Test
     public void listaRecursosUsuario() throws Exception {
-        mockMvc.perform(get("/api/acessos/usuarios/recursos").param("login", "gestor-autuacao"))
+        Long gestorAutuacaoId = 8L;
+
+        mockMvc.perform(get("/api/acessos/usuarios/" + gestorAutuacaoId + "/recursos"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(13)));
     }
 
@@ -173,8 +204,8 @@ public class AcessoIntegrationTests extends IntegrationTestsSupport {
     }
 
     @Test
-    public void recuperaPermissoesPorLogin() throws Exception {
-        mockMvc.perform(get("/api/acessos/usuarios/permissoes").param("login", "usuario-teste"))
+    public void recuperaPermissoesPorUsuarioId() throws Exception {
+        mockMvc.perform(get("/api/acessos/usuarios/1/permissoes"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     }
 

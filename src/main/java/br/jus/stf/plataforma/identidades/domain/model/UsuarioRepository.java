@@ -36,10 +36,10 @@ public interface UsuarioRepository {
     <U extends Usuario> U save(U principal);
 
     /**
-     * @param login
+     * @param id
      * @return
      */
-    List<Recurso> findRecursoByUsuario(String login);
+    List<Recurso> findRecursoByUsuario(UsuarioId id);
 
     /**
      * @return

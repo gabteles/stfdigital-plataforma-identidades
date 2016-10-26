@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.plataforma.identidades.application.PessoaApplicationService;
-import br.jus.stf.plataforma.identidades.application.commands.CadastrarAssociadoCommand;
 import br.jus.stf.plataforma.identidades.application.commands.CadastrarPessoaCommand;
 import br.jus.stf.plataforma.identidades.application.commands.CadastrarPessoasCommand;
 import br.jus.stf.plataforma.identidades.domain.model.corporativo.Pessoa;
@@ -58,7 +59,7 @@ public class PessoaRestResource {
      * @return Lista de IDs alocados.
      */
     @ApiOperation("Retorna uma lista de IDs alocados para cadastro ou reutilização de pessoas.")
-    @RequestMapping(value = "/alocar", method = RequestMethod.POST)
+    @RequestMapping(value = "/alocacoes-id", method = RequestMethod.POST)
     public List<Long> alocarIdPessoas(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
         isValid(result);
 
@@ -75,7 +76,7 @@ public class PessoaRestResource {
      * @return Dto com a Pessoa cadastrada.
      */
     @ApiOperation("Retorna um Dto com a Pessoa cadastrada.")
-    @RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
+    @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
     public PessoaDto cadastrarPessoa(@RequestBody @Valid CadastrarPessoaCommand command, BindingResult result) {
         isValid(result);
 
@@ -114,55 +115,44 @@ public class PessoaRestResource {
     }
 
     /**
-     * Retorna uma lista com todas as pessoas.
+     * Retorna uma lista com todas as pessoas ou as que possuem um número de documento, quando informado.
      * 
-     * @return Listas com as pessoas cadastradas.
+     * @return Listas com todas as pessoas cadastradas ou as que possuem o número de documento informado.
      */
-    @ApiOperation("Retorna uma lista com todas as pessoas.")
+    @ApiOperation("Lista com todas as pessoas ou filtrada por um número de documento, quando informado.")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<PessoaDto> listar() {
-        return pessoaRepository.findAll().stream()
-                .map(pessoaDtoAssembler::toDto)
-                .collect(Collectors.toList());
+    public List<PessoaDto> consultarPessoas(
+            @RequestParam(value = "documento", required = false) String numeroDocumento) {
+        List<PessoaDto> pessoas;
+
+        if (StringUtils.isNotBlank(numeroDocumento)) {
+            pessoas = consultarPessoasPorNumeroDocumento(numeroDocumento);
+        } else {
+            pessoas = pessoaRepository.findAll().stream()
+                    .map(pessoaDtoAssembler::toDto)
+                    .collect(Collectors.toList());
+        }
+
+        return pessoas;
     }
 
-    /**
-     * @param numero Número do documento pesquisado.
-     * @return Lista de pessoas que possuem esse documento.
-     */
-    @ApiOperation("Retorna uma lista pessoas que possuem o documento informado.")
-    @RequestMapping(value = "/documento/{numero}", method = RequestMethod.GET)
-    public List<PessoaDto> consultarPessoasPorNumero(@PathVariable("numero") String numero) {
-        List<PessoaDto> pessoas = new ArrayList<>();
+    private List<PessoaDto> consultarPessoasPorNumeroDocumento(String numeroDocumento) {
+        List<PessoaDto> pessoas = new ArrayList<>(0);
         PessoaDto pessoa;
 
-        if (CPFUtils.isValido(numero)) {
-            pessoa = consultarPessoaPorCPF(numero);
+        if (CPFUtils.isValido(numeroDocumento)) {
+            pessoa = consultarPessoaPorCPF(numeroDocumento);
 
             if (pessoa != null) {
                 pessoas.add(pessoa);
             } else {
-                pessoa = consultarPessoaWSRF(numero);
+                pessoa = consultarPessoaWSRF(numeroDocumento);
 
                 Optional.ofNullable(pessoa).ifPresent(pessoas::add);
             }
         }
 
         return pessoas;
-    }
-
-    /**
-     * Cria ou carrega uma pessoa e a associa a um Órgão.
-     * 
-     * @param command
-     * @param result Resultado da validação.
-     */
-    @ApiOperation("Cria ou carrega uma pessoa e a associa a um Órgão.")
-    @RequestMapping(value = "/associado", method = RequestMethod.POST)
-    public void cadastrarAssociado(@RequestBody @Valid CadastrarAssociadoCommand command, BindingResult result) {
-        isValid(result);
-
-        pessoaApplicationService.handle(command);
     }
 
     private PessoaDto consultarPessoaPorCPF(String cpf) {
