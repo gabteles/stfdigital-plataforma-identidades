@@ -78,7 +78,7 @@ public class PessoaIntegrationTests extends IntegrationTestsSupport {
 
         mockMvc.perform(post("/api/pessoas/alocacoes-id").contentType(MediaType.APPLICATION_JSON).content(pessoas))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0]", equalTo(9000))).andExpect(jsonPath("$[1]", lessThanOrEqualTo(3)))
+                .andExpect(jsonPath("$[0]", equalTo(9000)))
                 .andExpect(jsonPath("$[2]", equalTo(9001)));
     }
 
